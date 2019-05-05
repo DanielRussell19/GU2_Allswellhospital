@@ -200,6 +200,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imgs\testimonials-1.jpg" />
+    <Content Include="Imgs\testimonials-2.jpg" />
+    <Content Include="Imgs\testimonials-3.jpg" />
     <Content Include="Scripts\all.min.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -291,7 +294,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Imgs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
