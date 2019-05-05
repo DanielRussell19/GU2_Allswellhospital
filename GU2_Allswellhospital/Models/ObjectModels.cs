@@ -55,8 +55,8 @@ namespace GU2_Allswellhospital.Models
 
         [Required]
         public int WardCapacity { get; set; }
-    
-        //Navigation Properties
+
+        ////Navigation Properties
         [ForeignKey("Team")]
         public string TeamNo { get; set; }
         public Team Team { get; set; }

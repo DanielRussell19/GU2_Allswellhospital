@@ -17,15 +17,17 @@ namespace GU2_Allswellhospital.Models
 
             public IDbSet<Drug> Drugs { get; set; }
 
+            public IDbSet<Patient> Patients { get; set; }
+
             public IDbSet<Ward> Wards { get; set; }
 
             public IDbSet<Team> Teams { get; set; }
 
             public IDbSet<Prescription> Prescriptions { get; set; }
 
-            public IDbSet<Admission> Admissions { get; set; }
+            public IDbSet<Treatment> Treatments { get; set; }
 
-            public IDbSet<Patient> Patients { get; set; }
+            public IDbSet<Admission> Admissions { get; set; }
 
             public IDbSet<Payment> Payments { get; set; }
 

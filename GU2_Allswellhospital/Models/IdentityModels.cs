@@ -93,8 +93,7 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class WardSister : Staff
     {
-        //navigational properties
-        [Required]
+        ////navigational properties
         [ForeignKey("Ward")]
         public string WardNo { get; set; }
         public Ward Ward { get; set; }
@@ -122,7 +121,6 @@ namespace GU2_Allswellhospital.Models
         public string Specialism { get; set; }
 
         //navigational properties
-        [Required]
         [ForeignKey("Team")]
         public string TeamNo { get; set; }
         public Team Team { get; set; }
@@ -162,7 +160,6 @@ namespace GU2_Allswellhospital.Models
     public class Nurse : Staff
     {
         //navigational properties
-        [Required]
         [ForeignKey("Team")]
         public string TeamNo { get; set; }
         public Team Team { get; set; }
