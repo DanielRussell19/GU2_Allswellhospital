@@ -55,7 +55,6 @@ namespace GU2_Allswellhospital.Models
                 }
 
                 context.SaveChanges();
-
             }
 
             UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
