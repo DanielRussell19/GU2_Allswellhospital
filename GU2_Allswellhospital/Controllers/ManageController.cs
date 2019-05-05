@@ -10,6 +10,8 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
+    //Daniel Russell 04/05/2019
+
     [Authorize]
     public class ManageController : Controller
     {
