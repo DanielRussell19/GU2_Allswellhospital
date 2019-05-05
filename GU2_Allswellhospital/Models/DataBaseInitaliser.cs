@@ -15,10 +15,14 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class DataBaseInitaliser : DropCreateDatabaseAlways<ApplicationDbContext>
     {
-
+        /// <summary>
+        /// seeder method override, to seed inital users, roles and objects
+        /// </summary>
         protected override void Seed(ApplicationDbContext context)
         {
             base.Seed(context);
+
+            //creates staff roles
 
             if (!context.Users.Any())
             {
@@ -57,28 +61,30 @@ namespace GU2_Allswellhospital.Models
                 context.SaveChanges();
             }
 
-            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            //creates staff users
 
-            /*
-            //Create an staff
-            if (userManager.FindByName("staff@test.com") == null)
+            UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            
+            if (userManager.FindByName("staffadmin@test.com") == null)
             {
-                var staff = new Staff
+                var staffAdmin = new StaffAdmin
                 {
                     UserName = "staff@test.com",
                     Email = "staff@test.com",
-                    RegisteredAt = DateTime.Now,
                     EmailConfirmed = true,
-                    IsSuspended = false,
-                    SuspensionReason = "",
-                    SuspensionTime = null,
                     Forename = "sam",
                     Surname = "samson",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000"
                 };
-                userManager.Create(staff, "staff123");
-                userManager.AddToRole(staff.Id, "Staff");
+                userManager.Create(staffAdmin, "password123");
+                userManager.AddToRole(staffAdmin.Id, "StaffAdmin");
             }
 
+            /*
             //creatse moderator
 
             if (userManager.FindByName("mod@test.com") == null)
@@ -194,5 +200,5 @@ namespace GU2_Allswellhospital.Models
         }
 
 
-}
+    }
 }

@@ -200,6 +200,9 @@ namespace GU2_Allswellhospital.Models
     public class Admission
     {
         //Attributes
+        [Key]
+        public string AdmissionNo { get; set; }
+
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
         public DateTime DateAdmitted { get; set; }
