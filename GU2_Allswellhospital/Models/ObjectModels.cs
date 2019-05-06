@@ -32,7 +32,7 @@ namespace GU2_Allswellhospital.Models
         //Constructors
         public Drug()
         {
-
+           DrugNo = Guid.NewGuid().ToString();
         }
 
         public Drug(Drug drug)
@@ -59,7 +59,7 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public Ward()
         {
-
+            WardNo = Guid.NewGuid().ToString();
         }
 
         public Ward(Ward ward)
@@ -93,7 +93,8 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public Team()
         {
-        Staffs = new List<Staff>();
+            Staffs = new List<Staff>();
+            TeamNo = Guid.NewGuid().ToString();
         }
 
         public Team(Team team)
@@ -136,7 +137,7 @@ namespace GU2_Allswellhospital.Models
         //Constructors
         public Prescription()
         {
-
+            PrescriptionNo = Guid.NewGuid().ToString();
         }
 
         public Prescription(Prescription prescription)
@@ -183,6 +184,7 @@ namespace GU2_Allswellhospital.Models
         public Treatment()
         {
             prescriptions = new List<Prescription>();
+            TreatmentNo = Guid.NewGuid().ToString();
         }
 
         public Treatment(Treatment treatment)
@@ -222,7 +224,7 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public Admission()
         {
-
+            AdmissionNo = Guid.NewGuid().ToString();
         }
 
         public Admission(Admission admission)
@@ -265,7 +267,7 @@ namespace GU2_Allswellhospital.Models
         //Constructs
         public Payment()
         {
-
+            PaymentNo = Guid.NewGuid().ToString();
         }
 
         public Payment(Payment payment)
@@ -305,7 +307,7 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public BillingInvoice()
         {
-
+            InvoiceNo = Guid.NewGuid().ToString();
         }
 
         public BillingInvoice(BillingInvoice billingInvoice)

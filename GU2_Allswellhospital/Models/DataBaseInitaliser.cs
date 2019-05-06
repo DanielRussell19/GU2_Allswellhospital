@@ -117,10 +117,10 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Wards.Any())
             {
-                context.Wards.Add(new Ward { WardName="Dentistry", WardCapacity=27, WardNo= Guid.NewGuid().ToString()});
-                context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-                context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-                context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+                context.Wards.Add(new Ward { WardName="Dentistry", WardCapacity=27});
+                context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27});
+                context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27});
+                context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27});
 
                 context.SaveChanges();
             }
@@ -129,8 +129,8 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Teams.Any())
             {
-                context.Teams.Add(new Team { TeamName = "Dentistry", TeamNo = Guid.NewGuid().ToString() });
-                context.Teams.Add(new Team { TeamName = "Orthadontics", TeamNo = Guid.NewGuid().ToString() });
+                context.Teams.Add(new Team { TeamName = "Dentistry"});
+                context.Teams.Add(new Team { TeamName = "Orthadontics"});
 
                 context.SaveChanges();
             }
@@ -139,44 +139,35 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Drugs.Any())
             {
-                context.Drugs.Add(new Drug { DrugName = "Dent", DrugNo = Guid.NewGuid().ToString(), DrugDetails = "Heart medicine", DrugCost = 10.35 });
-                context.Drugs.Add(new Drug { DrugName = "Ortha", DrugNo = Guid.NewGuid().ToString(), DrugDetails = "Nose medicine", DrugCost = 5.49 });
+                context.Drugs.Add(new Drug { DrugName = "Dent", DrugDetails = "Heart medicine", DrugCost = 10.35 });
+                context.Drugs.Add(new Drug { DrugName = "Ortha", DrugDetails = "Nose medicine", DrugCost = 5.49 });
 
                 context.SaveChanges();
             }
 
             //patients
 
-            //if (!context.Patients.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Patients.Any())
+            {
+                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", Id = Guid.NewGuid().ToString(), UserName = "me@me.com"});
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
             //admissions
 
-            //if (!context.Admissions.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Admissions.Any())
+            {
+                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now, isConfirmed= true});
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
             //treatment invoices
 
             //if (!context.Invoices.Any())
             //{
             //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
 
             //    context.SaveChanges();
             //}
@@ -186,9 +177,6 @@ namespace GU2_Allswellhospital.Models
             //if (!context.Payments.Any())
             //{
             //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
 
             //    context.SaveChanges();
             //}
@@ -198,9 +186,6 @@ namespace GU2_Allswellhospital.Models
             //if (!context.Prescriptions.Any())
             //{
             //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Phisio", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "dermatology", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
 
             //    context.SaveChanges();
             //}
