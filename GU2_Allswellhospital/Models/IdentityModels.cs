@@ -94,9 +94,9 @@ namespace GU2_Allswellhospital.Models
     public class WardSister : Staff
     {
         ////navigational properties
-        //[ForeignKey("Ward")]
-        //public string WardNo { get; set; }
-        //public Ward Ward { get; set; }
+        [ForeignKey("Ward")]
+        public string WardNo { get; set; }
+        public Ward Ward { get; set; }
 
         public WardSister()
         {
