@@ -294,10 +294,10 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Advice.cshtml" />
     <Content Include="Views\Home\Treatments.cshtml" />
+    <Content Include="Views\StaffHome\StaffHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\StaffHome\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

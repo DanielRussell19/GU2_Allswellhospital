@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using Microsoft.AspNet.Identity
 <html>
 
 <head>
@@ -47,6 +48,22 @@
             <p>@DateTime.Now.Day / @DateTime.Now.Month / @DateTime.Now.Year - AllsWellHospital</p>
             <br />
             <p>@Html.ActionLink("Staff Access", "Login", "Account")</p>
+
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <p>Hello @User.Identity.GetUserName() !</p>
+                        </li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    </ul>
+                }
+            }
+
         </footer>
     </div>
 

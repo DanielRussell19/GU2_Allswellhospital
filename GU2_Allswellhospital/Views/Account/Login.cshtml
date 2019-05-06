@@ -1,6 +1,12 @@
 ﻿@using GU2_Allswellhospital.Models
 @model LoginViewModel
 
+@if (Request.IsAuthenticated)
+{
+    @Html.AntiForgeryToken()
+    Response.Redirect("~/StaffHome/StaffHome");
+}
+
 <style>
     .login,
     .image {
@@ -12,7 +18,7 @@
         background-size: cover;
         background-position: center;
     }
-</style>  
+</style>
 
 <div class="container-fluid">
     <div class="row no-gutter">
