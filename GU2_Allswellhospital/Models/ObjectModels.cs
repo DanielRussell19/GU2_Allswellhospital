@@ -56,11 +56,6 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public int WardCapacity { get; set; }
 
-        ////Navigation Properties
-        //[ForeignKey("Team")]
-        //public string TeamNo { get; set; }
-        //public Team Team { get; set; }
-
         //constructors
         public Ward()
         {
@@ -86,16 +81,19 @@ namespace GU2_Allswellhospital.Models
         public string TeamName { get; set; }
 
         //Navigational Properties
-        //public IList<Staff> Staffs {get;set;}
 
-        //[ForeignKey("Ward")]
-        //public string WardNo { get; set; }
-        //public Ward Ward { get; set; }
+        [ForeignKey("Ward")]
+        public string WardNo { get; set; }
+        public Ward Ward { get; set; }
+
+        [ForeignKey("Staff")]
+        public IList<string> StaffIDs { get; set; }
+        public IList<Staff> Staffs {get;set;}
 
         //constructors
         public Team()
         {
-            //Staffs = new List<Staff>();
+        Staffs = new List<Staff>();
         }
 
         public Team(Team team)
@@ -127,13 +125,13 @@ namespace GU2_Allswellhospital.Models
         public string IssuedByID { get; set; }
 
         //Navigational properties
-        //[ForeignKey("Patient")]
-        //public string PatientID { get; set; }
-        //public Patient Patient { get; set; }
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
 
-        //[ForeignKey("Drug")]
-        //public string DrugNo { get; set; }
-        //public Drug Drug { get; set; }
+        [ForeignKey("Drug")]
+        public string DrugNo { get; set; }
+        public Drug Drug { get; set; }
 
         //Constructors
         public Prescription()
@@ -167,24 +165,24 @@ namespace GU2_Allswellhospital.Models
         public double TreatmentCost { get; set; }
 
         //navigational properties
-        //public IList<Prescription> prescriptions { get; set; }
+        public IList<Prescription> prescriptions { get; set; }
 
-        //[ForeignKey("Doctor")]
-        //public string DoctorID { set; get; }
-        //public Doctor Doctor { get; set; }
+        [ForeignKey("Doctor")]
+        public string DoctorID { set; get; }
+        public Doctor Doctor { get; set; }
 
-        //[ForeignKey("Consultant")]
-        //public string ConsultantID { set; get; }
-        //public Consultant Consultant { get; set; }
+        [ForeignKey("Consultant")]
+        public string ConsultantID { set; get; }
+        public Consultant Consultant { get; set; }
 
-        //[ForeignKey("Patient")]
-        //public string PatientID { get; set; }
-        //public Patient Patient { get; set; }
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
 
         //constructors
         public Treatment()
         {
-            //prescriptions = new List<Prescription>();
+            prescriptions = new List<Prescription>();
         }
 
         public Treatment(Treatment treatment)
@@ -213,13 +211,13 @@ namespace GU2_Allswellhospital.Models
         public bool isConfirmed { get; set; }
 
         //navigational properties
-        //[ForeignKey("Patient")]
-        //public string PatientID { get; set; }
-        //public Patient Patient { get; set; }
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
 
-        //[ForeignKey("Ward")]
-        //public string WardNo { get; set; }
-        //public Ward Ward { get; set; }
+        [ForeignKey("Ward")]
+        public string WardNo { get; set; }
+        public Ward Ward { get; set; }
 
         //constructors
         public Admission()
@@ -292,17 +290,17 @@ namespace GU2_Allswellhospital.Models
         public double TotalDue { get; set; }
 
         //Navigational Properties
-        //[ForeignKey("Patient")]
-        //public string PatientID { get; set; }
-        //public Patient Patient { get; set; }
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
 
-        //[ForeignKey("Treatment")]
-        //public string TreatmentNo { get; set; }
-        //public Treatment Treatment { get; set; }
+        [ForeignKey("Treatment")]
+        public string TreatmentNo { get; set; }
+        public Treatment Treatment { get; set; }
 
-        //[ForeignKey("Payment")]
-        //public string PaymentNo { get; set; }
-        //public Payment Payment { get; set; }
+        [ForeignKey("Payment")]
+        public string PaymentNo { get; set; }
+        public Payment Payment { get; set; }
 
         //constructors
         public BillingInvoice()
