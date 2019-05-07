@@ -32,7 +32,10 @@ namespace GU2_Allswellhospital.Models
         //Constructors
         public Drug()
         {
-           DrugNo = Guid.NewGuid().ToString();
+            DrugNo = Guid.NewGuid().ToString();
+            DrugDetails = "N/a";
+            DrugName = "N/a";
+            DrugCost = 0.00;
         }
 
         public Drug(Drug drug)
@@ -60,6 +63,8 @@ namespace GU2_Allswellhospital.Models
         public Ward()
         {
             WardNo = Guid.NewGuid().ToString();
+            WardName = "N/a";
+            WardCapacity = 0;
         }
 
         public Ward(Ward ward)
@@ -95,6 +100,7 @@ namespace GU2_Allswellhospital.Models
         {
             Staffs = new List<Staff>();
             TeamNo = Guid.NewGuid().ToString();
+            TeamName = "N/a";
         }
 
         public Team(Team team)
@@ -232,6 +238,9 @@ namespace GU2_Allswellhospital.Models
         public Admission()
         {
             AdmissionNo = Guid.NewGuid().ToString();
+            DateAdmitted = DateTime.Now;
+            DateDischarged = DateTime.Now;
+            isConfirmed = false;
         }
 
         public Admission(Admission admission)
