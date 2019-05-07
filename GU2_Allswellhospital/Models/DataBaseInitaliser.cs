@@ -195,7 +195,6 @@ namespace GU2_Allswellhospital.Models
             if (!context.Treatments.Any())
             {
                 context.Treatments.Add(new Treatment { });
-                context.Treatments.Add(new Treatment { });
 
                 context.SaveChanges();
             }
