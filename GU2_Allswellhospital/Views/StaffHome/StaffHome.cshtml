@@ -5,3 +5,17 @@
 
 <h2>StaffHome</h2>
 
+@if (Request.IsAuthenticated)
+{
+    <button onclick="window.location.href = '@Url.Action("Index","Home")';">Admin Services</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("Index","Home")';">Medical Records</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("Index","Home")';">Team Managment</button>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    Response.Redirect("~/Home/Index");
+}
+
