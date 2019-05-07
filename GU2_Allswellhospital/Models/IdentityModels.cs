@@ -62,7 +62,7 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public StaffAdmin()
         {
-
+         
         }
 
         public StaffAdmin(StaffAdmin staffAdmin)

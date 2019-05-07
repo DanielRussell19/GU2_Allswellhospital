@@ -158,47 +158,47 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Admissions.Any())
             {
-                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now, isConfirmed= true});
+                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now, DateDischarged= DateTime.Now, isConfirmed = true });
 
                 context.SaveChanges();
             }
 
             //treatment invoices
 
-            //if (!context.Invoices.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Invoices.Any())
+            {
+                context.Invoices.Add(new BillingInvoice { });
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
             //payments
 
-            //if (!context.Payments.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Payments.Any())
+            {
+                context.Payments.Add(new Payment { });
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
             //prescriptions, not proscriptions :V
 
-            //if (!context.Prescriptions.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Prescriptions.Any())
+            {
+                context.Prescriptions.Add(new Prescription { });
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
             //Treatments
 
-            //if (!context.Treatments.Any())
-            //{
-            //    context.Wards.Add(new Ward { WardName = "Dentistry", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
-            //    context.Wards.Add(new Ward { WardName = "Orthadontics", WardCapacity = 27, WardNo = Guid.NewGuid().ToString() });
+            if (!context.Treatments.Any())
+            {
+                context.Treatments.Add(new Treatment { });
+                context.Treatments.Add(new Treatment { });
 
-            //    context.SaveChanges();
-            //}
+                context.SaveChanges();
+            }
 
         }
 

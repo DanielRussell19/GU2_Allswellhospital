@@ -138,6 +138,10 @@ namespace GU2_Allswellhospital.Models
         public Prescription()
         {
             PrescriptionNo = Guid.NewGuid().ToString();
+            Dosage = "N/a";
+            LengthofTreatment = "N/a";
+            DateofPrescription = DateTime.Now;
+            IssuedByID = Guid.NewGuid().ToString();
         }
 
         public Prescription(Prescription prescription)
@@ -185,6 +189,9 @@ namespace GU2_Allswellhospital.Models
         {
             prescriptions = new List<Prescription>();
             TreatmentNo = Guid.NewGuid().ToString();
+            TreatmentCost = 0.00;
+            TreatmentDetails = "N/a";
+            DateofTreatment = DateTime.Now;
         }
 
         public Treatment(Treatment treatment)
@@ -268,11 +275,18 @@ namespace GU2_Allswellhospital.Models
         public Payment()
         {
             PaymentNo = Guid.NewGuid().ToString();
+            PaymentMethod = "N/a";
+            BillingAddress = "N/a";
+            Forename = "N/a";
+            Surname = "N/a";
+            CardNumber = "N/a";
+            SecurityCode = "N/a";
+            ExpiryDate = DateTime.Now;
         }
 
         public Payment(Payment payment)
         {
-
+        
         }
     }
 
@@ -308,6 +322,8 @@ namespace GU2_Allswellhospital.Models
         public BillingInvoice()
         {
             InvoiceNo = Guid.NewGuid().ToString();
+            PaymentRecived = false;
+            TotalDue = 0.00;
         }
 
         public BillingInvoice(BillingInvoice billingInvoice)
