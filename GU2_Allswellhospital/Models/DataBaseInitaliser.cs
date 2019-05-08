@@ -71,15 +71,15 @@ namespace GU2_Allswellhospital.Models
 
             UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             
-            if (userManager.FindByName("staffadmin@test.com") == null)
+            if (userManager.FindByName("Simpson@Manager.com") == null)
             {
                 var staffAdmin = new StaffAdmin
                 {
-                    UserName = "staff@test.com",
-                    Email = "staff@test.com",
+                    UserName = "Simpson@Manager.com",
+                    Email = "Simpson@Manager.com",
                     EmailConfirmed = true,
-                    Forename = "sam",
-                    Surname = "samson",
+                    Forename = "Sam",
+                    Surname = "Simpson",
                     DOB = DateTime.Now,
                     Street = "Street",
                     City = "City",
@@ -90,15 +90,15 @@ namespace GU2_Allswellhospital.Models
                 userManager.AddToRole(staffAdmin.Id, "StaffAdmin");
             }
 
-            if (userManager.FindByName("medicalrecordstaff@test.com") == null)
+            if (userManager.FindByName("Carl@MedRec.com") == null)
             {
                 var medicalRecordsStaff = new MedicalRecordsStaff
                 {
-                    UserName = "medicalrecordstaff@test.com",
-                    Email = "medicalrecordstaff@test.com",
+                    UserName = "Carl@MedRec.com",
+                    Email = "Carl@MedRec.com",
                     EmailConfirmed = true,
-                    Forename = "wright",
-                    Surname = "mires",
+                    Forename = "Fred",
+                    Surname = "Carlson",
                     DOB = DateTime.Now,
                     Street = "Street",
                     City = "City",
@@ -107,6 +107,126 @@ namespace GU2_Allswellhospital.Models
                 };
                 userManager.Create(medicalRecordsStaff, "password123");
                 userManager.AddToRole(medicalRecordsStaff.Id, "MedicalRecordsStaff");
+            }
+
+            if (userManager.FindByName("Fray@WardSister.com") == null)
+            {
+                var wardSister = new WardSister
+                {
+                    UserName = "Fray@WardSister.com",
+                    Email = "Fray@WardSister.com",
+                    EmailConfirmed = true,
+                    Forename = "Lilith",
+                    Surname = "Fray",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000"
+                };
+                userManager.Create(wardSister, "password123");
+                userManager.AddToRole(wardSister.Id, "WardSister");
+            }
+
+            if (userManager.FindByName("Daniels@Nurse.com") == null)
+            {
+                var Nurse = new Nurse
+                {
+                    UserName = "Daniels@Nurse.com",
+                    Email = "Daniels@Nurse.com",
+                    EmailConfirmed = true,
+                    Forename = "Liam",
+                    Surname = "Daniels",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000"
+                };
+                userManager.Create(Nurse, "password123");
+                userManager.AddToRole(Nurse.Id, "Nurse");
+            }
+
+            if (userManager.FindByName("Ulala@SNurse.com") == null)
+            {
+                var StaffNurse = new StaffNurse
+                {
+                    UserName = "Ulala@SNurse.com",
+                    Email = "Ulala@SNurse.com",
+                    EmailConfirmed = true,
+                    Forename = "Tay",
+                    Surname = "Lewis",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000"
+                };
+                userManager.Create(StaffNurse, "password123");
+                userManager.AddToRole(StaffNurse.Id, "StaffNurse");
+            }
+
+            if (userManager.FindByName("Var@JDoctor.com") == null)
+            {
+                var JuniorDoctor = new Doctor
+                {
+                    UserName = "Var@JDoctor.com",
+                    Email = "Var@JDoctor.com",
+                    EmailConfirmed = true,
+                    Forename = "Vargas",
+                    Surname = "Taylor",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000",
+                    Grade = 'X',
+                    Specialism="Dentistry"
+                };
+                userManager.Create(JuniorDoctor, "password123");
+                userManager.AddToRole(JuniorDoctor.Id, "Doctor");
+            }
+
+            if (userManager.FindByName("Tracer@Doctor.com") == null)
+            {
+                var Doctor = new Doctor
+                {
+                    UserName = "Tracer@Doctor.com",
+                    Email = "Tracer@Doctor.com",
+                    EmailConfirmed = true,
+                    Forename = "Brie",
+                    Surname = "Tracer",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000",
+                    Grade='A',
+                    Specialism="Gastrology"
+                };
+                userManager.Create(Doctor, "password123");
+                userManager.AddToRole(Doctor.Id, "Doctor");
+            }
+
+            if (userManager.FindByName("Paul@Consultant.com") == null)
+            {
+                var consultant = new Consultant
+                {
+                    UserName = "Paul@Consultant.com",
+                    Email = "Paul@Consultant.com",
+                    EmailConfirmed = true,
+                    Forename = "Fred",
+                    Surname = "Carlson",
+                    DOB = DateTime.Now,
+                    Street = "Street",
+                    City = "City",
+                    Town = "Town",
+                    PhoneNumber = "0005550000",
+                    Specialism="Phiso",
+                    Grade='A'
+                };
+                userManager.Create(consultant, "password123");
+                userManager.AddToRole(consultant.Id, "Consultant");
             }
 
             context.SaveChanges();
