@@ -121,9 +121,9 @@ namespace GU2_Allswellhospital.Models
         public string Specialism { get; set; }
 
         //navigational properties
-        //[ForeignKey("Team")]
-        //public string TeamNo { get; set; }
-        //public Team Team { get; set; }
+        [ForeignKey("Team")]
+        public string TeamNo { get; set; }
+        public Team Team { get; set; }
 
         //contructors
         public Doctor()
@@ -160,9 +160,9 @@ namespace GU2_Allswellhospital.Models
     public class Nurse : Staff
     {
         //navigational properties
-        //[ForeignKey("Team")]
-        //public string TeamNo { get; set; }
-        //public Team Team { get; set; }
+        [ForeignKey("Team")]
+        public string TeamNo { get; set; }
+        public Team Team { get; set; }
 
         //constructors
         public Nurse()
