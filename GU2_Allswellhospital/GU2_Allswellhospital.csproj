@@ -176,9 +176,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminServicesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MedicalRecordsController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
+    <Compile Include="Controllers\TeamManagmentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -295,6 +298,13 @@
     <Content Include="Views\Home\Advice.cshtml" />
     <Content Include="Views\Home\Treatments.cshtml" />
     <Content Include="Views\StaffHome\StaffHome.cshtml" />
+    <Content Include="Views\TeamManagment\Create.cshtml" />
+    <Content Include="Views\TeamManagment\Delete.cshtml" />
+    <Content Include="Views\TeamManagment\Details.cshtml" />
+    <Content Include="Views\TeamManagment\Edit.cshtml" />
+    <Content Include="Views\TeamManagment\Index.cshtml" />
+    <Content Include="Views\AdminServices\AdminServicesIndex.cshtml" />
+    <Content Include="Views\MedicalRecords\MedicalRecordsIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
