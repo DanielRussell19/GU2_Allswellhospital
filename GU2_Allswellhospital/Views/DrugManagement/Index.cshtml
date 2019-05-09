@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GU2_Allswellhospital.Models.Drug>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DrugDetails)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DrugName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DrugCost)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DrugDetails)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DrugName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DrugCost)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DrugNo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DrugNo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DrugNo })
+        </td>
+    </tr>
+}
+
+</table>

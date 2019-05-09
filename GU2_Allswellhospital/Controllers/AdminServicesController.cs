@@ -13,5 +13,20 @@ namespace GU2_Allswellhospital.Controllers
         {
             return View();
         }
+
+        public ActionResult StaffManagement()
+        {
+            return View();
+        }
+
+        public ActionResult WardManagement()
+        {
+            return View();
+        }
+
+        public ActionResult DrugManagement()
+        {
+            return View();
+        }
     }
 }

@@ -177,11 +177,14 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminServicesController.cs" />
+    <Compile Include="Controllers\DrugManagementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MedicalRecordsController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
+    <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
+    <Compile Include="Controllers\WardManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -305,6 +308,21 @@
     <Content Include="Views\TeamManagment\Index.cshtml" />
     <Content Include="Views\AdminServices\AdminServicesIndex.cshtml" />
     <Content Include="Views\MedicalRecords\MedicalRecordsIndex.cshtml" />
+    <Content Include="Views\StaffManagement\Create.cshtml" />
+    <Content Include="Views\StaffManagement\Delete.cshtml" />
+    <Content Include="Views\StaffManagement\Details.cshtml" />
+    <Content Include="Views\StaffManagement\Edit.cshtml" />
+    <Content Include="Views\StaffManagement\Index.cshtml" />
+    <Content Include="Views\WardManagement\Create.cshtml" />
+    <Content Include="Views\WardManagement\Delete.cshtml" />
+    <Content Include="Views\WardManagement\Details.cshtml" />
+    <Content Include="Views\WardManagement\Edit.cshtml" />
+    <Content Include="Views\WardManagement\Index.cshtml" />
+    <Content Include="Views\DrugManagement\Create.cshtml" />
+    <Content Include="Views\DrugManagement\Delete.cshtml" />
+    <Content Include="Views\DrugManagement\Details.cshtml" />
+    <Content Include="Views\DrugManagement\Edit.cshtml" />
+    <Content Include="Views\DrugManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

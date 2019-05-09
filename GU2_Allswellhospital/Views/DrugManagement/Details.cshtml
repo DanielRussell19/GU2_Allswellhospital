@@ -1,0 +1,42 @@
+﻿@model GU2_Allswellhospital.Models.Drug
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Drug</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DrugDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DrugDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DrugName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DrugName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DrugCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DrugCost)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DrugNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

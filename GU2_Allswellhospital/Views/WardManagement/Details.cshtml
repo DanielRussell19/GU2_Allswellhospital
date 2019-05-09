@@ -1,0 +1,34 @@
+﻿@model GU2_Allswellhospital.Models.Ward
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Ward</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WardName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WardName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WardCapacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WardCapacity)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.WardNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

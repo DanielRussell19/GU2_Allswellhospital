@@ -42,6 +42,7 @@ namespace GU2_Allswellhospital.Models
             {
                 return new ApplicationDbContext();
             }
-        
+
+        public System.Data.Entity.DbSet<GU2_Allswellhospital.Models.Staff> ApplicationUsers { get; set; }
     }
 }
