@@ -18,17 +18,17 @@ namespace GU2_Allswellhospital.Controllers
 
         public ActionResult StaffManagement()
         {
-            return View();
+            return RedirectToAction("Index","StaffManagement","StaffManagement");
         }
 
         public ActionResult WardManagement()
         {
-            return View();
+            return RedirectToAction("Index", "WardManagement", "WardManagement");
         }
 
         public ActionResult DrugManagement()
         {
-            return View();
+            return RedirectToAction("Index", "DrugManagement", "DrugManagement");
         }
     }
 }

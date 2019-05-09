@@ -5,3 +5,18 @@
 
 <h2>AdminServicesIndex</h2>
 
+@if (Request.IsAuthenticated)
+{
+    <button onclick="window.location.href = '@Url.Action("Index","StaffManagement")';" style="position: center">Staff Management</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("Index","DrugManagement")';" style="position: center">Drug Management</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("Index","WardManagement")';" style="position: center">Ward Management</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("StaffIndex","StaffHome")';" style="position: center">Analytics Management</button>
+}
+else
+{
+    @Html.AntiForgeryToken()
+    Response.Redirect("~/Home/Index");
+}

@@ -61,7 +61,7 @@ namespace GU2_Allswellhospital.Models
     /// <summary>
     /// Describes an abstract Staff User
     /// </summary>
-    public abstract class Staff : ApplicationUser
+    public class Staff : ApplicationUser
     {
 
         //navigational properties

@@ -81,7 +81,7 @@ namespace GU2_Allswellhospital.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("StaffHome","StaffHome","StaffHome");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
