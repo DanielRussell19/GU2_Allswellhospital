@@ -91,15 +91,9 @@ namespace GU2_Allswellhospital.Models
         public string WardNo { get; set; }
         public Ward Ward { get; set; }
 
-        [ForeignKey("Staff")]
-        public IList<string> StaffIDs { get; set; }
-        public IList<Staff> Staffs { get; set; }
-
         //constructors
         public Team()
         {
-            StaffIDs = new List<string>();
-            Staffs = new List<Staff>();
             TeamNo = Guid.NewGuid().ToString();
             TeamName = "N/a";
         }

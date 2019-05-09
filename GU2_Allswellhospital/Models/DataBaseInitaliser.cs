@@ -278,7 +278,7 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Admissions.Any())
             {
-                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now, DateDischarged= DateTime.Now, isConfirmed = true });
+                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now.AddDays(20), DateDischarged= DateTime.Now, isConfirmed = true });
 
                 context.SaveChanges();
             }
@@ -287,7 +287,7 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Invoices.Any())
             {
-                context.Invoices.Add(new BillingInvoice { });
+                context.Invoices.Add(new BillingInvoice { PaymentRecived = false, TotalDue = 5.99 });
 
                 context.SaveChanges();
             }
@@ -296,7 +296,7 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Payments.Any())
             {
-                context.Payments.Add(new Payment { });
+                context.Payments.Add(new Payment {  });
 
                 context.SaveChanges();
             }

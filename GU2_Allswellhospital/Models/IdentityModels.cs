@@ -38,6 +38,17 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public DateTime DOB { get; set; }
 
+        //constructor
+        public ApplicationUser() : base()
+        {
+            Forename = "N/a";
+            Surname = "N/a";
+            Street = "N/a";
+            Town = "N/a";
+            City = "N/a";
+            DOB = DateTime.Now;
+        }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -52,6 +63,12 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public abstract class Staff : ApplicationUser
     {
+
+        //navigational properties
+        [ForeignKey("Team")]
+        public string TeamNo { get; set; }
+        public Team Team { get; set; }
+
     }
 
     /// <summary>
@@ -59,8 +76,9 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class StaffAdmin : Staff
     {
+        
         //constructors
-        public StaffAdmin()
+        public StaffAdmin() : base()
         {
          
         }
@@ -77,7 +95,7 @@ namespace GU2_Allswellhospital.Models
     public class MedicalRecordsStaff : Staff
     {
         //constructors
-        public MedicalRecordsStaff()
+        public MedicalRecordsStaff() : base()
         {
 
         }
@@ -98,7 +116,8 @@ namespace GU2_Allswellhospital.Models
         public string WardNo { get; set; }
         public Ward Ward { get; set; }
 
-        public WardSister()
+        //constructors
+        public WardSister() : base()
         {
 
         }
@@ -120,13 +139,8 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public string Specialism { get; set; }
 
-        //navigational properties
-        //[ForeignKey("Team")]
-        //public string TeamNo { get; set; }
-        //public Team Team { get; set; }
-
         //contructors
-        public Doctor()
+        public Doctor() : base()
         {
 
         }
@@ -143,7 +157,7 @@ namespace GU2_Allswellhospital.Models
     public class Consultant : Doctor
     {
         //constructors
-        public Consultant()
+        public Consultant() : base()
         {
 
         }
@@ -159,13 +173,9 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class Nurse : Staff
     {
-        //navigational properties
-        //[ForeignKey("Team")]
-        //public string TeamNo { get; set; }
-        //public Team Team { get; set; }
 
         //constructors
-        public Nurse()
+        public Nurse() : base()
         {
 
         }
@@ -182,7 +192,7 @@ namespace GU2_Allswellhospital.Models
     public class StaffNurse : Nurse
     {
         //constructors
-        public StaffNurse()
+        public StaffNurse() : base()
         {
 
         }
@@ -216,11 +226,20 @@ namespace GU2_Allswellhospital.Models
 
         public string NextofKinCity { get; set; }
 
+        public string NextofkinTelNum { get; set; }
+
         //constructors
-        public Patient()
+        public Patient() : base()
         {
             Conditions = new List<string>();
             Allergies = new List<string>();
+            Occupation = "N/a";
+            NextofKinForename = "N/a";
+            NextofKinSurname = "N/a";
+            NextofKinStreet = "N/a";
+            NextofKinTown = "N/a";
+            NextofKinCity = "N/a";
+            NextofkinTelNum = "N/a";
         }
 
         public Patient(Patient patient)
