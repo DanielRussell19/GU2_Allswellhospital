@@ -7,11 +7,11 @@
 
 @if (Request.IsAuthenticated)
 {
-    <button onclick="window.location.href = '@Url.Action("Index","Home")';" style="position: center">Admin Services</button><br />
+    <button onclick="window.location.href = '@Url.Action("AdminServicesRedirect","StaffHome")';" style="position: center">Admin Services</button><br />
 
-    <button onclick="window.location.href = '@Url.Action("Index","Home")';" style="position: center">Medical Records</button><br />
+    <button onclick="window.location.href = '@Url.Action("MedicalRecordsRedirect","StaffHome")';" style="position: center">Medical Records</button><br />
 
-    <button onclick="window.location.href = '@Url.Action("Index","Home")';" style="position: center">Team Managment</button>
+    <button onclick="window.location.href = '@Url.Action("TeamManagmentRedirect","StaffHome")';" style="position: center">Team Managment</button>
 }
 else
 {
