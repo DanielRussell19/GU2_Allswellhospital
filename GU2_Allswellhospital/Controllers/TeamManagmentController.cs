@@ -128,5 +128,15 @@ namespace GU2_Allswellhospital.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public void AssignStaff()
+        {
+
+        }
+
+        public void UnAssignStaff()
+        {
+
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace GU2_Allswellhospital.Controllers
 
         public ActionResult TeamManagementRedirect()
         {
-            return RedirectToAction("Index","TeamManagment","TeamManagment");
+            return RedirectToAction("Index", "TeamManagment", "TeamManagment");
         }
     }
 }
