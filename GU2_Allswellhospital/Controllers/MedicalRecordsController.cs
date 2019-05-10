@@ -15,5 +15,15 @@ namespace GU2_Allswellhospital.Controllers
         {
             return View();
         }
+
+        public void Patients()
+        {
+
+        }
+
+        public void Admissions()
+        {
+
+        }
     }
 }

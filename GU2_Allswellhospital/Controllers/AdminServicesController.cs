@@ -30,5 +30,10 @@ namespace GU2_Allswellhospital.Controllers
         {
             return RedirectToAction("Index", "DrugManagement", "DrugManagement");
         }
+
+        public void Analytics()
+        {
+
+        }
     }
 }
