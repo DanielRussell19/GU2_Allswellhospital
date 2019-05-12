@@ -1,0 +1,58 @@
+﻿@model GU2_Allswellhospital.Models.Admission
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Admission</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.Forename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Forename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ward.WardName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ward.WardName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAdmitted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateAdmitted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDischarged)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateDischarged)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isConfirmed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isConfirmed)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AdmissionNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,57 @@
+﻿@model IEnumerable<GU2_Allswellhospital.Models.Admission>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Patient.Forename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ward.WardName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateAdmitted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDischarged)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isConfirmed)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Patient.Forename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ward.WardName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateAdmitted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateDischarged)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isConfirmed)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.AdmissionNo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AdmissionNo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AdmissionNo })
+        </td>
+    </tr>
+}
+
+</table>

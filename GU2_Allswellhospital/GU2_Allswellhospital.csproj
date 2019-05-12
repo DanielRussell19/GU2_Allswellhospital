@@ -177,10 +177,12 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminServicesController.cs" />
+    <Compile Include="Controllers\AdmissionManagementController.cs" />
     <Compile Include="Controllers\DrugManagementController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MedicalRecordsController.cs" />
+    <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
     <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
@@ -323,6 +325,16 @@
     <Content Include="Views\DrugManagement\Details.cshtml" />
     <Content Include="Views\DrugManagement\Edit.cshtml" />
     <Content Include="Views\DrugManagement\Index.cshtml" />
+    <Content Include="Views\PatientManagement\Create.cshtml" />
+    <Content Include="Views\PatientManagement\Delete.cshtml" />
+    <Content Include="Views\PatientManagement\Details.cshtml" />
+    <Content Include="Views\PatientManagement\Edit.cshtml" />
+    <Content Include="Views\PatientManagement\Index.cshtml" />
+    <Content Include="Views\AdmissionManagement\Create.cshtml" />
+    <Content Include="Views\AdmissionManagement\Delete.cshtml" />
+    <Content Include="Views\AdmissionManagement\Details.cshtml" />
+    <Content Include="Views\AdmissionManagement\Edit.cshtml" />
+    <Content Include="Views\AdmissionManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

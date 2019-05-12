@@ -16,14 +16,14 @@ namespace GU2_Allswellhospital.Controllers
             return View();
         }
 
-        public void Patients()
+        public ActionResult Patients()
         {
-
+            return RedirectToAction("Index","PatientManagement","PatientManagement");
         }
 
-        public void Admissions()
+        public ActionResult Admissions()
         {
-
+            return RedirectToAction("Index", "AdmissionManagement", "AdmissionManagement");
         }
     }
 }

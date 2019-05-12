@@ -5,3 +5,14 @@
 
 <h2>MedicalRecordsIndex</h2>
 
+@if (Request.IsAuthenticated)
+{
+    <button onclick="window.location.href = '@Url.Action("Index","PatientManagement")';" style="position: center">Staff Management</button><br />
+
+    <button onclick="window.location.href = '@Url.Action("Index","AdmissionManagement")';" style="position: center">Drug Management</button><br />
+}
+else
+{
+    @Html.AntiForgeryToken()
+    Response.Redirect("~/Home/Index");
+}
