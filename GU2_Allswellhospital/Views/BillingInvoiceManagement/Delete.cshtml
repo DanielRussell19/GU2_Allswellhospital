@@ -1,0 +1,64 @@
+﻿@model GU2_Allswellhospital.Models.BillingInvoice
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>BillingInvoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.Forename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Forename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Payment.PaymentMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment.PaymentMethod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Treatment.TreatmentDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Treatment.TreatmentDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentRecived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentRecived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalDue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalDue)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

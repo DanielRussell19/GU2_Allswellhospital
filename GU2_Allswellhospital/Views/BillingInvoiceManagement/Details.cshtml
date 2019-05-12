@@ -1,0 +1,58 @@
+﻿@model GU2_Allswellhospital.Models.BillingInvoice
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BillingInvoice</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Patient.Forename)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.Forename)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Payment.PaymentMethod)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Payment.PaymentMethod)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Treatment.TreatmentDetails)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Treatment.TreatmentDetails)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentRecived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentRecived)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalDue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalDue)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.InvoiceNo }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

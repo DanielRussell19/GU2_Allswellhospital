@@ -44,5 +44,7 @@ namespace GU2_Allswellhospital.Models
             }
 
         public System.Data.Entity.DbSet<GU2_Allswellhospital.Models.Staff> ApplicationUsers { get; set; }
+
+        public System.Data.Entity.DbSet<GU2_Allswellhospital.Models.BillingInvoice> BillingInvoices { get; set; }
     }
 }
