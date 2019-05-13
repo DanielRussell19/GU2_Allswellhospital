@@ -211,12 +211,43 @@ namespace GU2_Allswellhospital.Models
     /// <summary>
     /// Describes a Patient Object, Patient has and SHOULD have no access to the system
     /// </summary>
-    public class Patient : ApplicationUser
+    public class Patient /*: ApplicationUser*/
     {
         //attruibutes
+
+        [Key]
+        public string Id { get; set; }
+
         public IList<string> Conditions { get; set; }
 
         public IList<string> Allergies { get; set; }
+
+        [Required]
+        public string Forename { get; set; }
+
+        [Required]
+        public string Surname { get; set; }
+
+        [Required]
+        public string Street { get; set; }
+
+        [Required]
+        public string Town { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string Email { get; set; }
+
+        [Required]
+        public string UserName { get; set; }
+
+        [Required]
+        public string TelNum { get; set; }
+
+        [Required]
+        public DateTime DOB { get; set; }
 
         [Required]
         public string Occupation { get; set; }
@@ -237,11 +268,18 @@ namespace GU2_Allswellhospital.Models
         IList<Treatment> Treatments { get; set; }
 
         //constructors
-        public Patient() : base()
+        public Patient() /*: base()*/
         {
+            Id = Guid.NewGuid().ToString();
             Treatments = new List<Treatment>();
             Conditions = new List<string>();
             Allergies = new List<string>();
+            Forename = "N/a";
+            Surname = "N/a";
+            Street = "N/a";
+            Town = "N/a";
+            City = "N/a";
+            DOB = DateTime.Now;
             Occupation = "N/a";
             NextofKinForename = "N/a";
             NextofKinSurname = "N/a";

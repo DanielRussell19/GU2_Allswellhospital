@@ -189,6 +189,7 @@
     <Compile Include="Controllers\StaffHomeController.cs" />
     <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
+    <Compile Include="Controllers\TreatmentManagementController.cs" />
     <Compile Include="Controllers\WardManagementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -354,6 +355,11 @@
     <Content Include="Views\PrescriptionManagement\Details.cshtml" />
     <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
     <Content Include="Views\PrescriptionManagement\Index.cshtml" />
+    <Content Include="Views\TreatmentManagement\Create.cshtml" />
+    <Content Include="Views\TreatmentManagement\Delete.cshtml" />
+    <Content Include="Views\TreatmentManagement\Details.cshtml" />
+    <Content Include="Views\TreatmentManagement\Edit.cshtml" />
+    <Content Include="Views\TreatmentManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

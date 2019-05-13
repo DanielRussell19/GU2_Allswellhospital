@@ -269,7 +269,7 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Patients.Any())
             {
-                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", Id = Guid.NewGuid().ToString(), UserName = "me@me.com"});
+                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", Id = Guid.NewGuid().ToString(), UserName = "me@me.com", TelNum="000055550000"});
 
                 context.SaveChanges();
             }
