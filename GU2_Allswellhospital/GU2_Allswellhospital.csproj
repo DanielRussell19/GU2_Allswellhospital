@@ -185,6 +185,7 @@
     <Compile Include="Controllers\MedicalRecordsController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\PaymentManagementController.cs" />
+    <Compile Include="Controllers\PrescriptionManagementController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
     <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
@@ -348,6 +349,11 @@
     <Content Include="Views\BillingInvoiceManagement\Details.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\Edit.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\Index.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Create.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Delete.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Details.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -235,13 +235,11 @@ namespace GU2_Allswellhospital.Models
 
         //Navigational properties
         IList<Treatment> Treatments { get; set; }
-        IList<Prescription> Prescriptions { get; set; }
 
         //constructors
         public Patient() : base()
         {
             Treatments = new List<Treatment>();
-            Prescriptions = new List<Prescription>();
             Conditions = new List<string>();
             Allergies = new List<string>();
             Occupation = "N/a";
