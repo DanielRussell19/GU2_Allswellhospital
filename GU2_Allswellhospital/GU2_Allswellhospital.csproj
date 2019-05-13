@@ -185,7 +185,6 @@
     <Compile Include="Controllers\MedicalRecordsController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\PaymentManagementController.cs" />
-    <Compile Include="Controllers\PrescriptionManagementController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
     <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
