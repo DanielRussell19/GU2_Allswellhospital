@@ -8,6 +8,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 9/05/2019
 
+    /// <summary>
+    /// Homepage of Admin Controls
+    /// </summary>
     public class AdminServicesController : Controller
     {
         // GET: AdminServices

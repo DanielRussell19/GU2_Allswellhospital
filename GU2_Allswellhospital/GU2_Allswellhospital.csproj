@@ -185,7 +185,7 @@
     <Compile Include="Controllers\MedicalRecordsController.cs" />
     <Compile Include="Controllers\PatientManagementController.cs" />
     <Compile Include="Controllers\PaymentManagementController.cs" />
-    <Compile Include="Controllers\PrescriptionManagementController.cs" />
+    <Compile Include="Controllers\PrescriptionManagerController.cs" />
     <Compile Include="Controllers\StaffHomeController.cs" />
     <Compile Include="Controllers\StaffManagementController.cs" />
     <Compile Include="Controllers\TeamManagmentController.cs" />
@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\ChangeRoleViewModel.cs" />
     <Compile Include="Models\DataBaseInitaliser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -338,11 +339,6 @@
     <Content Include="Views\AdmissionManagement\Details.cshtml" />
     <Content Include="Views\AdmissionManagement\Edit.cshtml" />
     <Content Include="Views\AdmissionManagement\Index.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Create.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Delete.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Details.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Index.cshtml" />
     <Content Include="Views\PaymentManagement\Create.cshtml" />
     <Content Include="Views\PaymentManagement\Delete.cshtml" />
     <Content Include="Views\PaymentManagement\Details.cshtml" />
@@ -353,6 +349,11 @@
     <Content Include="Views\BillingInvoiceManagement\Details.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\Edit.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\Index.cshtml" />
+    <Content Include="Views\PrescriptionManager\Create.cshtml" />
+    <Content Include="Views\PrescriptionManager\Delete.cshtml" />
+    <Content Include="Views\PrescriptionManager\Details.cshtml" />
+    <Content Include="Views\PrescriptionManager\Edit.cshtml" />
+    <Content Include="Views\PrescriptionManager\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

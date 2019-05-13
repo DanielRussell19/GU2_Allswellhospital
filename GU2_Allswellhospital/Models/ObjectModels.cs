@@ -105,6 +105,56 @@ namespace GU2_Allswellhospital.Models
     }
 
     /// <summary>
+    /// Defines Treatment
+    /// </summary>
+    public class Treatment
+    {
+        //attributes
+        [Key]
+        public string TreatmentNo { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
+        public DateTime DateofTreatment { get; set; }
+
+        [Required]
+        public string TreatmentDetails { get; set; }
+
+        [Required]
+        public double TreatmentCost { get; set; }
+
+        //navigational properties
+        //public IList<Prescription> prescriptions { get; set; }
+
+        [ForeignKey("Doctor")]
+        public string DoctorID { set; get; }
+        public Doctor Doctor { get; set; }
+
+        [ForeignKey("Consultant")]
+        public string ConsultantID { set; get; }
+        public Consultant Consultant { get; set; }
+
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
+
+        //constructors
+        public Treatment()
+        {
+            //prescriptions = new List<Prescription>();
+            TreatmentNo = Guid.NewGuid().ToString();
+            TreatmentCost = 0.00;
+            TreatmentDetails = "N/a";
+            DateofTreatment = DateTime.Now;
+        }
+
+        public Treatment(Treatment treatment)
+        {
+
+        }
+    }
+
+    /// <summary>
     /// Definition of Object Proscription
     /// </summary>
     public class Prescription
@@ -131,6 +181,10 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
+        [ForeignKey("Treatment")]
+        public string TreatmentNo { get; set; }
+        public Treatment Treatment { get; set; }
+
         [ForeignKey("Drug")]
         public string DrugNo { get; set; }
         public Drug Drug { get; set; }
@@ -150,57 +204,6 @@ namespace GU2_Allswellhospital.Models
 
         }
     }
-
-    /// <summary>
-    /// Defines Treatment
-    /// </summary>
-    public class Treatment
-    {
-        //attributes
-        [Key]
-        public string TreatmentNo { get; set; }
-
-        [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-        public DateTime DateofTreatment { get; set; }
-
-        [Required]
-        public string TreatmentDetails { get; set; }
-
-        [Required]
-        public double TreatmentCost { get; set; }
-
-        //navigational properties
-        public IList<Prescription> prescriptions { get; set; }
-
-        [ForeignKey("Doctor")]
-        public string DoctorID { set; get; }
-        public Doctor Doctor { get; set; }
-
-        [ForeignKey("Consultant")]
-        public string ConsultantID { set; get; }
-        public Consultant Consultant { get; set; }
-
-        [ForeignKey("Patient")]
-        public string PatientID { get; set; }
-        public Patient Patient { get; set; }
-
-        //constructors
-        public Treatment()
-        {
-            prescriptions = new List<Prescription>();
-            TreatmentNo = Guid.NewGuid().ToString();
-            TreatmentCost = 0.00;
-            TreatmentDetails = "N/a";
-            DateofTreatment = DateTime.Now;
-        }
-
-        public Treatment(Treatment treatment)
-        {
-
-        }
-    }
-
 
     /// <summary>
     /// Definition of Object Admission

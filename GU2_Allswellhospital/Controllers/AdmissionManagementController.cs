@@ -12,6 +12,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 12/05/2019
 
+    /// <summary>
+    /// Controller used to handle CRUD operations for Admissions along with additional methods
+    /// </summary>
     public class AdmissionManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -41,7 +44,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: AdmissionManagement/Create
         public ActionResult Create()
         {
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename");
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName");
             return View();
         }
@@ -60,7 +63,7 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", admission.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
             return View(admission);
         }
@@ -77,7 +80,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", admission.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
             return View(admission);
         }
@@ -95,7 +98,7 @@ namespace GU2_Allswellhospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", admission.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
             return View(admission);
         }

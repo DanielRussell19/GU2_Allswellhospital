@@ -12,6 +12,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 9/05/2019
 
+    /// <summary>
+    /// controller used to handle CRUD operations for staff
+    /// </summary>
     public class StaffManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -94,6 +97,18 @@ namespace GU2_Allswellhospital.Controllers
             }
             ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
             return View(staff);
+        }
+
+        [HttpGet]
+        public ActionResult ChangeRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangeRole(ChangeRoleViewModel roleChange)
+        {
+            return View();
         }
 
         // GET: StaffManagement/Delete/5

@@ -8,6 +8,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 05/05/2019
 
+    /// <summary>
+    /// controller used to handle staff home
+    /// </summary>
     public class StaffHomeController : Controller
     {
         // GET: StaffHome
