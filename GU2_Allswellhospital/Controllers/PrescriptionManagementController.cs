@@ -10,6 +10,11 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
+    //Daniel Russell 13/05/2019
+
+    /// <summary>
+    /// Controller for CRUD operations with Prescription
+    /// </summary>
     public class PrescriptionManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,7 +22,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: PrescriptionManagement
         public ActionResult Index()
         {
-            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Treatment);
+            var prescriptions = db.Prescriptions.Include(p => p.Treatment);
             return View(prescriptions.ToList());
         }
 
@@ -39,7 +44,6 @@ namespace GU2_Allswellhospital.Controllers
         // GET: PrescriptionManagement/Create
         public ActionResult Create()
         {
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
             ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails");
             return View();
         }
@@ -49,7 +53,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,TreatmentNo")] Prescription prescription)
+        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,TreatmentNo")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -58,7 +62,6 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
             ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
             return View(prescription);
         }
@@ -75,7 +78,6 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
             ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
             return View(prescription);
         }
@@ -85,7 +87,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,TreatmentNo")] Prescription prescription)
+        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,TreatmentNo")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +95,6 @@ namespace GU2_Allswellhospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
             ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
             return View(prescription);
         }
