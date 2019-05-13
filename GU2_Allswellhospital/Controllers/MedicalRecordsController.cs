@@ -8,6 +8,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 9/05/2019
 
+    /// <summary>
+    /// Controller used to handle CRUD operations for MedicalRecords
+    /// </summary>
     public class MedicalRecordsController : Controller
     {
         // GET: MedicalRecords

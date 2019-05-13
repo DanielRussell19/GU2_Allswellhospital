@@ -8,6 +8,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 04/05/2019
 
+    /// <summary>
+    /// Controller used to handle guest landing paged
+    /// </summary>
     public class HomeController : Controller
     {
         public ActionResult Index()

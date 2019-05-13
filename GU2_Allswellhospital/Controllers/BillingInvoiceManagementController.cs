@@ -10,6 +10,11 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
+    //Daniel Russell 12/05/2019
+
+    /// <summary>
+    /// Controller used to handle CRUD operations of Billing invoices for treatments
+    /// </summary>
     public class BillingInvoiceManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -17,7 +22,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: BillingInvoiceManagement
         public ActionResult Index()
         {
-            var billingInvoices = db.BillingInvoices.Include(b => b.Patient).Include(b => b.Payment).Include(b => b.Treatment);
+            var billingInvoices = db.Invoices.Include(b => b.Patient).Include(b => b.Payment).Include(b => b.Treatment);
             return View(billingInvoices.ToList());
         }
 
@@ -28,7 +33,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
+            BillingInvoice billingInvoice = db.Invoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
@@ -54,7 +59,7 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.BillingInvoices.Add(billingInvoice);
+                db.Invoices.Add(billingInvoice);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -72,7 +77,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
+            BillingInvoice billingInvoice = db.Invoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
@@ -109,7 +114,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
+            BillingInvoice billingInvoice = db.Invoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
@@ -122,8 +127,8 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
-            db.BillingInvoices.Remove(billingInvoice);
+            BillingInvoice billingInvoice = db.Invoices.Find(id);
+            db.Invoices.Remove(billingInvoice);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

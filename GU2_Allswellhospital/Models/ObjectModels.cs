@@ -29,9 +29,13 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public double DrugCost { get; set; }
 
+        //navigational properties
+        IList<Prescription> Prescriptions { get; set; }
+
         //Constructors
         public Drug()
         {
+            Prescriptions = new List<Prescription>();
             DrugNo = Guid.NewGuid().ToString();
             DrugDetails = "N/a";
             DrugName = "N/a";
@@ -105,53 +109,6 @@ namespace GU2_Allswellhospital.Models
     }
 
     /// <summary>
-    /// Definition of Object Proscription
-    /// </summary>
-    public class Prescription
-    {
-        //Attributes
-        [Key]
-        public string PrescriptionNo { get; set; }
-
-        [Required]
-        public string Dosage { get; set; }
-
-        [Required]
-        public string LengthofTreatment { get; set; }
-
-        [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-        public DateTime DateofPrescription { get; set; }
-
-        [Required]
-        public string IssuedByID { get; set; }
-
-        //Navigational properties
-        [ForeignKey("Patient")]
-        public string PatientID { get; set; }
-        public Patient Patient { get; set; }
-
-        [ForeignKey("Drug")]
-        public string DrugNo { get; set; }
-        public Drug Drug { get; set; }
-
-        //Constructors
-        public Prescription()
-        {
-            PrescriptionNo = Guid.NewGuid().ToString();
-            Dosage = "N/a";
-            LengthofTreatment = "N/a";
-            DateofPrescription = DateTime.Now;
-            IssuedByID = Guid.NewGuid().ToString();
-        }
-
-        public Prescription(Prescription prescription)
-        {
-
-        }
-    }
-
-    /// <summary>
     /// Defines Treatment
     /// </summary>
     public class Treatment
@@ -177,10 +134,6 @@ namespace GU2_Allswellhospital.Models
         public string DoctorID { set; get; }
         public Doctor Doctor { get; set; }
 
-        [ForeignKey("Consultant")]
-        public string ConsultantID { set; get; }
-        public Consultant Consultant { get; set; }
-
         [ForeignKey("Patient")]
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
@@ -201,6 +154,51 @@ namespace GU2_Allswellhospital.Models
         }
     }
 
+    /// <summary>
+    /// Definition of Object Proscription
+    /// </summary>
+    public class Prescription
+    {
+        //Attributes
+        [Key]
+        public string PrescriptionNo { get; set; }
+
+        [Required]
+        public string Dosage { get; set; }
+
+        [Required]
+        public string LengthofTreatment { get; set; }
+
+        [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
+        public DateTime DateofPrescription { get; set; }
+
+        [Required]
+        public string IssuedByID { get; set; }
+
+        //Navigational properties
+        [ForeignKey("Treatment")]
+        public string TreatmentNo { get; set; }
+        public Treatment Treatment { get; set; }
+
+        IList<Drug> Drugs { get; set; }
+
+        //Constructors
+        public Prescription()
+        {
+            List<Drug> Drugs = new List<Drug>();
+            PrescriptionNo = Guid.NewGuid().ToString();
+            Dosage = "N/a";
+            LengthofTreatment = "N/a";
+            DateofPrescription = DateTime.Now;
+            IssuedByID = Guid.NewGuid().ToString();
+        }
+
+        public Prescription(Prescription prescription)
+        {
+
+        }
+    }
 
     /// <summary>
     /// Definition of Object Admission

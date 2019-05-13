@@ -12,6 +12,9 @@ namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 12/05/2019
 
+    /// <summary>
+    /// Controller used to handle CRUD operations for patients
+    /// </summary>
     public class PatientManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

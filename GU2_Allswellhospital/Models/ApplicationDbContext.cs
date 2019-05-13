@@ -33,6 +33,8 @@ namespace GU2_Allswellhospital.Models
 
             public IDbSet<BillingInvoice> Invoices { get; set; }
 
+            public IDbSet<Staff> ApplicationUsers { get; set; }
+
             public ApplicationDbContext() : base("DBConnection", throwIfV1Schema: false)
             {
             Database.SetInitializer(new DataBaseInitaliser());
@@ -43,8 +45,5 @@ namespace GU2_Allswellhospital.Models
                 return new ApplicationDbContext();
             }
 
-        public System.Data.Entity.DbSet<GU2_Allswellhospital.Models.Staff> ApplicationUsers { get; set; }
-
-        public System.Data.Entity.DbSet<GU2_Allswellhospital.Models.BillingInvoice> BillingInvoices { get; set; }
     }
 }
