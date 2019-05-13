@@ -124,15 +124,11 @@ namespace GU2_Allswellhospital.Models
         public double TreatmentCost { get; set; }
 
         //navigational properties
-        //public IList<Prescription> prescriptions { get; set; }
+        public IList<Prescription> prescriptions { get; set; }
 
         [ForeignKey("Doctor")]
         public string DoctorID { set; get; }
         public Doctor Doctor { get; set; }
-
-        [ForeignKey("Consultant")]
-        public string ConsultantID { set; get; }
-        public Consultant Consultant { get; set; }
 
         [ForeignKey("Patient")]
         public string PatientID { get; set; }
@@ -141,7 +137,7 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public Treatment()
         {
-            //prescriptions = new List<Prescription>();
+            prescriptions = new List<Prescription>();
             TreatmentNo = Guid.NewGuid().ToString();
             TreatmentCost = 0.00;
             TreatmentDetails = "N/a";
@@ -177,21 +173,16 @@ namespace GU2_Allswellhospital.Models
         public string IssuedByID { get; set; }
 
         //Navigational properties
-        [ForeignKey("Patient")]
-        public string PatientID { get; set; }
-        public Patient Patient { get; set; }
-
         [ForeignKey("Treatment")]
         public string TreatmentNo { get; set; }
         public Treatment Treatment { get; set; }
 
-        [ForeignKey("Drug")]
-        public string DrugNo { get; set; }
-        public Drug Drug { get; set; }
+        IList<Drug> Drugs { get; set; }
 
         //Constructors
         public Prescription()
         {
+            List<Drug> Drugs = new List<Drug>();
             PrescriptionNo = Guid.NewGuid().ToString();
             Dosage = "N/a";
             LengthofTreatment = "N/a";
