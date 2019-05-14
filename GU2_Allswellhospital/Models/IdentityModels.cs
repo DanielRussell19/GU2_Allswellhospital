@@ -17,7 +17,7 @@ namespace GU2_Allswellhospital.Models
     /// <summary>
     /// Base Class for user Staff and Patient, inherits idenityuser from the identityframework
     /// </summary>
-    public class ApplicationUser : IdentityUser
+    public abstract class ApplicationUser : IdentityUser
     {
         //attributes
         [Required]
