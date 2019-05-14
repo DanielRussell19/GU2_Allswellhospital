@@ -214,6 +214,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Imgs\HomePageImage1.jpg" />
     <Content Include="Imgs\Slide1.jpg" />
     <Content Include="Imgs\Slide2.jpg" />
     <Content Include="Imgs\Slide3.jpg" />
