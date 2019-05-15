@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GU2_Allswellhospital.Controllers
 {
@@ -55,7 +56,7 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult Create()
         {
             ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
-            CreateStaffViewModel staffviewmodel = new CreateStaffViewModel();
+            ModifyStaffViewModel staffviewmodel = new ModifyStaffViewModel();
             staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name}).ToList();
             return View(staffviewmodel);
         }
@@ -65,7 +66,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> Create(string id, CreateStaffViewModel staffviewmodel)
+        public async System.Threading.Tasks.Task<ActionResult> Create(string id, ModifyStaffViewModel staffviewmodel)
         {
             if (ModelState.IsValid)
             {
@@ -82,14 +83,10 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             return RedirectToAction("Error");
-
-            //ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
-            //return View(staff);
-
         }
 
         // GET: StaffManagement/Edit/5
-        public ActionResult Edit(string id)
+        public async System.Threading.Tasks.Task<ActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -100,8 +97,25 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
-            return View(staff);
+
+            ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+            ModifyStaffViewModel staffviewmodel = new ModifyStaffViewModel();
+
+            string oldRole = (await UserManager.GetRolesAsync(id)).Single();
+
+            staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name, Selected = r.Name == oldRole }).ToList();
+            staffviewmodel.Forename = staff.Forename;
+            staffviewmodel.Surname = staff.Surname;
+            staffviewmodel.Street = staff.Street;
+            staffviewmodel.Town = staff.Town;
+            staffviewmodel.City = staff.City;
+            staffviewmodel.DOB = staff.DOB;
+            staffviewmodel.Email = staff.Email;
+            staffviewmodel.Telnum = staff.PhoneNumber;
+            staffviewmodel.Role = staff.Roles.First().ToString();
+            staffviewmodel.tempid = staff.Id;
+
+            return View(staffviewmodel);
         }
 
         // POST: StaffManagement/Edit/5
@@ -109,16 +123,22 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Forename,Surname,Street,Town,City,DOB,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,TeamNo")] Staff staff)
+        public async System.Threading.Tasks.Task<ActionResult> Edit(ModifyStaffViewModel staffviewmodel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(staff).State = EntityState.Modified;
-                db.SaveChanges();
+                var staff = UserManager.FindById(staffviewmodel.tempid);
+                string oldRole = (await UserManager.GetRolesAsync(staffviewmodel.tempid)).Single();
+
+                await UserManager.UpdateAsync(staff);
+
+                await UserManager.RemoveFromRoleAsync(staffviewmodel.tempid, oldRole);
+                await UserManager.AddToRoleAsync(staffviewmodel.tempid, staffviewmodel.Role);
+
                 return RedirectToAction("Index");
             }
-            ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
-            return View(staff);
+            return View("Error");
+
         }
 
         // GET: StaffManagement/Delete/5

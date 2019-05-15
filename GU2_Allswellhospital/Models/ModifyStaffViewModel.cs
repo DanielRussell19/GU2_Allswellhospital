@@ -7,8 +7,10 @@ using System.Web.Mvc;
 
 namespace GU2_Allswellhospital.Models
 {
-    public class CreateStaffViewModel
+    public class ModifyStaffViewModel
     {
+
+        public string tempid { get; set; }
 
         //username of new staff
         public string Username { get; set; }
@@ -39,6 +41,11 @@ namespace GU2_Allswellhospital.Models
         public string Password { get; set; }
 
         ///<summary>
+        ///user's previous role
+        ///</summary>
+        public string OldRole { get; set; }
+
+        ///<summary>
         ///user's new role selected from view
         ///</summary>
         [Required, Display(Name = "Role")]
@@ -50,7 +57,7 @@ namespace GU2_Allswellhospital.Models
         public ICollection<SelectListItem> Roles { get; set; }
 
         //constructor
-        public CreateStaffViewModel()
+        public ModifyStaffViewModel()
         {
             Username = Email;
         }

@@ -196,7 +196,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
-    <Compile Include="Models\CreateStaffViewModel.cs" />
+    <Compile Include="Models\ModifyStaffViewModel.cs" />
     <Compile Include="Models\DataBaseInitaliser.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
