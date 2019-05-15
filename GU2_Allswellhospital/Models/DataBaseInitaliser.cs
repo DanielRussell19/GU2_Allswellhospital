@@ -70,7 +70,7 @@ namespace GU2_Allswellhospital.Models
             //creates staff users
 
             UserManager<ApplicationUser> userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
-            
+
             if (userManager.FindByName("Simpson@Manager.com") == null)
             {
                 var staffAdmin = new StaffAdmin

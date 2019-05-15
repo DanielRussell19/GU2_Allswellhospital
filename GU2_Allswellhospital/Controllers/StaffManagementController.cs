@@ -15,9 +15,19 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// controller used to handle CRUD operations for staff
     /// </summary>
-    public class StaffManagementController : Controller
+    public class StaffManagementController : AccountController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        public StaffManagementController() : base()
+        {
+
+        }
+
+        public StaffManagementController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : base(userManager, signInManager)
+        {
+
+        }
 
         // GET: StaffManagement
         public ActionResult Index()
@@ -44,8 +54,10 @@ namespace GU2_Allswellhospital.Controllers
         // GET: StaffManagement/Create
         public ActionResult Create()
         {
-            ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName");
-            return View();
+            ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+            CreateStaffViewModel staffviewmodel = new CreateStaffViewModel();
+            staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name}).ToList();
+            return View(staffviewmodel);
         }
 
         // POST: StaffManagement/Create
@@ -53,17 +65,27 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Forename,Surname,Street,Town,City,DOB,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,TeamNo")] Staff staff)
+        public async System.Threading.Tasks.Task<ActionResult> Create(string id, CreateStaffViewModel staffviewmodel)
         {
             if (ModelState.IsValid)
             {
-                db.ApplicationUsers.Add(staff);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var Staff = new Staff { UserName = staffviewmodel.Email, Forename = staffviewmodel.Forename, Email = staffviewmodel.Email, City = staffviewmodel.City, DOB = staffviewmodel.DOB, PhoneNumber = staffviewmodel.Telnum, Surname = staffviewmodel.Surname, Town = staffviewmodel.Town, Street = staffviewmodel.Street };
+                var result = await UserManager.CreateAsync(Staff, staffviewmodel.Password);
+                if (result.Succeeded)
+                {
+                    await UserManager.AddToRoleAsync(Staff.Id, staffviewmodel.Role.ToString());
+
+                    return RedirectToAction("Index");
+                }
+
+                return RedirectToAction("Error");
             }
 
-            ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
-            return View(staff);
+            return RedirectToAction("Error");
+
+            //ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
+            //return View(staff);
+
         }
 
         // GET: StaffManagement/Edit/5
@@ -97,18 +119,6 @@ namespace GU2_Allswellhospital.Controllers
             }
             ViewBag.TeamNo = new SelectList(db.Teams, "TeamNo", "TeamName", staff.TeamNo);
             return View(staff);
-        }
-
-        [HttpGet]
-        public ActionResult ChangeRole()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult ChangeRole(ChangeRoleViewModel roleChange)
-        {
-            return View();
         }
 
         // GET: StaffManagement/Delete/5
