@@ -50,8 +50,9 @@
                                 </div>
                                 <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
                                 <div class="text-center">
-                                    <a class="small" href="#">Forgot password?</a>
+                                    <a class="small" href='@Url.Action("ResetPassword","Account")'>Reset Password</a>
                                 </div>
+
                                 @* Enable this once you have account confirmation enabled for password reset functionality
                                     <p>
                                     @Html.ActionLink("Forgot your password?", "ForgotPassword")

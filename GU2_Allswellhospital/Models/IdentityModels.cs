@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace GU2_Allswellhospital.Models
 {
@@ -19,6 +22,8 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public abstract class ApplicationUser : IdentityUser
     {
+        private ApplicationUserManager userManager;
+
         //attributes
         [Required]
         public string Forename { get; set; }
@@ -55,6 +60,20 @@ namespace GU2_Allswellhospital.Models
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
             // Add custom user claims here
             return userIdentity;
+        }
+
+        [NotMapped]
+        public string Role
+        {
+            get
+            {
+                if (userManager == null)
+                {
+                    userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                }
+
+                return userManager.GetRoles(Id).Single();
+            }
         }
     }
 

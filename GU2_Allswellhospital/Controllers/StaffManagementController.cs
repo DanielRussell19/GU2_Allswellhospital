@@ -33,7 +33,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: StaffManagement
         public ActionResult Index()
         {
-            var applicationUsers = db.ApplicationUsers.Include(s => s.Team);
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles);
             return View(applicationUsers.ToList());
         }
 
