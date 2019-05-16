@@ -7,9 +7,14 @@ using System.Web.Mvc;
 
 namespace GU2_Allswellhospital.Models
 {
+    //Daniel Russell 15/5/2019
+
+    /// <summary>
+    /// View model used to edit and create staff
+    /// </summary>
     public class ModifyStaffViewModel
     {
-
+        //temp value for user id
         public string tempid { get; set; }
 
         //username of new staff
@@ -24,17 +29,19 @@ namespace GU2_Allswellhospital.Models
         //staff last name
         public string Surname { get; set; }
       
+        //staff phonenumber
         public string Telnum { get; set; }
 
+        //staff street
         public string Street { get; set; }
 
-       
+        //staff town
         public string Town { get; set; }
 
-        
+        //staff city
         public string City { get; set; }
 
-        
+        //staff date of birth
         public DateTime DOB { get; set; }
 
         //staff password

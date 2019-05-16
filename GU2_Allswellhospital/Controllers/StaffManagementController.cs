@@ -135,6 +135,18 @@ namespace GU2_Allswellhospital.Controllers
                 await UserManager.RemoveFromRoleAsync(staffviewmodel.tempid, oldRole);
                 await UserManager.AddToRoleAsync(staffviewmodel.tempid, staffviewmodel.Role);
 
+                if(staffviewmodel.Password != null)
+                {
+                    IPasswordHasher passwordHasher = new PasswordHasher();
+
+                    string hashedpassword = passwordHasher.HashPassword(staffviewmodel.Password);
+
+                    UserManager.RemovePassword(staffviewmodel.tempid);
+                    await UserManager.AddPasswordAsync(staffviewmodel.tempid, staffviewmodel.Password);
+
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Index");
             }
             return View("Error");
