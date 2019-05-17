@@ -1,7 +1,58 @@
 ﻿
 @{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Contact Details";
 }
 
-<h2>Contact</h2>
+<h2>Contact Details</h2>
 
+<head>
+
+    <link href="~/Content/leaflet.css" rel="stylesheet" />
+
+    <script src="~/Content/leaflet.js"></script>
+
+    <style>
+
+        #mapid {
+            height: 280px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="mapid">
+
+        <script>
+            var mymap = L.map('mapid').setView([55.8572493, -4.2899877], 16.29);
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1Ijoia29hbGFsYSIsImEiOiJjanZzajh0dXIwYml6NGJwbWFydTN3c2p1In0.kZUEgrf7-fkrQGO4_nA-fA'
+            }).addTo(mymap);
+
+            var marker = L.marker([55.8572493, -4.2899877]).addTo(mymap);
+
+            marker.bindPopup("<b>Allswellhospital</b><br>Glasgow Branch").openPopup();
+        </script>
+        
+    </div>
+
+    <div class="pr-1">
+
+        <p class="text-center">
+
+            LandLine PhoneNumber: 0141 7295 003<br />
+            Email: AllswellhospitalAdministration@Yahoo.co.uk<br />
+            <br />
+            PostCode: G5 E07<br />
+            Address: 7 Pacific Dr<br />
+        </p>
+
+    </div>
+
+</body>
