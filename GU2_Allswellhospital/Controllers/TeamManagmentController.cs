@@ -130,6 +130,18 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Team team = db.Teams.Find(id);
+
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == id).ToList();
+
+            foreach(Staff staff in applicationUsers)
+            {
+                staff.TeamNo = null;
+
+                db.Entry(staff).State = EntityState.Modified;
+            }
+
+            db.SaveChanges();
+
             db.Teams.Remove(team);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -155,7 +167,7 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         
-        public async System.Threading.Tasks.Task<ActionResult> AssignStaff(string StaffId, string teamNo)
+        public ActionResult AssignStaff(string StaffId, string teamNo)
         {
 
             if (StaffId == null || teamNo == null)
@@ -169,23 +181,44 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             staff.TeamNo = teamNo;
-            await UserManager.UpdateAsync(staff);
+            //await UserManager.UpdateAsync(staff);
+
+            db.Entry(staff).State = EntityState.Modified;
+            db.SaveChanges();
 
             return RedirectToAction("Index");
         }
 
         
-        public ActionResult UnAssignStaffListing(string teamNo)
+        public ActionResult UnAssignStaffListing(string id)
         {
-            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles);
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == id);
+
+            ViewBag.TeamNo = id;
+
             return View(applicationUsers.ToList());
         }
 
         
-        public ActionResult UnAssignStaff()
+        public ActionResult UnAssignStaff(string StaffId, string teamNo)
         {
-            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles);
-            return View(applicationUsers.ToList());
+            if (StaffId == null || teamNo == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Staff staff = db.ApplicationUsers.Find(StaffId);
+            if (staff == null || teamNo == null)
+            {
+                return HttpNotFound();
+            }
+
+            staff.TeamNo = null;
+            //await UserManager.UpdateAsync(staff);
+
+            db.Entry(staff).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
