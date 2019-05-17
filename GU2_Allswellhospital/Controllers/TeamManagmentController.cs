@@ -15,9 +15,19 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// controller used to handle CRUD operations for Team
     /// </summary>
-    public class TeamManagmentController : Controller
+    public class TeamManagmentController : AccountController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        public TeamManagmentController() : base()
+        {
+
+        }
+
+        public TeamManagmentController(ApplicationUserManager userManager, ApplicationSignInManager signInManager) : base(userManager, signInManager)
+        {
+
+        }
 
         // GET: TeamManagment
         public ActionResult Index()
@@ -134,14 +144,48 @@ namespace GU2_Allswellhospital.Controllers
             base.Dispose(disposing);
         }
 
-        public void AssignStaff()
+        
+        public ActionResult AssignStaffListing(string id)
         {
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == null);
 
+            ViewBag.TeamNo = id;
+
+            return View(applicationUsers.ToList());
         }
 
-        public void UnAssignStaff()
+        
+        public async System.Threading.Tasks.Task<ActionResult> AssignStaff(string StaffId, string teamNo)
         {
 
+            if (StaffId == null || teamNo == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Staff staff = db.ApplicationUsers.Find(StaffId);
+            if (staff == null || teamNo == null)
+            {
+                return HttpNotFound();
+            }
+
+            staff.TeamNo = teamNo;
+            await UserManager.UpdateAsync(staff);
+
+            return RedirectToAction("Index");
+        }
+
+        
+        public ActionResult UnAssignStaffListing(string teamNo)
+        {
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles);
+            return View(applicationUsers.ToList());
+        }
+
+        
+        public ActionResult UnAssignStaff()
+        {
+            var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles);
+            return View(applicationUsers.ToList());
         }
     }
 }

@@ -361,6 +361,8 @@
     <Content Include="Views\TreatmentManagement\Details.cshtml" />
     <Content Include="Views\TreatmentManagement\Edit.cshtml" />
     <Content Include="Views\TreatmentManagement\Index.cshtml" />
+    <Content Include="Views\TeamManagment\AssignStaffListing.cshtml" />
+    <Content Include="Views\TeamManagment\UnAssignStaffListing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
