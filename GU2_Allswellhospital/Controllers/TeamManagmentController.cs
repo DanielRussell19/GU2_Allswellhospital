@@ -15,6 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// controller used to handle CRUD operations for Team
     /// </summary>
+    [Authorize(Roles = "Consultant")]
     public class TeamManagmentController : AccountController
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -181,7 +182,6 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             staff.TeamNo = teamNo;
-            //await UserManager.UpdateAsync(staff);
 
             db.Entry(staff).State = EntityState.Modified;
             db.SaveChanges();
@@ -213,7 +213,6 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             staff.TeamNo = null;
-            //await UserManager.UpdateAsync(staff);
 
             db.Entry(staff).State = EntityState.Modified;
             db.SaveChanges();

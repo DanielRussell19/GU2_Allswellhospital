@@ -11,6 +11,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Homepage of Admin Controls
     /// </summary>
+    [Authorize(Roles = "StaffAdmin")]
     public class AdminServicesController : Controller
     {
         // GET: AdminServices
@@ -19,21 +20,25 @@ namespace GU2_Allswellhospital.Controllers
             return View();
         }
 
+        // GET: Redirects to StaffManagement
         public ActionResult StaffManagement()
         {
             return RedirectToAction("Index","StaffManagement","StaffManagement");
         }
 
+        // GET: Redirects to WardManagement
         public ActionResult WardManagement()
         {
             return RedirectToAction("Index", "WardManagement", "WardManagement");
         }
 
+        // GET: Redirects to DrugManagement
         public ActionResult DrugManagement()
         {
             return RedirectToAction("Index", "DrugManagement", "DrugManagement");
         }
 
+        // GET: Redirects to Analytics
         public void Analytics()
         {
 

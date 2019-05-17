@@ -10,6 +10,11 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
+    //Daniel Russell 14/05/2019
+
+    /// <summary>
+    /// Controller used to handle CRUD operations for Treatments
+    /// </summary>
     public class TreatmentManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
