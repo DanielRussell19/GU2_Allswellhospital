@@ -1,12 +1,13 @@
 ﻿@model GU2_Allswellhospital.Models.Patient
 
 @{
-    ViewBag.Title = "Patient Details";
+    ViewBag.Title = "Details";
 }
 
-<h2>Patient Details</h2>
+<h2>Details</h2>
 
 <div>
+    <h4>Patient</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -50,14 +51,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.DOB)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DOB)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.Email)
         </dt>
 
@@ -71,6 +64,22 @@
 
         <dd>
             @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DOB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DOB)
         </dd>
 
         <dt>
@@ -133,6 +142,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("View Treatments","Index", "TreatmentManagement","TreatmentManagement", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

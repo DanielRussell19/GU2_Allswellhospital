@@ -1,15 +1,14 @@
 ﻿@model IEnumerable<GU2_Allswellhospital.Models.Patient>
 
 @{
-    ViewBag.Title = "Patient Management";
+    ViewBag.Title = "Index";
 }
 
-<h2>Patient Management</h2>
+<h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
 <table class="table">
     <tr>
         <th>
@@ -28,13 +27,37 @@
             @Html.DisplayNameFor(model => model.City)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DOB)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.Email)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.TelNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Occupation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofKinForename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofKinSurname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofKinStreet)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofKinTown)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofKinCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextofkinTelNum)
         </th>
         <th></th>
     </tr>
@@ -57,29 +80,43 @@
             @Html.DisplayFor(modelItem => item.City)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DOB)
+            @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Email)
+            @Html.DisplayFor(modelItem => item.UserName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.TelNum)
         </td>
-
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            @Html.DisplayFor(modelItem => item.DOB)
         </td>
-
-        @Html.HiddenFor(modelItem => item.UserName)
-        @Html.HiddenFor(modelItem => item.Occupation)
-        @Html.HiddenFor(modelItem => item.NextofKinForename)
-        @Html.HiddenFor(modelItem => item.NextofKinSurname)
-        @Html.HiddenFor(modelItem => item.NextofKinStreet)
-        @Html.HiddenFor(modelItem => item.NextofKinTown)
-        @Html.HiddenFor(modelItem => item.NextofKinCity)
-        @Html.HiddenFor(modelItem => item.NextofkinTelNum)
+        <td>
+            @Html.DisplayFor(modelItem => item.Occupation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofKinForename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofKinSurname)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofKinStreet)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofKinTown)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofKinCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NextofkinTelNum)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
     </tr>
 }
 
