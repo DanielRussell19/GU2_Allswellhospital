@@ -20,9 +20,9 @@ namespace GU2_Allswellhospital.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TreatmentManagement
-        public ActionResult Index()
+        public ActionResult Index(string id)
         {
-            var treatments = db.Treatments.Include(t => t.Doctor).Include(t => t.Patient);
+            var treatments = db.Treatments.Include(t => t.Doctor).Include(t => t.Patient).Where(t => t.PatientID == id);
             return View(treatments.ToList());
         }
 

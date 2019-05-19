@@ -1,15 +1,15 @@
 ﻿
 @{
-    ViewBag.Title = "MedicalRecordsIndex";
+    ViewBag.Title = "Medical Records Index";
 }
 
-<h2>MedicalRecordsIndex</h2>
+<h2>Medical Records Index</h2>
 
 @if (Request.IsAuthenticated)
 {
-    <button onclick="window.location.href = '@Url.Action("Index","PatientManagement")';" style="position: center">Patient Management</button><br />
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","PatientManagement")';" style="position: center">Patient Management</button><br />
 
-    <button onclick="window.location.href = '@Url.Action("Index","AdmissionManagement")';" style="position: center">Admission Management</button><br />
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","AdmissionManagement")';" style="position: center">Admission Management</button><br />
 }
 else
 {

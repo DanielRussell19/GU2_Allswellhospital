@@ -15,7 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// controller used to handle CRUD operations for Team
     /// </summary>
-    [Authorize(Roles = "Consultant")]
+    [Authorize(Roles = "Consultant,StaffAdmin")]
     public class TeamManagmentController : AccountController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

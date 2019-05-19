@@ -3,15 +3,24 @@
     ViewBag.Title = "StaffHome";
 }
 
-<h2>Staff Home</h2>
+<h2 class="text-center">Staff Home</h2>
 
 @if (Request.IsAuthenticated)
 {
-    <button onclick="window.location.href = '@Url.Action("AdminServicesRedirect","StaffHome")';" style="position: center">Admin Services</button><br />
+    if (User.IsInRole("StaffAdmin"))
+    {
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("AdminServicesRedirect", "StaffHome")';" style="position: center">Admin Services</button><br />
+    }
 
-    <button onclick="window.location.href = '@Url.Action("MedicalRecordsRedirect","StaffHome")';" style="position: center">Medical Records</button><br />
+    if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant"))
+    {
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("MedicalRecordsRedirect", "StaffHome")';" style="position: center">Medical Records</button><br />
+    }
 
-    <button onclick="window.location.href = '@Url.Action("TeamManagementRedirect","StaffHome")';" style="position: center">Team Managment</button>
+    if (User.IsInRole("Consultant") || User.IsInRole("StaffAdmin"))
+    {
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("TeamManagementRedirect", "StaffHome")';" style="position: center">Team Managment</button>
+    }
 }
 else
 {
