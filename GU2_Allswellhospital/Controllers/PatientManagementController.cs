@@ -51,8 +51,10 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Forename,Surname,Street,Town,City,DOB,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
+        public ActionResult Create([Bind(Include = "Forename,Surname,Street,Town,City,DOB,Email,TelNum,UserName,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
         {
+            patient.Id = Guid.NewGuid().ToString();
+
             if (ModelState.IsValid)
             {
                 db.Patients.Add(patient);
@@ -83,7 +85,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Forename,Surname,Street,Town,City,DOB,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
+        public ActionResult Edit([Bind(Include = "Forename,Surname,Street,Town,City,DOB,Email,TelNum,UserName,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
         {
             if (ModelState.IsValid)
             {

@@ -1,17 +1,16 @@
 ﻿@model GU2_Allswellhospital.Models.Admission
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Admission";
 }
 
-<h2>Create</h2>
+<h2>Create Admission</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Admission</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

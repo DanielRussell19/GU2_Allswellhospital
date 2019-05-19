@@ -230,7 +230,7 @@ namespace GU2_Allswellhospital.Models
     /// <summary>
     /// Describes a Patient Object, Patient has and SHOULD have no access to the system
     /// </summary>
-    public class Patient /*: ApplicationUser*/
+    public class Patient
     {
         //attruibutes
 
@@ -287,7 +287,7 @@ namespace GU2_Allswellhospital.Models
         IList<Treatment> Treatments { get; set; }
 
         //constructors
-        public Patient() /*: base()*/
+        public Patient()
         {
             Id = Guid.NewGuid().ToString();
             Treatments = new List<Treatment>();
