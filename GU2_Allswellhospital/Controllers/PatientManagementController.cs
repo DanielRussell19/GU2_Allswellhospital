@@ -53,6 +53,8 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Forename,Surname,Street,Town,City,Email,UserName,TelNum,DOB,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
         {
+            patient.Id = Guid.NewGuid().ToString();
+
             if (ModelState.IsValid)
             {
                 db.Patients.Add(patient);

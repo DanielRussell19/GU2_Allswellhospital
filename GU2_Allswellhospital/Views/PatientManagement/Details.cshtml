@@ -89,6 +89,10 @@
             @Html.DisplayFor(model => model.Occupation)
         </dd>
 
+        <content><br /></content>
+        <text style="text-decoration: underline">Next of Kin Details</text>
+        <content><br /></content>
+
         <dt>
             @Html.DisplayNameFor(model => model.NextofKinForename)
         </dt>
@@ -141,5 +145,6 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("View Treatments","Index","TreatmentManagement", new { patientid = Model.Id }, new { }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

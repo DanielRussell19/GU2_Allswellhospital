@@ -41,24 +41,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Occupation)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofKinForename)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofKinSurname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofKinStreet)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofKinTown)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofKinCity)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.NextofkinTelNum)
-        </th>
         <th></th>
     </tr>
 
@@ -94,29 +76,20 @@
         <td>
             @Html.DisplayFor(modelItem => item.Occupation)
         </td>
+
         <td>
-            @Html.DisplayFor(modelItem => item.NextofKinForename)
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NextofKinSurname)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NextofKinStreet)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NextofKinTown)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NextofKinCity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NextofkinTelNum)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
+
+        @Html.HiddenFor(modelItem => item.NextofKinForename)
+        @Html.HiddenFor(modelItem => item.NextofKinSurname)
+        @Html.HiddenFor(modelItem => item.NextofKinStreet)
+        @Html.HiddenFor(modelItem => item.NextofKinTown)
+        @Html.HiddenFor(modelItem => item.NextofKinCity)
+        @Html.HiddenFor(modelItem => item.NextofkinTelNum)
+
     </tr>
 }
 

@@ -216,7 +216,7 @@ namespace GU2_Allswellhospital.Models
         public DateTime DateAdmitted { get; set; }
 
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-        public DateTime DateDischarged { get; set; }
+        public DateTime? DateDischarged { get; set; }
 
         public bool isConfirmed { get; set; }
 
@@ -234,7 +234,7 @@ namespace GU2_Allswellhospital.Models
         {
             AdmissionNo = Guid.NewGuid().ToString();
             DateAdmitted = DateTime.Now;
-            DateDischarged = DateTime.Now;
+            //DateDischarged = DateTime.Now;
             isConfirmed = false;
         }
 
