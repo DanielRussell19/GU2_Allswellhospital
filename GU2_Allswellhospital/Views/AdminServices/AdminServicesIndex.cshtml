@@ -3,7 +3,7 @@
     ViewBag.Title = "AdminServicesIndex";
 }
 
-<h2>Admin Services</h2>
+<h2 class="text-center">Admin Services</h2>
 
 @if (Request.IsAuthenticated)
 {
@@ -20,3 +20,7 @@ else
     @Html.AntiForgeryToken()
     Response.Redirect("~/Home/Index");
 }
+
+    <p>
+        @Html.ActionLink("Back to Main", "StaffHome", "StaffHome")
+    </p>

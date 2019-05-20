@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Ward.WardName)
@@ -38,3 +38,7 @@
 }
 
 </table>
+
+<p>
+    @Html.ActionLink("Back to Main", "StaffHome", "StaffHome")
+</p>

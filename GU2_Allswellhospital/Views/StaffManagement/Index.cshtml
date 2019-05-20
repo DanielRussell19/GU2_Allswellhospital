@@ -10,7 +10,7 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Forename)
@@ -98,3 +98,7 @@
     }
 
 </table>
+
+<p>
+    @Html.ActionLink("Back to Main", "AdminServicesIndex", "AdminServices")
+</p>

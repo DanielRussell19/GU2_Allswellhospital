@@ -269,7 +269,9 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Patients.Any())
             {
-                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", Id = Guid.NewGuid().ToString(), UserName = "me@me.com", TelNum="000055550000"});
+                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", UserName = "me@me.com", TelNum="07903899757"});
+                context.Patients.Add(new Patient { Email = "memes@me.com", Forename = "Dafwfn", Surname = "Ruswfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", UserName = "me@me.com", TelNum = "07903899757" });
+                context.Patients.Add(new Patient { Email = "mel@mel.com", Forename = "Dafwfn", Surname = "Ruswfwfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", UserName = "me@me.com", TelNum = "07903899757" });
 
                 context.SaveChanges();
             }
@@ -278,7 +280,7 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Admissions.Any())
             {
-                context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now.AddDays(20), DateDischarged= DateTime.Now, isConfirmed = true });
+                //context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now.AddDays(20), DateDischarged= DateTime.Now, isAdmitted = true });
 
                 context.SaveChanges();
             }

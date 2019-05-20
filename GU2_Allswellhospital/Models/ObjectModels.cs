@@ -63,12 +63,15 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public int WardCapacity { get; set; }
 
+        public int WardSpacesTaken { get; set; }
+
         //constructors
         public Ward()
         {
             WardNo = Guid.NewGuid().ToString();
             WardName = "N/a";
             WardCapacity = 0;
+            WardSpacesTaken = WardCapacity;
         }
 
         public Ward(Ward ward)
@@ -218,7 +221,7 @@ namespace GU2_Allswellhospital.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
         public DateTime? DateDischarged { get; set; }
 
-        public bool isConfirmed { get; set; }
+        public bool isAdmitted { get; set; }
 
         //navigational properties
         [ForeignKey("Patient")]
@@ -235,7 +238,7 @@ namespace GU2_Allswellhospital.Models
             AdmissionNo = Guid.NewGuid().ToString();
             DateAdmitted = DateTime.Now;
             //DateDischarged = DateTime.Now;
-            isConfirmed = false;
+            isAdmitted = false;
         }
 
         public Admission(Admission admission)

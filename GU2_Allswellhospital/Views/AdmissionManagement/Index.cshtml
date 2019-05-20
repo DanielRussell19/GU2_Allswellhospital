@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Patient.Forename)
@@ -24,7 +24,7 @@
             @Html.DisplayNameFor(model => model.DateDischarged)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isConfirmed)
+            @Html.DisplayNameFor(model => model.isAdmitted)
         </th>
         <th></th>
     </tr>
@@ -44,12 +44,19 @@
             @Html.DisplayFor(modelItem => item.DateDischarged)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.isConfirmed)
+            @Html.DisplayFor(modelItem => item.isAdmitted)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.AdmissionNo }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AdmissionNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AdmissionNo })
+            @if (item.isAdmitted == false && item.DateDischarged == null)
+            {
+                @Html.ActionLink("Confirm Admission", "ConfirmAdmission", new { id = item.AdmissionNo })
+            }
+            else if(item.DateDischarged == null)
+            {
+                @Html.ActionLink("Discharge Admission", "DischargePatient", new { id = item.AdmissionNo })
+            }
+
+            @Html.ActionLink("Delete", "Delete", new { id = item.AdmissionNo })
         </td>
     </tr>
 }

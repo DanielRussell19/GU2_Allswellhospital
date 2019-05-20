@@ -286,6 +286,10 @@ namespace GU2_Allswellhospital.Models
         //Navigational properties
         IList<Treatment> Treatments { get; set; }
 
+        [ForeignKey("Ward")]
+        public string WardNo { get; set; }
+        public Ward Ward { get; set; }
+
         //constructors
         public Patient()
         {

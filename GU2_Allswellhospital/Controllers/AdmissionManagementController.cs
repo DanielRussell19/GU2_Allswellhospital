@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GU2_Allswellhospital.Controllers
 {
@@ -23,6 +24,7 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult Index()
         {
             var admissions = db.Admissions.Include(a => a.Patient).Include(a => a.Ward);
+
             return View(admissions.ToList());
         }
 
@@ -44,8 +46,8 @@ namespace GU2_Allswellhospital.Controllers
         // GET: AdmissionManagement/Create
         public ActionResult Create()
         {
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
-            ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName");
+            ViewBag.PatientID = new SelectList(db.Patients.Where(p => p.WardNo == null), "Id", "Forename");
+            ViewBag.WardNo = new SelectList(db.Wards.Where(w => w.WardSpacesTaken < w.WardCapacity), "WardNo", "WardName");
             return View();
         }
 
@@ -56,11 +58,34 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AdmissionNo,DateAdmitted,DateDischarged,isConfirmed,PatientID,WardNo")] Admission admission)
         {
-            if (ModelState.IsValid)
+            admission.DateDischarged = null;
+            admission.AdmissionNo = Guid.NewGuid().ToString();
+
+            if (ModelState.IsValid && admission.DateAdmitted >= DateTime.Now)
             {
-                db.Admissions.Add(admission);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Ward ward = db.Wards.Find(admission.WardNo);
+                ward.WardSpacesTaken = ward.WardSpacesTaken + 1;
+
+                Patient patient = db.Patients.Find(admission.PatientID);
+
+                if (ward.WardSpacesTaken >= ward.WardCapacity || patient.WardNo != null)
+                {
+                    return HttpNotFound();
+                }
+                else
+                {
+                    patient.WardNo = admission.WardNo;
+
+                    db.Admissions.Add(admission);
+                    db.Entry(ward).State = EntityState.Modified;
+                    db.Entry(patient).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    SmsService smsService = new SmsService();
+                    smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
+
+                    return RedirectToAction("Index");
+                }
             }
 
             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
@@ -103,6 +128,35 @@ namespace GU2_Allswellhospital.Controllers
             return View(admission);
         }
 
+        public ActionResult ConfirmAdmission(string id)
+        {
+            Admission admission = db.Admissions.Find(id);
+            admission.isAdmitted = true;
+
+            db.Entry(admission).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DischargePatient(string id)
+        {
+            Admission admission = db.Admissions.Find(id);
+            admission.DateDischarged = DateTime.Now;
+            admission.isAdmitted = false;
+
+            Ward ward = db.Wards.Find(admission.WardNo);
+            ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
+
+            Patient patient = db.Patients.Find(admission.PatientID);
+            patient.WardNo = null;
+
+            db.Entry(ward).State = EntityState.Modified;
+            db.Entry(admission).State = EntityState.Modified;
+            db.Entry(patient).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         // GET: AdmissionManagement/Delete/5
         public ActionResult Delete(string id)
         {
@@ -124,6 +178,27 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Admission admission = db.Admissions.Find(id);
+
+            if (admission.WardNo == null || admission.PatientID == null)
+            {
+                db.Admissions.Remove(admission);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            Patient patient = db.Patients.Find(admission.PatientID);
+
+            Ward ward = db.Wards.Find(admission.WardNo);
+
+            if (patient.WardNo != null)
+            {
+                patient.WardNo = null;
+                ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
+
+                db.Entry(patient).State = EntityState.Modified;
+                db.Entry(ward).State = EntityState.Modified;
+            }
+
             db.Admissions.Remove(admission);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -7,20 +7,36 @@
 
 @if (Request.IsAuthenticated)
 {
-    if (User.IsInRole("StaffAdmin"))
+
+<div>
+    @if (User.IsInRole("StaffAdmin"))
     {
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("AdminServicesRedirect", "StaffHome")';" style="position: center">Admin Services</button><br />
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("AdminServicesRedirect", "StaffHome")';" style="position: center">Admin Services</button><br />
+    }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">Admin Services</button><br />
     }
 
-    if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant"))
+    @if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant") || User.IsInRole("MedicalRecordsStaff"))
     {
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("MedicalRecordsRedirect", "StaffHome")';" style="position: center">Medical Records</button><br />
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("MedicalRecordsRedirect", "StaffHome")';" style="position: center">Medical Records</button><br />
+    }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">Medical Records</button><br />
     }
 
-    if (User.IsInRole("Consultant") || User.IsInRole("StaffAdmin"))
+    @if (User.IsInRole("Consultant") || User.IsInRole("StaffAdmin"))
     {
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("TeamManagementRedirect", "StaffHome")';" style="position: center">Team Managment</button>
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("TeamManagementRedirect", "StaffHome")';" style="position: center">Team Managment</button>
     }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">Team Management</button><br />
+    }
+</div>
+
 }
 else
 {

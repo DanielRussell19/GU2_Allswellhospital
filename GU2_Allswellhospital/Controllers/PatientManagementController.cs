@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GU2_Allswellhospital.Controllers
 {
@@ -59,6 +60,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 db.Patients.Add(patient);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

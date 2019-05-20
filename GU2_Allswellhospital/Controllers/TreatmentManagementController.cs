@@ -23,12 +23,17 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult Index(string patientid)
         {
             var treatments = db.Treatments.Include(t => t.Doctor).Include(t => t.Patient).Where(t => t.PatientID == patientid);
+
+            ViewBag.patientid = patientid;
+
             return View(treatments.ToList());
         }
 
         // GET: TreatmentManagement/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(string id, string patientid)
         {
+            ViewBag.patientid = patientid;
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,10 +47,11 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: TreatmentManagement/Create
-        public ActionResult Create()
+        public ActionResult Create(string patientid)
         {
+            ViewBag.patientid = patientid;
+
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
             return View();
         }
 
@@ -54,17 +60,22 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TreatmentNo,DateofTreatment,TreatmentDetails,TreatmentCost,DoctorID,PatientID")] Treatment treatment)
+        public ActionResult Create([Bind(Include = "TreatmentDetails,TreatmentCost,DoctorID")] Treatment treatment, string patientid)
         {
+            ViewBag.patientid = patientid;
+
+            treatment.TreatmentNo = Guid.NewGuid().ToString();
+            treatment.PatientID = patientid;
+            treatment.DateofTreatment = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","TreatmentManagement",patientid);
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
         }
 

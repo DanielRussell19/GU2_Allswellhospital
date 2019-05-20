@@ -7,9 +7,9 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { patientid = (string) ViewBag.patientid })
 </p>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Doctor.Forename)
@@ -47,9 +47,9 @@
             @Html.DisplayFor(modelItem => item.TreatmentCost)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TreatmentNo }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TreatmentNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TreatmentNo })
+            @Html.ActionLink("Edit", "Edit", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid })
         </td>
     </tr>
 }

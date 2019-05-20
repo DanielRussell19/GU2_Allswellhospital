@@ -3,7 +3,7 @@
     ViewBag.Title = "Medical Records Index";
 }
 
-<h2>Medical Records Index</h2>
+<h2 class="text-center">Medical Records Index</h2>
 
 @if (Request.IsAuthenticated)
 {
@@ -16,3 +16,7 @@ else
     @Html.AntiForgeryToken()
     Response.Redirect("~/Home/Index");
 }
+
+<p>
+    @Html.ActionLink("Back to Main", "StaffHome", "StaffHome")
+</p>
