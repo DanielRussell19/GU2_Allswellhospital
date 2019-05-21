@@ -374,11 +374,6 @@
     <Content Include="Views\PrescriptionManagement\Details.cshtml" />
     <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
     <Content Include="Views\PrescriptionManagement\Index.cshtml" />
-    <Content Include="Views\TreatmentManagement\Create.cshtml" />
-    <Content Include="Views\TreatmentManagement\Delete.cshtml" />
-    <Content Include="Views\TreatmentManagement\Details.cshtml" />
-    <Content Include="Views\TreatmentManagement\Edit.cshtml" />
-    <Content Include="Views\TreatmentManagement\Index.cshtml" />
     <Content Include="Views\TeamManagment\AssignStaffListing.cshtml" />
     <Content Include="Views\TeamManagment\UnAssignStaffListing.cshtml" />
     <Content Include="Views\PatientManagement\Create.cshtml" />
@@ -386,6 +381,11 @@
     <Content Include="Views\PatientManagement\Details.cshtml" />
     <Content Include="Views\PatientManagement\Edit.cshtml" />
     <Content Include="Views\PatientManagement\Index.cshtml" />
+    <Content Include="Views\TreatmentManagement\Create.cshtml" />
+    <Content Include="Views\TreatmentManagement\Delete.cshtml" />
+    <Content Include="Views\TreatmentManagement\Details.cshtml" />
+    <Content Include="Views\TreatmentManagement\Edit.cshtml" />
+    <Content Include="Views\TreatmentManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
