@@ -15,6 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for payments
     /// </summary>
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class PaymentManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

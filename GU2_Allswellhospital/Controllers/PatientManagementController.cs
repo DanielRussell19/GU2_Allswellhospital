@@ -16,6 +16,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for patients along with additional methods
     /// </summary>
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class PatientManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -52,7 +53,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Forename,Surname,Street,Town,City,Email,UserName,TelNum,DOB,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
+        public ActionResult Create([Bind(Include = "Id,Forename,Surname,Street,Town,City,Email,TelNum,DOB,Occupation,NextofKinForename,NextofKinSurname,NextofKinStreet,NextofKinTown,NextofKinCity,NextofkinTelNum")] Patient patient)
         {
             patient.Id = Guid.NewGuid().ToString();
 

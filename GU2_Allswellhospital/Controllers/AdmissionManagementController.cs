@@ -16,6 +16,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for Admissions along with additional methods
     /// </summary>
+    [Authorize(Roles = "MedicalRecordsStaff")]
     public class AdmissionManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -70,7 +71,9 @@ namespace GU2_Allswellhospital.Controllers
 
                 if (ward.WardSpacesTaken >= ward.WardCapacity || patient.WardNo != null)
                 {
-                    return HttpNotFound();
+                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
+                    ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
+                    return View(admission);
                 }
                 else
                 {

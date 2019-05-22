@@ -269,9 +269,9 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Patients.Any())
             {
-                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", UserName = "me@me.com", TelNum="07903899757"});
-                context.Patients.Add(new Patient { Email = "memes@me.com", Forename = "Dafwfn", Surname = "Ruswfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", UserName = "me@me.com", TelNum = "07903899757" });
-                context.Patients.Add(new Patient { Email = "mel@mel.com", Forename = "Dafwfn", Surname = "Ruswfwfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", UserName = "me@me.com", TelNum = "07903899757" });
+                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", TelNum="07903899757"});
+                context.Patients.Add(new Patient { Email = "memes@me.com", Forename = "Dafn", Surname = "Ruswfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
+                context.Patients.Add(new Patient { Email = "mel@mel.com", Forename = "Dawn", Surname = "Ruswfwfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
 
                 context.SaveChanges();
             }
@@ -280,8 +280,6 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Admissions.Any())
             {
-                //context.Admissions.Add(new Admission { DateAdmitted = DateTime.Now.AddDays(20), DateDischarged= DateTime.Now, isAdmitted = true });
-
                 context.SaveChanges();
             }
 
@@ -289,8 +287,6 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Invoices.Any())
             {
-                context.Invoices.Add(new BillingInvoice { PaymentRecived = false, TotalDue = 5.99 });
-
                 context.SaveChanges();
             }
 
@@ -298,8 +294,6 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Payments.Any())
             {
-                context.Payments.Add(new Payment {  });
-
                 context.SaveChanges();
             }
 
@@ -307,8 +301,6 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Prescriptions.Any())
             {
-                context.Prescriptions.Add(new Prescription { });
-
                 context.SaveChanges();
             }
 
@@ -316,8 +308,6 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Treatments.Any())
             {
-                context.Treatments.Add(new Treatment { });
-
                 context.SaveChanges();
             }
 

@@ -11,6 +11,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for MedicalRecords
     /// </summary>
+    [Authorize(Roles ="Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class MedicalRecordsController : Controller
     {
         // GET: MedicalRecords
@@ -27,6 +28,11 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult Admissions()
         {
             return RedirectToAction("Index", "AdmissionManagement", "AdmissionManagement");
+        }
+
+        public ActionResult Payments()
+        {
+            return RedirectToAction("Index", "PaymentManagement", "PaymentManagement");
         }
     }
 }

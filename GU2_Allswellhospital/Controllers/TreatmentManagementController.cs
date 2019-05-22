@@ -15,6 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for Treatments
     /// </summary>
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class TreatmentManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -23,12 +24,16 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult Index(string patientid)
         {
             var treatments = db.Treatments.Include(t => t.Doctor).Include(t => t.Patient).Where(t => t.PatientID == patientid);
+
+            ViewBag.patientid = patientid;
+
             return View(treatments.ToList());
         }
 
         // GET: TreatmentManagement/Details/5
         public ActionResult Details(string id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -42,11 +47,13 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: TreatmentManagement/Create
-        public ActionResult Create()
+        public ActionResult Create(string patientid)
         {
+            ViewBag.patientid = patientid;
+
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
-            return View();
+
+            return View(new Treatment { PatientID = patientid });
         }
 
         // POST: TreatmentManagement/Create
@@ -60,7 +67,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","TreatmentManagement",new { treatment.PatientID });
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
@@ -69,7 +76,7 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: TreatmentManagement/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string id, string patientid)
         {
             if (id == null)
             {
@@ -96,11 +103,21 @@ namespace GU2_Allswellhospital.Controllers
             {
                 db.Entry(treatment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
             }
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
+        }
+
+        public void CreateInvoice()
+        {
+
+        }
+
+        public int CalcTotal()
+        {
+            return 0;
         }
 
         // GET: TreatmentManagement/Delete/5
@@ -124,9 +141,10 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Treatment treatment = db.Treatments.Find(id);
+            string patientid = treatment.PatientID;
             db.Treatments.Remove(treatment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "TreatmentManagement", new { patientid });
         }
 
         protected override void Dispose(bool disposing)

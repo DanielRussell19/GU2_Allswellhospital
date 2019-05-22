@@ -58,14 +58,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.TelNum)
         </dt>
 
@@ -145,6 +137,5 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("View Treatments","Index","TreatmentManagement", new { patientid = Model.Id }, new { }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

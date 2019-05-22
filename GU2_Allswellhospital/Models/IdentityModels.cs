@@ -260,9 +260,6 @@ namespace GU2_Allswellhospital.Models
         public string Email { get; set; }
 
         [Required]
-        public string UserName { get; set; }
-
-        [Required]
         public string TelNum { get; set; }
 
         [Required]

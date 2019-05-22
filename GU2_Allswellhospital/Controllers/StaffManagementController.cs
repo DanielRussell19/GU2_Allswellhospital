@@ -16,6 +16,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// controller used to handle CRUD operations for staff
     /// </summary>
+    [Authorize(Roles = "StaffAdmin")]
     public class StaffManagementController : AccountController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -15,6 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller for CRUD operations with Prescription
     /// </summary>
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class PrescriptionManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
