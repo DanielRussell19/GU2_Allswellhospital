@@ -16,6 +16,8 @@ using System.Configuration;
 using Twilio.Rest.Api.V2010.Account;
 using Twilio.Types;
 using System.Diagnostics;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace GU2_Allswellhospital
 {
@@ -23,9 +25,27 @@ namespace GU2_Allswellhospital
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
-        }
+            try
+            {
+
+            var apiKey = ConfigurationManager.AppSettings["SendGridAuth"]; ;
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("test@example.com", "Example User");
+            var subject = "Sending with SendGrid is Fun";
+            var to = new EmailAddress("insanitythekoala@gmail.com", "Example User");
+            var plainTextContent = "and easy to do anywhere, even with C#";
+            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = client.SendEmailAsync(msg);
+
+            return Task.FromResult("Success");
+
+            } 
+            catch
+            {
+            return Task.FromResult("Error");
+            }
+}
     }
 
     public class SmsService : IIdentityMessageService

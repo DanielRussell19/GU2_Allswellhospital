@@ -87,6 +87,9 @@ namespace GU2_Allswellhospital.Controllers
                     SmsService smsService = new SmsService();
                     smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
 
+                    EmailService emailService = new EmailService();
+                    emailService.SendAsync(new IdentityMessage { Body = "ffe", Destination = "ihiuhi@afho.com", Subject = "iwudhiwh" });
+
                     return RedirectToAction("Index");
                 }
             }
