@@ -30,11 +30,11 @@ namespace GU2_Allswellhospital
 
             var apiKey = ConfigurationManager.AppSettings["SendGridAuth"]; ;
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("test@example.com", "Example User");
-            var subject = "Sending with SendGrid is Fun";
-            var to = new EmailAddress("insanitythekoala@gmail.com", "Example User");
-            var plainTextContent = "and easy to do anywhere, even with C#";
-            var htmlContent = "<strong>and easy to do anywhere, even with C#</strong>";
+            var from = new EmailAddress("Allswellhospital@example.com", "Example User");
+            var subject = "Fictional Hospital Appointment, programming test";
+            var to = new EmailAddress(message.Destination, "Example User");
+            var plainTextContent = message.Body;
+            var htmlContent = "<strong>"+message.Body+"</strong>";
             var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
             var response = client.SendEmailAsync(msg);
 
