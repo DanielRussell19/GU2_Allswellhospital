@@ -67,7 +67,43 @@ namespace GU2_Allswellhospital.Controllers
             {
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
-                return RedirectToAction("Index","TreatmentManagement",new { treatment.PatientID });
+
+                BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
+
+                try
+                {
+                        var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
+
+                        foreach (BillingInvoice invoice in billinginvoices)
+                        {
+                            if(invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
+                            {
+                                Invoice = invoice;
+
+                                Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
+                                Invoice.Treatments.Add(treatment);
+
+                                db.Entry(invoice).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                                return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
+                            }
+                        }
+
+                        Invoice.Treatments.Add(treatment);
+                        db.BillingInvoices.Add(Invoice);
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
+                }
+                catch
+                {
+                    ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
+                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
+                    return View(treatment);
+                }
+
+                
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
@@ -101,10 +137,50 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
+                Treatment oldtreatment = db.Treatments.Find(treatment.TreatmentNo);
+
                 db.Entry(treatment).State = EntityState.Modified;
                 db.SaveChanges();
+
+                BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
+
+                var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
+
+                try
+                {
+
+                foreach (BillingInvoice invoice in billinginvoices)
+                {
+                    if (invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
+                    {
+                        Invoice = invoice;
+                        Invoice.TotalDue = Invoice.TotalDue - oldtreatment.TreatmentCost;
+                        Invoice.Treatments.Remove(oldtreatment);
+                        Invoice.Treatments.Add(treatment);
+                        Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
+
+                        db.Entry(invoice).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
+                    }
+                }
+
+                Invoice.Treatments.Add(treatment);
+                db.BillingInvoices.Add(Invoice);
+                db.SaveChanges();
+
                 return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
+
+                }
+                catch
+                {
+                    ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
+                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
+                    return View(treatment);
+                }
             }
+
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
@@ -132,8 +208,38 @@ namespace GU2_Allswellhospital.Controllers
         {
             Treatment treatment = db.Treatments.Find(id);
             string patientid = treatment.PatientID;
-            db.Treatments.Remove(treatment);
-            db.SaveChanges();
+
+            var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
+            BillingInvoice Invoice = new BillingInvoice();
+
+            try
+            {
+
+                foreach (BillingInvoice invoice in billinginvoices)
+                {
+                    if (invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
+                    {
+                        Invoice = invoice;
+
+                        Invoice.TotalDue = Invoice.TotalDue - treatment.TreatmentCost;
+                        Invoice.Treatments.Remove(treatment);
+
+                        db.Entry(invoice).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        db.Treatments.Remove(treatment);
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "TreatmentManagement", new { patientid });
+
+                    }
+                }
+
+            }
+            catch
+            {
+                return View("Error");
+            }
+
             return RedirectToAction("Index", "TreatmentManagement", new { patientid });
         }
 

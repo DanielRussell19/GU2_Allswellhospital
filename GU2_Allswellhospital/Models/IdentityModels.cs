@@ -159,8 +159,8 @@ namespace GU2_Allswellhospital.Models
         public string Specialism { get; set; }
 
         //Navigational Properties
-        IList<Treatment>Treatments { get; set; }
-        IList<Prescription> Prescriptions { get; set; }
+        public IList<Treatment>Treatments { get; set; }
+        public IList<Prescription> Prescriptions { get; set; }
 
         //contructors
         public Doctor() : base()
@@ -281,11 +281,11 @@ namespace GU2_Allswellhospital.Models
         public string NextofkinTelNum { get; set; }
 
         //Navigational properties
-        IList<Treatment> Treatments { get; set; }
+        public IList<Treatment> Treatments { get; set; }
 
-        IList<Prescription> Prescriptions { get; set; }
+        public IList<Prescription> Prescriptions { get; set; }
 
-        IList<BillingInvoice> BillingInvoices { get; set; }
+        public IList<BillingInvoice> BillingInvoices { get; set; }
 
         [ForeignKey("Ward")]
         public string WardNo { get; set; }

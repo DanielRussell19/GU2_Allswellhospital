@@ -30,7 +30,7 @@ namespace GU2_Allswellhospital.Models
         public double DrugCost { get; set; }
 
         //navigational properties
-        IList<Prescription> Prescriptions { get; set; }
+        public IList<Prescription> Prescriptions { get; set; }
 
         //Constructors
         public Drug()
@@ -97,7 +97,7 @@ namespace GU2_Allswellhospital.Models
         public string WardNo { get; set; }
         public Ward Ward { get; set; }
 
-        IList<Staff> Staffs { get; set; }
+        public IList<Staff> Staffs { get; set; }
 
         //constructors
         public Team()
@@ -193,7 +193,7 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
-        IList<Drug> Drugs { get; set; }
+        public IList<Drug> Drugs { get; set; }
 
         //Constructors
         public Prescription()
@@ -323,8 +323,8 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
-        IList<Treatment> Treatments { get; set; }
-        IList<Prescription> Prescriptions { get; set; }
+        public IList<Treatment> Treatments { get; set; }
+        public IList<Prescription> Prescriptions { get; set; }
 
         [ForeignKey("Payment")]
         public string PaymentNo { get; set; }

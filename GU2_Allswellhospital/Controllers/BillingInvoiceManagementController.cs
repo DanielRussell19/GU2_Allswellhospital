@@ -29,6 +29,7 @@ namespace GU2_Allswellhospital.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
+            ViewBag.Treatments = new SelectList(billingInvoice.Treatments,"TreatmentNo","TreatmentDetails","TreatmentCost");
             if (billingInvoice == null)
             {
                 return HttpNotFound();
