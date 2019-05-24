@@ -380,16 +380,6 @@
     <Content Include="Views\PaymentManagement\Details.cshtml" />
     <Content Include="Views\PaymentManagement\Edit.cshtml" />
     <Content Include="Views\PaymentManagement\Index.cshtml" />
-    <Content Include="Views\BillingInvoiceManagement\Create.cshtml" />
-    <Content Include="Views\BillingInvoiceManagement\Delete.cshtml" />
-    <Content Include="Views\BillingInvoiceManagement\Details.cshtml" />
-    <Content Include="Views\BillingInvoiceManagement\Edit.cshtml" />
-    <Content Include="Views\BillingInvoiceManagement\Index.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Create.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Delete.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Details.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
-    <Content Include="Views\PrescriptionManagement\Index.cshtml" />
     <Content Include="Views\TeamManagment\AssignStaffListing.cshtml" />
     <Content Include="Views\TeamManagment\UnAssignStaffListing.cshtml" />
     <Content Include="Views\PatientManagement\Create.cshtml" />
@@ -402,6 +392,16 @@
     <Content Include="Views\TreatmentManagement\Details.cshtml" />
     <Content Include="Views\TreatmentManagement\Edit.cshtml" />
     <Content Include="Views\TreatmentManagement\Index.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Create.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Delete.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Details.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Edit.cshtml" />
+    <Content Include="Views\PrescriptionManagement\Index.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\Create.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\Delete.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\Details.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\Edit.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

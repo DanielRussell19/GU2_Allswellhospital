@@ -133,7 +133,6 @@ namespace GU2_Allswellhospital.Models
         public double TreatmentCost { get; set; }
 
         //navigational properties
-        public IList<Prescription> Prescriptions { get; set; }
 
         [ForeignKey("Doctor")]
         public string DoctorID { set; get; }
@@ -143,10 +142,13 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
+        [ForeignKey("BillingInvoice")]
+        public string InvoiceNo { get; set; }
+        public BillingInvoice BillingInvoice { get; set; }
+
         //constructors
         public Treatment()
         {
-            Prescriptions = new List<Prescription>();
             TreatmentNo = Guid.NewGuid().ToString();
             TreatmentCost = 0.00;
             TreatmentDetails = "N/a";
@@ -183,9 +185,13 @@ namespace GU2_Allswellhospital.Models
         public string DoctorID { get; set; }
         public Doctor Doctor { get; set; }
 
-        [ForeignKey("Treatment")]
-        public string TreatmentNo { get; set; }
-        public Treatment Treatment { get; set; }
+        [ForeignKey("BillingInvoice")]
+        public string InvoiceNo { get; set; }
+        public BillingInvoice BillingInvoice { get; set; }
+
+        [ForeignKey("Patient")]
+        public string PatientID { get; set; }
+        public Patient Patient { get; set; }
 
         IList<Drug> Drugs { get; set; }
 
@@ -317,9 +323,8 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
-        [ForeignKey("Treatment")]
-        public string TreatmentNo { get; set; }
-        public Treatment Treatment { get; set; }
+        IList<Treatment> Treatments { get; set; }
+        IList<Prescription> Prescriptions { get; set; }
 
         [ForeignKey("Payment")]
         public string PaymentNo { get; set; }
@@ -328,6 +333,8 @@ namespace GU2_Allswellhospital.Models
         //constructors
         public BillingInvoice()
         {
+            Treatments = new List<Treatment>();
+            Prescriptions = new List<Prescription>();
             InvoiceNo = Guid.NewGuid().ToString();
             PaymentRecived = false;
             TotalDue = 0.00;

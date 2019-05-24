@@ -10,11 +10,6 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
-    //Daniel Russell 12/05/2019
-
-    /// <summary>
-    /// Controller used to handle CRUD operations of Billing invoices for treatments
-    /// </summary>
     public class BillingInvoiceManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -22,7 +17,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: BillingInvoiceManagement
         public ActionResult Index()
         {
-            var billingInvoices = db.Invoices.Include(b => b.Patient).Include(b => b.Payment).Include(b => b.Treatment);
+            var billingInvoices = db.BillingInvoices.Include(b => b.Patient).Include(b => b.Payment);
             return View(billingInvoices.ToList());
         }
 
@@ -33,7 +28,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.Invoices.Find(id);
+            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
@@ -44,9 +39,8 @@ namespace GU2_Allswellhospital.Controllers
         // GET: BillingInvoiceManagement/Create
         public ActionResult Create()
         {
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename");
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod");
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails");
             return View();
         }
 
@@ -55,18 +49,17 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,TreatmentNo,PaymentNo")] BillingInvoice billingInvoice)
+        public ActionResult Create([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,PaymentNo")] BillingInvoice billingInvoice)
         {
             if (ModelState.IsValid)
             {
-                db.Invoices.Add(billingInvoice);
+                db.BillingInvoices.Add(billingInvoice);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", billingInvoice.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", billingInvoice.TreatmentNo);
             return View(billingInvoice);
         }
 
@@ -77,14 +70,13 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.Invoices.Find(id);
+            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", billingInvoice.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", billingInvoice.TreatmentNo);
             return View(billingInvoice);
         }
 
@@ -93,7 +85,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,TreatmentNo,PaymentNo")] BillingInvoice billingInvoice)
+        public ActionResult Edit([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,PaymentNo")] BillingInvoice billingInvoice)
         {
             if (ModelState.IsValid)
             {
@@ -101,9 +93,8 @@ namespace GU2_Allswellhospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PatientID = new SelectList(db.ApplicationUsers, "Id", "Forename", billingInvoice.PatientID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", billingInvoice.TreatmentNo);
             return View(billingInvoice);
         }
 
@@ -114,7 +105,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.Invoices.Find(id);
+            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
             if (billingInvoice == null)
             {
                 return HttpNotFound();
@@ -127,8 +118,8 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            BillingInvoice billingInvoice = db.Invoices.Find(id);
-            db.Invoices.Remove(billingInvoice);
+            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
+            db.BillingInvoices.Remove(billingInvoice);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

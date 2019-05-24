@@ -285,7 +285,7 @@ namespace GU2_Allswellhospital.Models
 
             //treatment invoices
 
-            if (!context.Invoices.Any())
+            if (!context.BillingInvoices.Any())
             {
                 context.SaveChanges();
             }

@@ -10,20 +10,19 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
-    //Daniel Russell 13/05/2019
-
-    /// <summary>
-    /// Controller for CRUD operations with Prescription
-    /// </summary>
-    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class PrescriptionManagementController : Controller
     {
+        //Daniel Russell 13/05/2019
+
+        /// <summary>
+        /// Controller for CRUD operations with Prescription
+        /// </summary>
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PrescriptionManagement
         public ActionResult Index()
         {
-            var prescriptions = db.Prescriptions.Include(p => p.Treatment);
+            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Patient);
             return View(prescriptions.ToList());
         }
 
@@ -45,7 +44,8 @@ namespace GU2_Allswellhospital.Controllers
         // GET: PrescriptionManagement/Create
         public ActionResult Create()
         {
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails");
+            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
             return View();
         }
 
@@ -54,7 +54,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,TreatmentNo")] Prescription prescription)
+        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -63,7 +63,8 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
+            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 
@@ -79,7 +80,8 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
+            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 
@@ -88,7 +90,7 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,TreatmentNo")] Prescription prescription)
+        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +98,8 @@ namespace GU2_Allswellhospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.TreatmentNo = new SelectList(db.Treatments, "TreatmentNo", "TreatmentDetails", prescription.TreatmentNo);
+            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
+            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 

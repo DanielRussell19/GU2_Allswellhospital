@@ -283,6 +283,10 @@ namespace GU2_Allswellhospital.Models
         //Navigational properties
         IList<Treatment> Treatments { get; set; }
 
+        IList<Prescription> Prescriptions { get; set; }
+
+        IList<BillingInvoice> BillingInvoices { get; set; }
+
         [ForeignKey("Ward")]
         public string WardNo { get; set; }
         public Ward Ward { get; set; }
@@ -292,6 +296,8 @@ namespace GU2_Allswellhospital.Models
         {
             Id = Guid.NewGuid().ToString();
             Treatments = new List<Treatment>();
+            Prescriptions = new List<Prescription>();
+            BillingInvoices = new List<BillingInvoice>();
             Conditions = new List<string>();
             Allergies = new List<string>();
             Forename = "N/a";

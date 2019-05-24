@@ -72,9 +72,10 @@
         </td>
 
         <td>
-            @Html.ActionLink("View Record", "Details", new { id = item.Id }) |
-            @Html.ActionLink("View Treatments", "Index", "TreatmentManagement", new { patientid = item.Id }, new { }) |
-            @Html.ActionLink("View Invoices", "Index", "BillingInvoiceManagement", new { patientid = item.Id }, new { }) |
+            @Html.ActionLink("View Record", "Details", new { id = item.Id }) <br />
+            @Html.ActionLink("View Treatments", "Index", "TreatmentManagement", new { patientid = item.Id }, new { }) <br />
+            @Html.ActionLink("View Prescriptions", "Index", "PrescriptionManagement", new { patientid = item.Id }, new { }) <br />
+            @Html.ActionLink("View Invoices", "Index", "BillingInvoiceManagement", new { patientid = item.Id }, new { }) <br />
             @Html.ActionLink("Delete", "Delete", new { id = item.Id })
         </td>
 

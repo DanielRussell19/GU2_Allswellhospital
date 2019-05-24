@@ -31,7 +31,7 @@ namespace GU2_Allswellhospital.Models
 
             public IDbSet<Payment> Payments { get; set; }
 
-            public IDbSet<BillingInvoice> Invoices { get; set; }
+            public IDbSet<BillingInvoice> BillingInvoices { get; set; }
 
             public IDbSet<Staff> ApplicationUsers { get; set; }
 

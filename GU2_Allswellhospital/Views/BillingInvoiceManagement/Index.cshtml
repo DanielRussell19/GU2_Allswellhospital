@@ -9,16 +9,13 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table table-bordered table-striped">
+<table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Patient.Forename)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Payment.PaymentMethod)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Treatment.TreatmentDetails)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PaymentRecived)
@@ -36,9 +33,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Payment.PaymentMethod)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Treatment.TreatmentDetails)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PaymentRecived)

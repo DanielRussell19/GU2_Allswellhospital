@@ -110,16 +110,6 @@ namespace GU2_Allswellhospital.Controllers
             return View(treatment);
         }
 
-        public void CreateInvoice()
-        {
-
-        }
-
-        public int CalcTotal()
-        {
-            return 0;
-        }
-
         // GET: TreatmentManagement/Delete/5
         public ActionResult Delete(string id)
         {
