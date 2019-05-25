@@ -43,14 +43,20 @@
         </dd>
 
         <dt>
-            @Html.DisplayFor(model => model.Treatments)
+            @Html.DisplayNameFor(model => model.Treatments)
         </dt>
 
-        <dd>
-            @Html.ListBoxFor(model => model.Treatments, (SelectList)ViewBag.Treatments , htmlAttributes: new { @class = "form-control" });
-        </dd>
 
-    </dl>
+        @foreach (var item in Model.Treatments)
+        {
+            <dd>
+                @Html.Label(item.DateofTreatment.ToString("dd/MM/yyyy"))
+                @Html.Label(item.TreatmentDetails)
+                @Html.Label(item.TreatmentCost.ToString("N2")) 
+            </dd>
+        }
+
+     </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.InvoiceNo }) |

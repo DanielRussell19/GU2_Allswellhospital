@@ -68,30 +68,39 @@ namespace GU2_Allswellhospital.Controllers
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
 
+                //temp invoice to be used as a new invoice if no unpaid invoice matching patient is found
                 BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
 
                 try
                 {
+                        //list of invoices
                         var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
 
+                        //searches list of invoices for an invoice that matches the patient that is unpaid, else outside of foreach creates new invoice with unpaid status
                         foreach (BillingInvoice invoice in billinginvoices)
                         {
+                            //if an invoice is found matching patient and also be unpaid the invoice is appended with the new treatment
                             if(invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
                             {
                                 Invoice = invoice;
 
                                 Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
+                                treatment.InvoiceNo = Invoice.InvoiceNo;
                                 Invoice.Treatments.Add(treatment);
 
                                 db.Entry(invoice).State = EntityState.Modified;
+                                db.Entry(treatment).State = EntityState.Modified;
                                 db.SaveChanges();
 
                                 return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
                             }
                         }
 
+                        //if no invoice found, create new invoice with temp invoice and newly created treatment added within
+                        treatment.InvoiceNo = Invoice.InvoiceNo;
                         Invoice.Treatments.Add(treatment);
                         db.BillingInvoices.Add(Invoice);
+                        db.Entry(treatment).State = EntityState.Modified;
                         db.SaveChanges();
 
                         return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
@@ -139,9 +148,6 @@ namespace GU2_Allswellhospital.Controllers
             {
                 Treatment oldtreatment = db.Treatments.Find(treatment.TreatmentNo);
 
-                db.Entry(treatment).State = EntityState.Modified;
-                db.SaveChanges();
-
                 BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
 
                 var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
@@ -159,7 +165,12 @@ namespace GU2_Allswellhospital.Controllers
                         Invoice.Treatments.Add(treatment);
                         Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
 
+                        db.Entry(treatment).State = EntityState.Modified;
+
+                        db.SaveChanges();
+
                         db.Entry(invoice).State = EntityState.Modified;
+
                         db.SaveChanges();
 
                         return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });

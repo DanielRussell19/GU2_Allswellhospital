@@ -28,8 +28,18 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
-            ViewBag.Treatments = new SelectList(billingInvoice.Treatments,"TreatmentNo","TreatmentDetails","TreatmentCost");
+
+            var billingInvoices = db.BillingInvoices.Include(i => i.Treatments).Include(i => i.Prescriptions);
+            BillingInvoice billingInvoice = new BillingInvoice();
+
+            foreach(BillingInvoice invoice in billingInvoices)
+            {
+                if(invoice.InvoiceNo == id)
+                {
+                    billingInvoice = invoice;
+                }
+            }
+
             if (billingInvoice == null)
             {
                 return HttpNotFound();
