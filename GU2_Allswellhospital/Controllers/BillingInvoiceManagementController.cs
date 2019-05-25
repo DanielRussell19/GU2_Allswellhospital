@@ -15,9 +15,12 @@ namespace GU2_Allswellhospital.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BillingInvoiceManagement
-        public ActionResult Index()
+        public ActionResult Index(string patientid)
         {
-            var billingInvoices = db.BillingInvoices.Include(b => b.Patient).Include(b => b.Payment);
+            var billingInvoices = db.BillingInvoices.Include(b => b.Patient).Include(b => b.Payment).Where(p => p.PatientID == patientid);
+
+            ViewBag.patientid = patientid;
+
             return View(billingInvoices.ToList());
         }
 
@@ -48,11 +51,12 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: BillingInvoiceManagement/Create
-        public ActionResult Create()
+        public ActionResult Create(string patientid)
         {
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
+            ViewBag.patientid = patientid;
+
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod");
-            return View();
+            return View(new BillingInvoice { PatientID=patientid });
         }
 
         // POST: BillingInvoiceManagement/Create
@@ -69,7 +73,6 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
             return View(billingInvoice);
         }
@@ -86,7 +89,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
+
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
             return View(billingInvoice);
         }
@@ -104,7 +107,7 @@ namespace GU2_Allswellhospital.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", billingInvoice.PatientID);
+
             ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
             return View(billingInvoice);
         }

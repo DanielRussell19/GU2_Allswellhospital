@@ -20,9 +20,12 @@ namespace GU2_Allswellhospital.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PrescriptionManagement
-        public ActionResult Index()
+        public ActionResult Index(string patientid)
         {
-            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Patient);
+            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Patient).Where(p => p.PatientID == patientid);
+
+            ViewBag.patientid = patientid;
+
             return View(prescriptions.ToList());
         }
 
@@ -42,11 +45,12 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: PrescriptionManagement/Create
-        public ActionResult Create()
+        public ActionResult Create(string patientid)
         {
+            ViewBag.patientid = patientid;
+
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename");
-            return View();
+            return View(new Prescription { PatientID = patientid });
         }
 
         // POST: PrescriptionManagement/Create
@@ -64,7 +68,6 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 
@@ -81,7 +84,6 @@ namespace GU2_Allswellhospital.Controllers
                 return HttpNotFound();
             }
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 
@@ -99,7 +101,6 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", prescription.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", prescription.PatientID);
             return View(prescription);
         }
 

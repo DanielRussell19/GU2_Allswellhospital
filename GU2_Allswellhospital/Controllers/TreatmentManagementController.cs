@@ -86,7 +86,6 @@ namespace GU2_Allswellhospital.Controllers
 
                                 Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
                                 treatment.InvoiceNo = Invoice.InvoiceNo;
-                                Invoice.Treatments.Add(treatment);
 
                                 db.Entry(invoice).State = EntityState.Modified;
                                 db.Entry(treatment).State = EntityState.Modified;
@@ -98,8 +97,8 @@ namespace GU2_Allswellhospital.Controllers
 
                         //if no invoice found, create new invoice with temp invoice and newly created treatment added within
                         treatment.InvoiceNo = Invoice.InvoiceNo;
-                        Invoice.Treatments.Add(treatment);
                         db.BillingInvoices.Add(Invoice);
+
                         db.Entry(treatment).State = EntityState.Modified;
                         db.SaveChanges();
 
@@ -108,7 +107,6 @@ namespace GU2_Allswellhospital.Controllers
                 catch
                 {
                     ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
                     return View(treatment);
                 }
 
@@ -116,7 +114,6 @@ namespace GU2_Allswellhospital.Controllers
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
         }
 
@@ -133,7 +130,6 @@ namespace GU2_Allswellhospital.Controllers
                 return HttpNotFound();
             }
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
         }
 
@@ -146,9 +142,9 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                Treatment oldtreatment = db.Treatments.Find(treatment.TreatmentNo);
 
                 BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
+                Treatment oldtreatment = treatment;
 
                 var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
 
@@ -160,16 +156,21 @@ namespace GU2_Allswellhospital.Controllers
                     if (invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
                     {
                         Invoice = invoice;
-                        Invoice.TotalDue = Invoice.TotalDue - oldtreatment.TreatmentCost;
-                        Invoice.Treatments.Remove(oldtreatment);
-                        Invoice.Treatments.Add(treatment);
-                        Invoice.TotalDue = Invoice.TotalDue + treatment.TreatmentCost;
 
-                        db.Entry(treatment).State = EntityState.Modified;
+                        foreach (Treatment t in Invoice.Treatments)
+                        {
+                                if(t.TreatmentNo == treatment.TreatmentNo)
+                                {
+                                    oldtreatment = t;
+                                }
+                        }
 
-                        db.SaveChanges();
+                        treatment.InvoiceNo = Invoice.InvoiceNo;
+                        Invoice.TotalDue = Invoice.TotalDue - oldtreatment.TreatmentCost + treatment.TreatmentCost;
 
                         db.Entry(invoice).State = EntityState.Modified;
+                        
+                        db.Entry(treatment).State = EntityState.Modified;
 
                         db.SaveChanges();
 
@@ -177,23 +178,23 @@ namespace GU2_Allswellhospital.Controllers
                     }
                 }
 
-                Invoice.Treatments.Add(treatment);
-                db.BillingInvoices.Add(Invoice);
-                db.SaveChanges();
+                    treatment.InvoiceNo = Invoice.InvoiceNo;
+                    db.BillingInvoices.Add(Invoice);
 
-                return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
+                    db.Entry(treatment).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
 
                 }
                 catch
                 {
                     ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
                     return View(treatment);
                 }
             }
 
             ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", treatment.PatientID);
             return View(treatment);
         }
 
