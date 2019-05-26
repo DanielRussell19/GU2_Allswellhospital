@@ -65,6 +65,8 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
+                //strange improvised fix for forign key error, if staff are not loaded from staffmanagement prescription creation becomes impossible ALSO
+                db.Set<ApplicationUser>().Load();
 
                 db.Prescriptions.Add(prescription);
                 db.SaveChanges();

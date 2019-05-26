@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -64,7 +65,9 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                //strange improvised fix for forign key error, if staff are not loaded from staffmanagement treatment creation becomes impossible
+                db.Set<ApplicationUser>().Load();
+
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
 
@@ -166,10 +169,11 @@ namespace GU2_Allswellhospital.Controllers
                         treatment.InvoiceNo = Invoice.InvoiceNo;
                         Invoice.TotalDue = Invoice.TotalDue - oldtreatment.TreatmentCost + treatment.TreatmentCost;
 
-                        db.Entry(invoice).State = EntityState.Modified;
+                        //forign key error fix when editing, stating primary key conflict instead of using state.modified (the origin of error, apparently)
+                        db.Set<BillingInvoice>().AddOrUpdate(invoice);
                         
-                        db.Entry(treatment).State = EntityState.Modified;
-
+                        db.Set<Treatment>().AddOrUpdate(treatment);
+                        
                         db.SaveChanges();
 
                         return RedirectToAction("Index", "TreatmentManagement", new { treatment.PatientID });
@@ -187,7 +191,6 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
-                    
                     return View(treatment);
                 }
             }
