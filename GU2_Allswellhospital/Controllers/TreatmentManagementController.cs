@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Microsoft.AspNet.Identity;
 
 namespace GU2_Allswellhospital.Controllers
 {
@@ -15,7 +17,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for Treatments
     /// </summary>
-    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
+    [Authorize(Roles = "Doctor,Consultant")]
     public class TreatmentManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -33,7 +35,6 @@ namespace GU2_Allswellhospital.Controllers
         // GET: TreatmentManagement/Details/5
         public ActionResult Details(string id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,9 +52,7 @@ namespace GU2_Allswellhospital.Controllers
         {
             ViewBag.patientid = patientid;
 
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename");
-
-            return View(new Treatment { PatientID = patientid });
+            return View(new Treatment { PatientID = patientid, DoctorID = User.Identity.GetUserId() });
         }
 
         // POST: TreatmentManagement/Create
@@ -65,6 +64,7 @@ namespace GU2_Allswellhospital.Controllers
         {
             if (ModelState.IsValid)
             {
+                
                 db.Treatments.Add(treatment);
                 db.SaveChanges();
 
@@ -106,14 +106,12 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
-                    ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
                     return View(treatment);
                 }
 
                 
             }
 
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
             return View(treatment);
         }
 
@@ -129,7 +127,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
+            
             return View(treatment);
         }
 
@@ -189,12 +187,12 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
-                    ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
+                    
                     return View(treatment);
                 }
             }
 
-            ViewBag.DoctorID = new SelectList(db.ApplicationUsers, "Id", "Forename", treatment.DoctorID);
+            
             return View(treatment);
         }
 

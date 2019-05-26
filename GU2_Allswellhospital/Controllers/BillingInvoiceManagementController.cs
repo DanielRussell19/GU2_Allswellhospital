@@ -10,6 +10,12 @@ using GU2_Allswellhospital.Models;
 
 namespace GU2_Allswellhospital.Controllers
 {
+    //Daniel Russell 13/05/2019
+
+    /// <summary>
+    /// Controller for CRUD operations with BillingInvoice
+    /// </summary>
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff")]
     public class BillingInvoiceManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

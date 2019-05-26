@@ -1,5 +1,7 @@
-﻿using System;
+﻿using GU2_Allswellhospital.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +15,7 @@ namespace GU2_Allswellhospital.Controllers
     /// </summary>
     public class StaffHomeController : Controller
     {
+
         // GET: StaffHome
         public ActionResult StaffHome()
         {

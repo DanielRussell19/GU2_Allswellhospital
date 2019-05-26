@@ -176,6 +176,8 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public string LengthofTreatment { get; set; }
 
+        public double PrescriptionCost { get; set; }
+
         [Required]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
         public DateTime DateofPrescription { get; set; }
@@ -193,12 +195,13 @@ namespace GU2_Allswellhospital.Models
         public string PatientID { get; set; }
         public Patient Patient { get; set; }
 
-        public IList<Drug> Drugs { get; set; }
+        [ForeignKey("Drug")]
+        public string DrugNo { get; set; }
+        public Patient Drug { get; set; }
 
         //Constructors
         public Prescription()
         {
-            List<Drug> Drugs = new List<Drug>();
             PrescriptionNo = Guid.NewGuid().ToString();
             Dosage = "N/a";
             LengthofTreatment = "N/a";
