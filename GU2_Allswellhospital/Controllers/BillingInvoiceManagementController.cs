@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Stripe;
 
 namespace GU2_Allswellhospital.Controllers
 {
@@ -56,48 +58,12 @@ namespace GU2_Allswellhospital.Controllers
             return View(billingInvoice);
         }
 
-        // GET: BillingInvoiceManagement/Create
-        public ActionResult Create(string patientid)
+        // GET: BillingInvoiceManagement/Edit/5
+        public ActionResult MakePayment(string id,string patientid)
         {
             ViewBag.patientid = patientid;
 
-            ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod");
-            return View(new BillingInvoice { PatientID=patientid });
-        }
-
-        // POST: BillingInvoiceManagement/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,PaymentNo")] BillingInvoice billingInvoice)
-        {
-            if (ModelState.IsValid)
-            {
-                db.BillingInvoices.Add(billingInvoice);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            return View(billingInvoice);
-        }
-
-        // GET: BillingInvoiceManagement/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
-            if (billingInvoice == null)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            return View(billingInvoice);
+            return View(new CreatePaymentViewModel { PatientId = patientid, InvoiceNo = id });
         }
 
         // POST: BillingInvoiceManagement/Edit/5
@@ -105,17 +71,27 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "InvoiceNo,PaymentRecived,TotalDue,PatientID,PaymentNo")] BillingInvoice billingInvoice)
+        public ActionResult MakePayment([Bind(Include = "PaymentNo,PaymentMethod,BillingAddress,Forename,Surname,CardNumber,SecurityCode,ExpiryDate,PatientId,InvoiceNo")] CreatePaymentViewModel payment)
         {
+
             if (ModelState.IsValid)
             {
-                db.Entry(billingInvoice).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+
+                StripeConfiguration.SetApiKey("sk_test_fHaiXwbfFo3YUowus0cFNdOR00HHNl42Yw");
+                var paymentIntentService = new PaymentIntentService();
+                var createOptions = new PaymentIntentCreateOptions
+                {
+                    Amount = 999,
+                    Currency = "gbp",
+                    PaymentMethodTypes = new List<string> { "card" },
+                    ReceiptEmail = "danielrussell19@gmail.com",
+                };
+                paymentIntentService.Create(createOptions);
+
+                return RedirectToAction("Index", "BillingInvoiceManagement", new { payment.PatientId });
             }
 
-            ViewBag.PaymentNo = new SelectList(db.Payments, "PaymentNo", "PaymentMethod", billingInvoice.PaymentNo);
-            return View(billingInvoice);
+            return View(payment);
         }
 
         // GET: BillingInvoiceManagement/Delete/5
@@ -138,10 +114,26 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
-            db.BillingInvoices.Remove(billingInvoice);
+            var billingInvoices = db.BillingInvoices.Include(i => i.Prescriptions).Include(i => i.Treatments);
+            BillingInvoice invoice = null;
+            string patientid = null;
+
+            foreach (BillingInvoice billingInvoice in billingInvoices)
+            {
+                if(billingInvoice.InvoiceNo == id)
+                {
+                    invoice = billingInvoice;
+                    patientid = invoice.PatientID;
+
+                    db.Entry(invoice).State = EntityState.Deleted;
+                    break;
+                    
+                }
+            }
+
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index", "BillingInvoiceManagement", new { patientid });
         }
 
         protected override void Dispose(bool disposing)

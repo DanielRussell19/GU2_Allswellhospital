@@ -5,10 +5,6 @@
 }
 
 <h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
-</p>
 <table class="table">
     <tr>
         <th>
@@ -41,7 +37,7 @@
             @Html.DisplayFor(modelItem => item.TotalDue)
         </td>
         <td>
-            @Html.ActionLink("Make Payment", "Edit", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Make Payment", "MakePayment", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
             @Html.ActionLink("Detailed View", "Details", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid })
         </td>

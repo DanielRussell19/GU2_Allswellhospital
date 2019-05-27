@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace GU2_Allswellhospital.Models
 {
@@ -291,7 +292,6 @@ namespace GU2_Allswellhospital.Models
         public Payment()
         {
             PaymentNo = Guid.NewGuid().ToString();
-            PaymentMethod = "N/a";
             BillingAddress = "N/a";
             Forename = "N/a";
             Surname = "N/a";
