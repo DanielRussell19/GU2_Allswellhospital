@@ -18,6 +18,9 @@
             @Html.DisplayNameFor(model => model.Patient.Forename)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.DrugNo)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Dosage)
         </th>
         <th>
@@ -38,6 +41,9 @@
             @Html.DisplayFor(modelItem => item.Patient.Forename)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Drug.DrugName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Dosage)
         </td>
         <td>
@@ -47,9 +53,9 @@
             @Html.DisplayFor(modelItem => item.DateofPrescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.PrescriptionNo, patientid = (string)ViewBag.patientid })
+            @Html.ActionLink("Edit", "Edit", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Details", "Details", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid })
         </td>
     </tr>
 }

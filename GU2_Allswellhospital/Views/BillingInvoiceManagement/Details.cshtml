@@ -46,17 +46,29 @@
             @Html.DisplayNameFor(model => model.Treatments)
         </dt>
 
-
         @foreach (var item in Model.Treatments)
         {
             <dd>
-                @Html.Label(item.DateofTreatment.ToString("dd/MM/yyyy"))
-                @Html.Label(item.TreatmentDetails)
-                @Html.Label(item.TreatmentCost.ToString("N2")) 
+                @item.DateofTreatment.ToString("dd/MM/yyyy") |
+                @item.TreatmentDetails |
+                @item.TreatmentCost.ToString("C2")
             </dd>
         }
 
-     </dl>
+        <dt>
+            @Html.DisplayNameFor(model => model.Prescriptions)
+        </dt>
+
+
+        @foreach (var item in Model.Prescriptions)
+        {
+            <dd>
+                @item.DateofPrescription.ToString("dd/MM/yyyy") |
+                @item.Drug.DrugName |
+                @item.PrescriptionCost.ToString("C2")
+            </dd>
+        }
+    </dl>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.InvoiceNo }) |

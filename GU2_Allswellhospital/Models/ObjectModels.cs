@@ -136,15 +136,15 @@ namespace GU2_Allswellhospital.Models
 
         [ForeignKey("Doctor")]
         public string DoctorID { set; get; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
 
         [ForeignKey("Patient")]
         public string PatientID { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         [ForeignKey("BillingInvoice")]
         public string InvoiceNo { get; set; }
-        public BillingInvoice BillingInvoice { get; set; }
+        public virtual BillingInvoice BillingInvoice { get; set; }
 
         //constructors
         public Treatment()
@@ -185,19 +185,19 @@ namespace GU2_Allswellhospital.Models
         //Navigational properties
         [ForeignKey("Doctor")]
         public string DoctorID { get; set; }
-        public Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
 
         [ForeignKey("BillingInvoice")]
         public string InvoiceNo { get; set; }
-        public BillingInvoice BillingInvoice { get; set; }
+        public virtual BillingInvoice BillingInvoice { get; set; }
 
         [ForeignKey("Patient")]
         public string PatientID { get; set; }
-        public Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
         [ForeignKey("Drug")]
         public string DrugNo { get; set; }
-        public Patient Drug { get; set; }
+        public virtual Drug Drug { get; set; }
 
         //Constructors
         public Prescription()

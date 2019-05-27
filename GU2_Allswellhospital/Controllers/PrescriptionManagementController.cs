@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -25,7 +26,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: PrescriptionManagement
         public ActionResult Index(string patientid)
         {
-            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Patient).Where(p => p.PatientID == patientid);
+            var prescriptions = db.Prescriptions.Include(p => p.Doctor).Include(p => p.Patient).Include(p => p.Drug).Where(p => p.PatientID == patientid);
 
             ViewBag.patientid = patientid;
 
@@ -52,7 +53,7 @@ namespace GU2_Allswellhospital.Controllers
         {
             ViewBag.patientid = patientid;
 
-            ViewBag.Drugs = (db.Drugs.ToList());
+            ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
             return View(new Prescription { PatientID = patientid, DoctorID = User.Identity.GetUserId() });
         }
 
@@ -61,12 +62,15 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,Lengthofprescription,DateofPrescription,DoctorID,PatientID")] Prescription prescription)
+        public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID,DrugNo")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
                 //strange improvised fix for forign key error, if staff are not loaded from staffmanagement prescription creation becomes impossible ALSO
-                db.Set<ApplicationUser>().Load();
+                db.ApplicationUsers.Load();
+
+                Drug drug = db.Drugs.Find(prescription.DrugNo);
+                prescription.PrescriptionCost = drug.DrugCost;
 
                 db.Prescriptions.Add(prescription);
                 db.SaveChanges();
@@ -94,7 +98,7 @@ namespace GU2_Allswellhospital.Controllers
                             db.Entry(prescription).State = EntityState.Modified;
                             db.SaveChanges();
 
-                            return RedirectToAction("Index", "prescriptionManagement", new { prescription.PatientID });
+                            return RedirectToAction("Index", "PrescriptionManagement", new { prescription.PatientID });
                         }
                     }
 
@@ -105,18 +109,18 @@ namespace GU2_Allswellhospital.Controllers
                     db.Entry(prescription).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    return RedirectToAction("Index", "prescriptionManagement", new { prescription.PatientID });
+                    return RedirectToAction("Index", "PrescriptionManagement", new { prescription.PatientID });
                 }
                 catch
                 {
-                    ViewBag.Drugs = (db.Drugs.ToList());
+                    ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
                     return View(prescription);
                 }
 
 
             }
 
-            ViewBag.Drugs = (db.Drugs.ToList());
+            ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
             return View(prescription);
         }
 
@@ -132,6 +136,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
             return View(prescription);
         }
 
@@ -140,15 +145,68 @@ namespace GU2_Allswellhospital.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,Lengthofprescription,DateofPrescription,DoctorID,PatientID")] Prescription prescription)
+        public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID,DrugNo")] Prescription prescription)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(prescription).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                Drug drug = db.Drugs.Find(prescription.DrugNo);
+                prescription.PrescriptionCost = drug.DrugCost;
+
+                BillingInvoice Invoice = new BillingInvoice { PatientID = prescription.PatientID, PaymentRecived = false, TotalDue = prescription.PrescriptionCost };
+                Prescription oldprescription = prescription;
+
+                var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
+
+                try
+                {
+
+                    foreach (BillingInvoice invoice in billinginvoices)
+                    {
+                        if (invoice.PatientID == prescription.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
+                        {
+                            Invoice = invoice;
+
+                            foreach (Prescription p in Invoice.Prescriptions)
+                            {
+                                if (p.PrescriptionNo == prescription.PrescriptionNo)
+                                {
+                                    oldprescription = p;
+                                }
+                            }
+
+                            prescription.InvoiceNo = Invoice.InvoiceNo;
+                            Invoice.TotalDue = Invoice.TotalDue - oldprescription.PrescriptionCost + prescription.PrescriptionCost;
+
+                            //forign key error fix when editing, stating primary key conflict instead of using state.modified (the origin of error, apparently)
+                            db.Set<BillingInvoice>().AddOrUpdate(invoice);
+
+                            db.Set<Prescription>().AddOrUpdate(prescription);
+
+                            db.SaveChanges();
+
+                            return RedirectToAction("Index", "PrescriptionManagement", new {prescription.PatientID });
+                        }
+                    }
+
+                    prescription.InvoiceNo = Invoice.InvoiceNo;
+                    db.BillingInvoices.Add(Invoice);
+
+                    db.Entry(prescription).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "PrescriptionManagement", new { prescription.PatientID });
+
+                }
+                catch
+                {
+                    ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                    return View(prescription);
+                }
             }
+
+            ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
             return View(prescription);
+
         }
 
         // GET: PrescriptionManagement/Delete/5
@@ -172,9 +230,40 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Prescription prescription = db.Prescriptions.Find(id);
-            db.Prescriptions.Remove(prescription);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            string patientid = prescription.PatientID;
+
+            var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
+            BillingInvoice Invoice = new BillingInvoice();
+
+            try
+            {
+
+                foreach (BillingInvoice invoice in billinginvoices)
+                {
+                    if (invoice.PatientID == prescription.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
+                    {
+                        Invoice = invoice;
+
+                        Invoice.TotalDue = Invoice.TotalDue - prescription.PrescriptionCost;
+                        Invoice.Prescriptions.Remove(prescription);
+
+                        db.Entry(invoice).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        db.Prescriptions.Remove(prescription);
+                        db.SaveChanges();
+                        return RedirectToAction("Index", "PrescriptionManagement", new { patientid });
+
+                    }
+                }
+
+            }
+            catch
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index", "PrescriptionManagement", new { patientid });
         }
 
         protected override void Dispose(bool disposing)

@@ -15,6 +15,7 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class DataBaseInitaliser : DropCreateDatabaseAlways<ApplicationDbContext>
     {
+
         /// <summary>
         /// seeder method override, to seed inital users, roles and objects
         /// </summary>

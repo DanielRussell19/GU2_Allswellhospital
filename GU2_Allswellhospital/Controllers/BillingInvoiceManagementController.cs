@@ -38,7 +38,7 @@ namespace GU2_Allswellhospital.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var billingInvoices = db.BillingInvoices.Include(i => i.Treatments).Include(i => i.Prescriptions);
+            var billingInvoices = db.BillingInvoices.Include(i => i.Treatments).Include(i => i.Prescriptions).Include(i => i.Patient).Include(i => i.Payment);
             BillingInvoice billingInvoice = new BillingInvoice();
 
             foreach(BillingInvoice invoice in billingInvoices)

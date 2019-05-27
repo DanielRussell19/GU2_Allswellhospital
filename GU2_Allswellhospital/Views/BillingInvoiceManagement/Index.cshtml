@@ -41,8 +41,8 @@
             @Html.DisplayFor(modelItem => item.TotalDue)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Make Payment", "Edit", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
+            @Html.ActionLink("Detailed View", "Details", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid })
         </td>
     </tr>
