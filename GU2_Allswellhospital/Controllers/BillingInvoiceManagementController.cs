@@ -58,40 +58,115 @@ namespace GU2_Allswellhospital.Controllers
             return View(billingInvoice);
         }
 
-        // GET: BillingInvoiceManagement/Edit/5
+        // GET: BillingInvoiceManagement/makepayment
         public ActionResult MakePayment(string id,string patientid)
         {
             ViewBag.patientid = patientid;
+            Patient patient = db.Patients.Find(patientid);
+            BillingInvoice billingInvoice = db.BillingInvoices.Find(id);
 
-            return View(new CreatePaymentViewModel { PatientId = patientid, InvoiceNo = id });
+            return View(new CreatePaymentViewModel { PatientId = patientid, InvoiceNo = id, Forename = patient.Forename, Surname = patient.Surname, BillingAddress = patient.Street + " " + patient.Town, InvoiceTotal = billingInvoice.TotalDue });
         }
 
-        // POST: BillingInvoiceManagement/Edit/5
+        // POST: BillingInvoiceManagement/Makepayment
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MakePayment([Bind(Include = "PaymentNo,PaymentMethod,BillingAddress,Forename,Surname,CardNumber,SecurityCode,ExpiryDate,PatientId,InvoiceNo")] CreatePaymentViewModel payment)
+        public ActionResult MakePayment([Bind(Include = "PaymentNo,PaymentMethod,BillingAddress,Forename,Surname,CardNumber,SecurityCode,ExpiryDate,PatientId,InvoiceNo,SelectedMethod,InvoiceTotal")] CreatePaymentViewModel payment, string stripeEmail, string stripeToken)
         {
 
             if (ModelState.IsValid)
             {
 
-                StripeConfiguration.SetApiKey("sk_test_fHaiXwbfFo3YUowus0cFNdOR00HHNl42Yw");
-                var paymentIntentService = new PaymentIntentService();
-                var createOptions = new PaymentIntentCreateOptions
+                if(payment.SelectedMethod == "Stripe")
                 {
-                    Amount = 999,
-                    Currency = "gbp",
-                    PaymentMethodTypes = new List<string> { "card" },
-                    ReceiptEmail = "danielrussell19@gmail.com",
-                };
-                paymentIntentService.Create(createOptions);
+                    try
+                    {
+                         return RedirectToAction("StripePayment", "BillingInvoiceManagement", payment);
+                    }
+                    catch
+                    {
+                        return View("Error");
+                    }
+                }
+                else
+                {
+                    Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
+                    BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
+
+                    db.Payments.Add(temppayment);
+
+                    db.SaveChanges();
+
+                    billingInvoice.PaymentRecived = true;
+                    billingInvoice.PaymentNo = temppayment.PaymentNo;
+
+                    db.Entry(billingInvoice).State = EntityState.Modified;
+
+                    db.SaveChanges();
+                }
 
                 return RedirectToAction("Index", "BillingInvoiceManagement", new { payment.PatientId });
             }
 
             return View(payment);
+        }
+
+        [HttpGet]
+        public ActionResult StripePayment(CreatePaymentViewModel payment)
+        {
+            return View(payment);
+        }
+
+        [HttpPost]
+        public ActionResult StripePayment([Bind(Include = "PaymentNo,PaymentMethod,BillingAddress,Forename,Surname,CardNumber,SecurityCode,ExpiryDate,PatientId,InvoiceNo,SelectedMethod,InvoiceTotal")] CreatePaymentViewModel payment, string stripeEmail, string stripeToken)
+        {
+            //attributes
+            StripeConfiguration.SetApiKey("sk_test_fHaiXwbfFo3YUowus0cFNdOR00HHNl42Yw");
+            var customers = new CustomerService();
+            var charges = new ChargeService();
+
+            //create customer
+            var customer = customers.Create(new CustomerCreateOptions
+            {
+                Email = stripeEmail,
+                Description = "test purposes Charge",
+                SourceToken = stripeToken
+            });
+
+            //creates charge, unable to correctly record charge as amount requires a long input which my entire project relises on double
+            var charge = charges.Create(new ChargeCreateOptions
+            {
+                Amount = 050,
+                Description = "test purposes Charge",
+                Currency = "gbp",
+                CustomerId = customer.Id
+            });
+
+            //if charge and customer creation successfull then payment is recorded in database
+            if (customers.Get(customer.Id) != null && charges.Get(charge.Id) != null)
+            {
+                Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
+                BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
+
+                db.Payments.Add(temppayment);
+
+                db.SaveChanges();
+
+                billingInvoice.PaymentRecived = true;
+                billingInvoice.PaymentNo = temppayment.PaymentNo;
+
+                db.Entry(billingInvoice).State = EntityState.Modified;
+
+                db.SaveChanges();
+
+                return RedirectToAction("Index", "BillingInvoiceManagement", new { payment.PatientId });
+            }
+            else
+            {
+                return View("Error");
+            }
         }
 
         // GET: BillingInvoiceManagement/Delete/5

@@ -17,13 +17,17 @@ namespace GU2_Allswellhospital.Models
         public string InvoiceNo { get; set; }
 
         [Required]
-        public List<SelectListItem> PaymentMethod = new List<SelectListItem>()
+        public List<SelectListItem> PaymentMethods = new List<SelectListItem>()
         {
             new SelectListItem(){Text = "Stripe", Value = "Stripe"},
             new SelectListItem(){Text = "Cheque", Value = "Cheque"},
             new SelectListItem(){Text = "Cash", Value = "Cash"},
             new SelectListItem(){Text = "Pre-paid", Value = "Pre-paid"}
         };
+
+        public string SelectedMethod { get; set; }
+
+        public double InvoiceTotal { get; set; }
 
         [Required]
         public string BillingAddress { get; set; }
@@ -34,14 +38,5 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public string Surname { get; set; }
 
-
-        public string CardNumber { get; set; }
-
-
-        public string SecurityCode { get; set; }
-
-
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-        public DateTime ExpiryDate { get; set; }
     }
 }

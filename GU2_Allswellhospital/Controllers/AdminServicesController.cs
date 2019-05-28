@@ -39,9 +39,9 @@ namespace GU2_Allswellhospital.Controllers
         }
 
         // GET: Redirects to Analytics
-        public void Analytics()
+        public ActionResult Analytics()
         {
-
+            return View();
         }
     }
 }

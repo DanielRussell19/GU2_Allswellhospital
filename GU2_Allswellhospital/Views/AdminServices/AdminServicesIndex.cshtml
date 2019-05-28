@@ -13,7 +13,7 @@
 
     <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","WardManagement")';" style="position: center">Ward Management</button><br />
 
-    <button  onclick="window.location.href = '@Url.Action("StaffIndex","StaffHome")';" style="position: center">Analytics Management</button>
+    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Analytics","AdminServices")';" style="position: center">Analytics</button><br />
 }
 else
 {
@@ -21,6 +21,6 @@ else
     Response.Redirect("~/Home/Index");
 }
 
-    <p>
-        @Html.ActionLink("Back to Main", "StaffHome", "StaffHome")
-    </p>
+<p>
+    @Html.ActionLink("Back to Main", "StaffHome", "StaffHome")
+</p>

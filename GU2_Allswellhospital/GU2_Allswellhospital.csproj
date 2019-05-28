@@ -406,11 +406,9 @@
     <Content Include="Views\BillingInvoiceManagement\Details.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\MakePayment.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\Index.cshtml" />
-    <Content Include="Views\PaymentManagement\Create.cshtml" />
-    <Content Include="Views\PaymentManagement\Delete.cshtml" />
-    <Content Include="Views\PaymentManagement\Details.cshtml" />
-    <Content Include="Views\PaymentManagement\Edit.cshtml" />
     <Content Include="Views\PaymentManagement\Index.cshtml" />
+    <Content Include="Views\AdminServices\Analytics.cshtml" />
+    <Content Include="Views\BillingInvoiceManagement\StripePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

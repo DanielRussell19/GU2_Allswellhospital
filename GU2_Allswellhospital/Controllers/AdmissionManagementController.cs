@@ -84,16 +84,23 @@ namespace GU2_Allswellhospital.Controllers
                     db.Entry(patient).State = EntityState.Modified;
                     db.SaveChanges();
 
-                    if (patient.TelNum != null)
+                    try
                     {
-                        SmsService smsService = new SmsService();
-                        smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
-                    }
+                        if (patient.TelNum != null)
+                        {
+                            SmsService smsService = new SmsService();
+                            smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
+                        }
 
-                    if (patient.Email != null)
+                        if (patient.Email != null)
+                        {
+                            EmailService emailService = new EmailService();
+                            emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
+                        }
+                    }
+                    catch
                     {
-                        EmailService emailService = new EmailService();
-                        emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
+                        return View("Error");
                     }
 
                     return RedirectToAction("Index");
