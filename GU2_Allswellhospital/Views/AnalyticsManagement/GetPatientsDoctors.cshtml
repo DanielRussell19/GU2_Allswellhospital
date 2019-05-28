@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GU2_Allswellhospital.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Staff Management";
+}
+
+<h2>Doctors Who Treat Patient</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Forename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        @Html.HiddenFor(modelItem => item.PhoneNumberConfirmed)
+        @Html.HiddenFor(modelItem => item.TwoFactorEnabled)
+        @Html.HiddenFor(modelItem => item.LockoutEndDateUtc)
+        @Html.HiddenFor(modelItem => item.LockoutEnabled)
+        @Html.HiddenFor(modelItem => item.AccessFailedCount)
+        @Html.HiddenFor(modelItem => item.UserName)
+        @Html.HiddenFor(modelItem => item.EmailConfirmed)
+        @Html.HiddenFor(modelItem => item.PasswordHash)
+        @Html.HiddenFor(modelItem => item.SecurityStamp)
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+        </tr>
+    }
+
+</table>

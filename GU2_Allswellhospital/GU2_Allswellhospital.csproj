@@ -427,10 +427,14 @@
     <Content Include="Views\PaymentManagement\Index.cshtml" />
     <Content Include="Views\AdminServices\Analytics.cshtml" />
     <Content Include="Views\BillingInvoiceManagement\StripePayment.cshtml" />
+    <Content Include="Views\AnalyticsManagement\Index.cshtml" />
+    <Content Include="Views\AnalyticsManagement\GetPatients.cshtml" />
+    <Content Include="Views\AnalyticsManagement\GetPatientsDoctors.cshtml" />
+    <Content Include="Views\AnalyticsManagement\GetTeams.cshtml" />
+    <Content Include="Views\AnalyticsManagement\GetPatientsUnderTeam.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\AnalyticsManagement\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
