@@ -1,4 +1,5 @@
 ﻿using GU2_Allswellhospital.Models;
+using RotativaHQ.MVC5;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,8 +10,6 @@ using System.Web.Mvc;
 namespace GU2_Allswellhospital.Controllers
 {
     //Daniel Russell 28/05/2019
-
-    //sendgrid, twillo, leaflet, stripe, github, videoapi
 
     /// <summary>
     /// Controller used to handle quieries and enable the abillity to convert it to pdf
@@ -41,7 +40,10 @@ namespace GU2_Allswellhospital.Controllers
                 doctors.Add(db.ApplicationUsers.Find(treatment.DoctorID));
             }
 
-            return View(doctors);
+            return new ViewAsPdf(doctors)
+            {
+                FileName = "PatientDoctors.pdf"
+            };
         }
 
         public ActionResult GetTeams()
@@ -56,12 +58,15 @@ namespace GU2_Allswellhospital.Controllers
             List<Admission> admissions = db.Admissions.Include(a => a.Patient).Where(a => a.WardNo == team.WardNo && a.isAdmitted == true).ToList();
             List<Patient> patients = new List<Patient>();
 
-            foreach(Admission admission in admissions)
+            foreach (Admission admission in admissions)
             {
                 patients.Add(db.Patients.Find(admission.PatientID));
             }
 
-            return View(patients);
+            return new ViewAsPdf(patients)
+            {
+                FileName = "PatientsUnderSelectTeam"+team.TeamName+".pdf"
+            };
         }
     }
 }
