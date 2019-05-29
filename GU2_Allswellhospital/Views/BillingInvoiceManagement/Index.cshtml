@@ -37,9 +37,12 @@
             @Html.DisplayFor(modelItem => item.TotalDue)
         </td>
         <td>
-            @Html.ActionLink("Make Payment", "MakePayment", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Detailed View", "Details", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.InvoiceNo, patientid = (string)ViewBag.patientid })
+            @if (User.IsInRole("MedicalRecordsStaff"))
+            {
+                @Html.ActionLink("Make Payment", "MakePayment", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid }) 
+                @Html.ActionLink("Detailed View", "Details", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
+                @Html.ActionLink("Delete", "Delete", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
+            }
         </td>
     </tr>
 }

@@ -18,7 +18,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller used to handle CRUD operations for Treatments
     /// </summary>
-    [Authorize(Roles = "Doctor,Consultant")]
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class TreatmentManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

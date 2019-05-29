@@ -17,7 +17,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller for CRUD operations with Prescription
     /// </summary>
-    [Authorize(Roles = "Doctor,Consultant")]
+    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff,Nurse,StaffNurse")]
     public class PrescriptionManagementController : Controller
     {
 
@@ -70,7 +70,7 @@ namespace GU2_Allswellhospital.Controllers
                 db.ApplicationUsers.Load();
 
                 Drug drug = db.Drugs.Find(prescription.DrugNo);
-                prescription.PrescriptionCost = drug.DrugCost;
+                prescription.PrescriptionCost = (drug.DrugCost * double.Parse(prescription.Dosage) * double.Parse(prescription.LengthofTreatment));
 
                 db.Prescriptions.Add(prescription);
                 db.SaveChanges();
@@ -150,7 +150,7 @@ namespace GU2_Allswellhospital.Controllers
             if (ModelState.IsValid)
             {
                 Drug drug = db.Drugs.Find(prescription.DrugNo);
-                prescription.PrescriptionCost = drug.DrugCost;
+                prescription.PrescriptionCost = (drug.DrugCost * double.Parse(prescription.Dosage) * double.Parse(prescription.LengthofTreatment));
 
                 BillingInvoice Invoice = new BillingInvoice { PatientID = prescription.PatientID, PaymentRecived = false, TotalDue = prescription.PrescriptionCost };
                 Prescription oldprescription = prescription;

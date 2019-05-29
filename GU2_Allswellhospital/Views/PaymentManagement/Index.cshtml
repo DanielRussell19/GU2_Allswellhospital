@@ -12,6 +12,9 @@
             @Html.DisplayNameFor(model => model.PaymentMethod)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.PaymentAmount)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.BillingAddress)
         </th>
         <th>
@@ -20,7 +23,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Surname)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.CardNumber)
         </th>
         <th>
@@ -28,7 +31,7 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ExpiryDate)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -36,6 +39,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.PaymentMethod)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PaymentAmount)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.BillingAddress)
@@ -46,7 +52,7 @@
         <td>
             @Html.DisplayFor(modelItem => item.Surname)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.CardNumber)
         </td>
         <td>
@@ -54,7 +60,7 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ExpiryDate)
-        </td>
+        </td>*@
     </tr>
 }
 

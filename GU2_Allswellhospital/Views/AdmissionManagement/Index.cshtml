@@ -6,6 +6,13 @@
 
 <h2>Patient Admissions</h2>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -29,36 +36,37 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patient.Forename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ward.WardName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateAdmitted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateDischarged)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isAdmitted)
-        </td>
-        <td>
-            @if (item.isAdmitted == false && item.DateDischarged == null)
-            {
-                @Html.ActionLink("Confirm Admission", "ConfirmAdmission", new { id = item.AdmissionNo })
-            }
-            else if(item.DateDischarged == null)
-            {
-                @Html.ActionLink("Discharge Admission", "DischargePatient", new { id = item.AdmissionNo })
-            }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ward.WardName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAdmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateDischarged)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isAdmitted)
+            </td>
+            <td>
+                @if (item.isAdmitted == false && item.DateDischarged == null)
+                {
+                    @Html.ActionLink("Confirm Admission", "ConfirmAdmission", new { id = item.AdmissionNo })
+                }
+                else if (item.DateDischarged == null)
+                {
+                    @Html.ActionLink("Discharge Admission", "DischargePatient", new { id = item.AdmissionNo })
+                }
 
-            @Html.ActionLink("Delete", "Delete", new { id = item.AdmissionNo })
-        </td>
-    </tr>
-}
+                @Html.ActionLink("Delete", "Delete", new { id = item.AdmissionNo })
+            </td>
+        </tr>
+    }
 
 </table>

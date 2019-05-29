@@ -28,6 +28,7 @@ namespace GU2_Allswellhospital.Models
         public string DrugName { get; set; }
 
         [Required]
+        [Display(Name ="DrugCost/g")]
         public double DrugCost { get; set; }
 
         //navigational properties
@@ -172,9 +173,11 @@ namespace GU2_Allswellhospital.Models
         public string PrescriptionNo { get; set; }
 
         [Required]
+        [Display(Name ="Dosage/g")]
         public string Dosage { get; set; }
 
         [Required]
+        [Display(Name ="LengthofPrescription/Days")]
         public string LengthofTreatment { get; set; }
 
         public double PrescriptionCost { get; set; }
@@ -270,6 +273,9 @@ namespace GU2_Allswellhospital.Models
         public string PaymentMethod { get; set; }
 
         [Required]
+        public double PaymentAmount { get; set; }
+
+        [Required]
         public string BillingAddress { get; set; }
 
         [Required]
@@ -278,15 +284,15 @@ namespace GU2_Allswellhospital.Models
         [Required]
         public string Surname { get; set; }
 
-        [Required]
-        public string CardNumber { get; set; }
+        //[Required]
+        //public string CardNumber { get; set; }
 
-        [Required]
-        public string SecurityCode { get; set; }
+        //[Required]
+        //public string SecurityCode { get; set; }
 
-        [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
-        public DateTime ExpiryDate { get; set; }
+        //[Required]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0: yyyy-MM-dd}")]
+        //public DateTime ExpiryDate { get; set; }
 
         //Constructs
         public Payment()
@@ -295,9 +301,9 @@ namespace GU2_Allswellhospital.Models
             BillingAddress = "N/a";
             Forename = "N/a";
             Surname = "N/a";
-            CardNumber = "N/a";
-            SecurityCode = "N/a";
-            ExpiryDate = DateTime.Now;
+            //CardNumber = "N/a";
+            //SecurityCode = "N/a";
+            //ExpiryDate = DateTime.Now;
         }
 
         public Payment(Payment payment)

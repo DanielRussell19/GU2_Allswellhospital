@@ -24,7 +24,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: PatientManagement
         public ActionResult Index()
         {
-            return View(db.Patients.ToList());
+            return View(db.Patients.Include(p => p.Ward).ToList());
         }
 
         // GET: PatientManagement/Details/5

@@ -62,88 +62,70 @@ namespace GU2_Allswellhospital.Controllers
             admission.DateDischarged = null;
             admission.AdmissionNo = Guid.NewGuid().ToString();
 
-            if (ModelState.IsValid && admission.DateAdmitted >= DateTime.Now)
+            if (ModelState.IsValid)
             {
-                Ward ward = db.Wards.Find(admission.WardNo);
-                ward.WardSpacesTaken = ward.WardSpacesTaken + 1;
-
-                Patient patient = db.Patients.Find(admission.PatientID);
-
-                if (ward.WardSpacesTaken >= ward.WardCapacity || patient.WardNo != null)
+                if (admission.DateAdmitted > DateTime.Now)
                 {
-                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
-                    ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
-                    return View(admission);
+
+                    Ward ward = db.Wards.Find(admission.WardNo);
+
+                    Patient patient = db.Patients.Find(admission.PatientID);
+
+                    if (ward.WardSpacesTaken >= ward.WardCapacity -1)
+                    {
+                        ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
+                        ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
+                        ViewBag.ErrorMessage = "Ward is full";
+                        return View(admission);
+                    }
+                    else
+                    {
+                        ward.WardSpacesTaken = ward.WardSpacesTaken + 1;
+                        patient.WardNo = admission.WardNo;
+
+                        db.Admissions.Add(admission);
+                        db.Entry(ward).State = EntityState.Modified;
+                        db.Entry(patient).State = EntityState.Modified;
+                        db.SaveChanges();
+
+                        try
+                        {
+                            if (patient.TelNum != null)
+                            {
+                                SmsService smsService = new SmsService();
+                                smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
+                            }
+
+                            if (patient.Email != null)
+                            {
+                                EmailService emailService = new EmailService();
+                                emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
+                            }
+                        }
+                        catch
+                        {
+                            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
+                            ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
+                            ViewBag.ErrorMessage = "Sms notification and or email notification failed";
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+
                 }
                 else
                 {
-                    patient.WardNo = admission.WardNo;
-
-                    db.Admissions.Add(admission);
-                    db.Entry(ward).State = EntityState.Modified;
-                    db.Entry(patient).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    try
-                    {
-                        if (patient.TelNum != null)
-                        {
-                            SmsService smsService = new SmsService();
-                            smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
-                        }
-
-                        if (patient.Email != null)
-                        {
-                            EmailService emailService = new EmailService();
-                            emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
-                        }
-                    }
-                    catch
-                    {
-                        return View("Error");
-                    }
-
-                    return RedirectToAction("Index");
+                    ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
+                    ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
+                    ViewBag.ErrorMessage = "Date invalid, Please choose a later date";
+                    return View(admission);
                 }
+
             }
 
             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
-            return View(admission);
-        }
-
-        // GET: AdmissionManagement/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Admission admission = db.Admissions.Find(id);
-            if (admission == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
-            ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
-            return View(admission);
-        }
-
-        // POST: AdmissionManagement/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "AdmissionNo,DateAdmitted,DateDischarged,isConfirmed,PatientID,WardNo")] Admission admission)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(admission).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
-            ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
+            ViewBag.ErrorMessage = "Submit is Invalid, please fill all fields";
             return View(admission);
         }
 
@@ -160,6 +142,15 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DischargePatient(string id)
         {
             Admission admission = db.Admissions.Find(id);
+
+            List<BillingInvoice> invoices = db.BillingInvoices.Include(i => i.Patient).Where(i => i.PatientID == admission.PatientID && i.PaymentRecived == false).ToList();
+
+            if ((invoices.Count > 0) == true)
+            {
+                ViewBag.ErrorMessage = "Patient has unpaid treatments";
+                return View("Index", db.Admissions.Include(a => a.Patient).Include(a => a.Ward).ToList());
+            }
+
             admission.DateDischarged = DateTime.Now;
             admission.isAdmitted = false;
 
@@ -197,30 +188,39 @@ namespace GU2_Allswellhospital.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             Admission admission = db.Admissions.Find(id);
+            List<BillingInvoice> invoices = db.BillingInvoices.Include(i => i.Patient).Where(i => i.PatientID == admission.PatientID && i.PaymentRecived == false).ToList();
 
-            if (admission.WardNo == null || admission.PatientID == null)
+            if ((invoices.Count >0) == false)
             {
+                if (admission.WardNo == null || admission.PatientID == null)
+                {
+                    db.Admissions.Remove(admission);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+
+                Patient patient = db.Patients.Find(admission.PatientID);
+
+                Ward ward = db.Wards.Find(admission.WardNo);
+
+                if (patient.WardNo != null)
+                {
+                    patient.WardNo = null;
+                    ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
+
+                    db.Entry(patient).State = EntityState.Modified;
+                    db.Entry(ward).State = EntityState.Modified;
+                }
+
                 db.Admissions.Remove(admission);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            Patient patient = db.Patients.Find(admission.PatientID);
-
-            Ward ward = db.Wards.Find(admission.WardNo);
-
-            if (patient.WardNo != null)
+            else
             {
-                patient.WardNo = null;
-                ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
-
-                db.Entry(patient).State = EntityState.Modified;
-                db.Entry(ward).State = EntityState.Modified;
+                ViewBag.ErrorMessage = "Patient has unpaid treatments";
+                return View("Index", db.Admissions.Include(a => a.Patient).Include(a => a.Ward).ToList());
             }
-
-            db.Admissions.Remove(admission);
-            db.SaveChanges();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

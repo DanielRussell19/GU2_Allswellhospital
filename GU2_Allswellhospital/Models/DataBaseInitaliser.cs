@@ -260,8 +260,10 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Drugs.Any())
             {
-                context.Drugs.Add(new Drug { DrugName = "Dent", DrugDetails = "Heart medicine", DrugCost = 10.35 });
-                context.Drugs.Add(new Drug { DrugName = "Ortha", DrugDetails = "Nose medicine", DrugCost = 5.49 });
+                context.Drugs.Add(new Drug { DrugName = "Anastetic", DrugDetails = "sleep medicine", DrugCost = 0.35 });
+                context.Drugs.Add(new Drug { DrugName = "Nostro", DrugDetails = "Nose medicine", DrugCost = 0.49 });
+                context.Drugs.Add(new Drug { DrugName = "Generic Technologies HeartMed", DrugDetails = "Reboot the heart in 1 min", DrugCost = 0.35 });
+                context.Drugs.Add(new Drug { DrugName = "GastroBegone", DrugDetails = "EXPLOSIVE results, warning rear passage not guranteed for reattachment", DrugCost = 0.49 });
 
                 context.SaveChanges();
             }
@@ -270,9 +272,9 @@ namespace GU2_Allswellhospital.Models
 
             if (!context.Patients.Any())
             {
-                context.Patients.Add(new Patient { Email="me@me.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", TelNum="07903899757"});
-                context.Patients.Add(new Patient { Email = "memes@me.com", Forename = "Dafn", Surname = "Ruswfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
-                context.Patients.Add(new Patient { Email = "mel@mel.com", Forename = "Dawn", Surname = "Ruswfwfws", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
+                context.Patients.Add(new Patient { Email="insanitythekoala@gmail.com", Forename="Dan", Surname="Russ", Street="dolph", Town="towni", City="county", DOB=DateTime.Now, Occupation="Unemployed", TelNum="07903899757"});
+                context.Patients.Add(new Patient { Email = "insanitythekoala@gmail.com", Forename = "Jill", Surname = "willis", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
+                context.Patients.Add(new Patient { Email = "insanitythekoala@gmail.com", Forename = "Dawn", Surname = "furgus", Street = "dolph", Town = "towni", City = "county", DOB = DateTime.Now, Occupation = "Unemployed", TelNum = "07903899757" });
 
                 context.SaveChanges();
             }

@@ -7,11 +7,36 @@
 
 @if (Request.IsAuthenticated)
 {
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","PatientManagement")';" style="position: center">Patient Management</button><br />
 
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","AdmissionManagement")';" style="position: center">Admission Management</button><br />
+    if (User.IsInRole("Consultant") || User.IsInRole("StaffAdmin") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor") || User.IsInRole("WardSister") || User.IsInRole("MedicalRecordsStaff"))
+    {
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","PatientManagement")';" style="position: center">Patient Management</button><br />
+    }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">Patient Management</button><br />
+    }
 
-    <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","PaymentManagement")';" style="position: center">Admission Management</button><br />
+    if (User.IsInRole("MedicalRecordsStaff"))
+    {
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","AdmissionManagement")';" style="position: center">Admission Management</button><br />
+    }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">Admission Management</button><br />
+    }
+
+    if (User.IsInRole("MedicalRecordsStaff"))
+    {
+        <button class="btn-block btn-primary" onclick="window.location.href = '@Url.Action("Index","PaymentManagement")';" style="position: center">View Payments</button><br />
+    }
+    else
+    {
+        <button class="btn-block btn-secondary" style="position: center">View Payments</button><br />
+    }
+
+
+
 }
 else
 {

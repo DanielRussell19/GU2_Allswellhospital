@@ -17,7 +17,7 @@ namespace GU2_Allswellhospital.Controllers
     /// <summary>
     /// Controller for CRUD operations with BillingInvoice
     /// </summary>
-    [Authorize(Roles = "Doctor,Consultant,MedicalRecordsStaff")]
+    [Authorize(Roles = "MedicalRecordsStaff")]
     public class BillingInvoiceManagementController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -95,6 +95,8 @@ namespace GU2_Allswellhospital.Controllers
                     Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
                     BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
 
+                    temppayment.PaymentAmount = billingInvoice.TotalDue;
+
                     db.Payments.Add(temppayment);
 
                     db.SaveChanges();
@@ -122,48 +124,58 @@ namespace GU2_Allswellhospital.Controllers
         [HttpPost]
         public ActionResult StripePayment([Bind(Include = "PaymentNo,PaymentMethod,BillingAddress,Forename,Surname,CardNumber,SecurityCode,ExpiryDate,PatientId,InvoiceNo,SelectedMethod,InvoiceTotal")] CreatePaymentViewModel payment, string stripeEmail, string stripeToken)
         {
-            //attributes
-            StripeConfiguration.SetApiKey("sk_test_fHaiXwbfFo3YUowus0cFNdOR00HHNl42Yw");
-            var customers = new CustomerService();
-            var charges = new ChargeService();
-
-            //create customer
-            var customer = customers.Create(new CustomerCreateOptions
+            try
             {
-                Email = stripeEmail,
-                Description = "test purposes Charge",
-                SourceToken = stripeToken
-            });
+                //attributes
+                StripeConfiguration.SetApiKey("sk_test_fHaiXwbfFo3YUowus0cFNdOR00HHNl42Yw");
+                var customers = new CustomerService();
+                var charges = new ChargeService();
 
-            //creates charge, unable to correctly record charge as amount requires a long input which my entire project relises on double
-            var charge = charges.Create(new ChargeCreateOptions
-            {
-                Amount = 050,
-                Description = "test purposes Charge",
-                Currency = "gbp",
-                CustomerId = customer.Id
-            });
+                //create customer
+                var customer = customers.Create(new CustomerCreateOptions
+                {
+                    Email = stripeEmail,
+                    Description = "test purposes Charge",
+                    SourceToken = stripeToken
+                });
 
-            //if charge and customer creation successfull then payment is recorded in database
-            if (customers.Get(customer.Id) != null && charges.Get(charge.Id) != null)
-            {
-                Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
-                BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
+                //creates charge, unable to correctly record charge as amount requires a long input which my entire project relises on double
+                var charge = charges.Create(new ChargeCreateOptions
+                {
+                    Amount = 050,
+                    Description = "test purposes Charge",
+                    Currency = "gbp",
+                    CustomerId = customer.Id
+                });
 
-                db.Payments.Add(temppayment);
+                //if charge and customer creation successfull then payment is recorded in database
+                if (customers.Get(customer.Id) != null && charges.Get(charge.Id) != null)
+                {
 
-                db.SaveChanges();
+                    Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
+                    BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
 
-                billingInvoice.PaymentRecived = true;
-                billingInvoice.PaymentNo = temppayment.PaymentNo;
+                    temppayment.PaymentAmount = billingInvoice.TotalDue;
 
-                db.Entry(billingInvoice).State = EntityState.Modified;
+                    db.Payments.Add(temppayment);
 
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                return RedirectToAction("Index", "BillingInvoiceManagement", new { payment.PatientId });
+                    billingInvoice.PaymentRecived = true;
+                    billingInvoice.PaymentNo = temppayment.PaymentNo;
+
+                    db.Entry(billingInvoice).State = EntityState.Modified;
+
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "BillingInvoiceManagement", new { payment.PatientId });
+                }
+                else
+                {
+                    return View("Error");
+                }
             }
-            else
+            catch
             {
                 return View("Error");
             }
@@ -189,7 +201,7 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
-            var billingInvoices = db.BillingInvoices.Include(i => i.Prescriptions).Include(i => i.Treatments);
+            var billingInvoices = db.BillingInvoices.Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment);
             BillingInvoice invoice = null;
             string patientid = null;
 
@@ -200,9 +212,11 @@ namespace GU2_Allswellhospital.Controllers
                     invoice = billingInvoice;
                     patientid = invoice.PatientID;
 
+                    Payment payment = db.Payments.Find(invoice.PaymentNo);
+
                     db.Entry(invoice).State = EntityState.Deleted;
-                    break;
-                    
+                    db.Entry(payment).State = EntityState.Deleted;
+                    break;    
                 }
             }
 

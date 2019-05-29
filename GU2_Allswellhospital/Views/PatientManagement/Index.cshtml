@@ -6,9 +6,13 @@
 
 <h2>Patients</h2>
 
+@if (User.IsInRole("MedicalRecordsStaff"))
+{
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+}
+
 <table class="table table-bordered table-striped">
     <tr>
         <th>
@@ -72,11 +76,35 @@
         </td>
 
         <td>
-            @Html.ActionLink("View Record", "Details", new { id = item.Id }) <br />
-            @Html.ActionLink("View Treatments", "Index", "TreatmentManagement", new { patientid = item.Id }, new { }) <br />
-            @Html.ActionLink("View Prescriptions", "Index", "PrescriptionManagement", new { patientid = item.Id }, new { }) <br />
-            @Html.ActionLink("View Invoices", "Index", "BillingInvoiceManagement", new { patientid = item.Id }, new { }) <br />
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            @if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant") || User.IsInRole("MedicalRecordsStaff"))
+            {
+                @Html.ActionLink("View Record", "Details", new { id = item.Id }) <br />
+            }
+
+            @if (User.IsInRole("MedicalRecordsStaff"))
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
+
+            @if (item.WardNo != null)
+            {
+
+                if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant") || User.IsInRole("MedicalRecordsStaff"))
+                {
+                    @Html.ActionLink("View Treatments", "Index", "TreatmentManagement", new { patientid = item.Id }, new { }) <br />
+                }
+
+                if (User.IsInRole("Doctor") || User.IsInRole("Nurse") || User.IsInRole("WardSister") || User.IsInRole("StaffNurse") || User.IsInRole("Consultant") || User.IsInRole("MedicalRecordsStaff"))
+                {
+                    @Html.ActionLink("View Prescriptions", "Index", "PrescriptionManagement", new { patientid = item.Id }, new { }) <br />
+                }
+
+                if (User.IsInRole("MedicalRecordsStaff"))
+                {
+                    @Html.ActionLink("View Invoices", "Index", "BillingInvoiceManagement", new { patientid = item.Id }, new { }) <br />
+                }
+
+            }
         </td>
 
         @Html.HiddenFor(modelItem => item.NextofKinForename)

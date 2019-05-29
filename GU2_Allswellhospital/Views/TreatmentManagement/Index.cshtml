@@ -6,9 +6,13 @@
 
 <h2>Index</h2>
 
+@if(User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+{
 <p>
     @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
 </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -47,9 +51,14 @@
             @Html.DisplayFor(modelItem => item.TreatmentCost)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Details", "Details", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.TreatmentNo, patientid = (string)ViewBag.patientid })
+            @if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+
+                @Html.ActionLink("Details", "Details", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+
+                @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+            }
         </td>
     </tr>
 }

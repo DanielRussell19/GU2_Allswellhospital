@@ -6,9 +6,13 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
-</p>
+@if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -24,6 +28,9 @@
             @Html.DisplayNameFor(model => model.Dosage)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.PrescriptionCost)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.LengthofTreatment)
         </th>
         <th>
@@ -32,7 +39,8 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Doctor.Forename)
@@ -47,17 +55,25 @@
             @Html.DisplayFor(modelItem => item.Dosage)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.PrescriptionCost)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.LengthofTreatment)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DateofPrescription)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Details", "Details", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid })
+            @if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+            {
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid })
+                @Html.ActionLink("Details", "Details", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid })
+                @Html.ActionLink("Delete", "Delete", new { id = item.PrescriptionNo, patientid = (string)ViewBag.patientid })
+
+            }
         </td>
     </tr>
-}
+        }
 
-</table>
+    </table>
