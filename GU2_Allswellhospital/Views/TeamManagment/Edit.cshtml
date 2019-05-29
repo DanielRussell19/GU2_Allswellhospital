@@ -6,10 +6,17 @@
 
 <h2>Edit</h2>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Team</h4>
         <hr />

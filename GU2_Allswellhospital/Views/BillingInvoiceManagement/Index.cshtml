@@ -5,6 +5,14 @@
 }
 
 <h2>Index</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
@@ -22,29 +30,30 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patient.Forename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Payment.PaymentMethod)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentRecived)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalDue)
-        </td>
-        <td>
-            @if (User.IsInRole("MedicalRecordsStaff"))
-            {
-                @Html.ActionLink("Make Payment", "MakePayment", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid }) 
-                @Html.ActionLink("Detailed View", "Details", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
-                @Html.ActionLink("Delete", "Delete", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
-            }
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Payment.PaymentMethod)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentRecived)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalDue)
+            </td>
+            <td>
+                @if (User.IsInRole("MedicalRecordsStaff"))
+                {
+                    @Html.ActionLink("Make Payment", "MakePayment", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
+                    @Html.ActionLink("Detailed View", "Details", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.InvoiceNo, patientid = (string)ViewBag.patientid })
+                }
+            </td>
+        </tr>
+    }
 
 </table>

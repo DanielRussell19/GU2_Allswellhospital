@@ -35,6 +35,13 @@ namespace GU2_Allswellhospital.Controllers
             List<Treatment> treatments = db.Treatments.Include(t => t.Patient).Include(t => t.Doctor).Where(t => t.PatientID == id).ToList();
             List<ApplicationUser> doctors = new List<ApplicationUser>();
 
+            if(doctors.Count == 0)
+            {
+                Patient patient = db.Patients.Find(id);
+                ViewBag.ErrorMessage = "Patient " + patient.Forename + " " + patient.Surname + " has no treatment";
+                return View("GetPatients", db.Patients.ToList());
+            }
+
             foreach(Treatment treatment in treatments)
             {
                 doctors.Add(db.ApplicationUsers.Find(treatment.DoctorID));
@@ -57,6 +64,12 @@ namespace GU2_Allswellhospital.Controllers
 
             List<Admission> admissions = db.Admissions.Include(a => a.Patient).Where(a => a.WardNo == team.WardNo && a.isAdmitted == true).ToList();
             List<Patient> patients = new List<Patient>();
+
+            if (patients.Count == 0)
+            {
+                ViewBag.ErrorMessage = "Team " + team.TeamName + " has not cared for any patients";
+                return View("GetTeams", db.Teams.ToList());
+            }
 
             foreach (Admission admission in admissions)
             {

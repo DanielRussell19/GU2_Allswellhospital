@@ -6,6 +6,13 @@
 
 <h2>Drug Management</h2>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -23,24 +30,25 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.DrugName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DrugDetails)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DrugCost)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.DrugNo }) |
-            @Html.ActionLink("Details", "Details", new { id = item.DrugNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.DrugNo })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugDetails)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrugCost)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.DrugNo }) |
+                @Html.ActionLink("Details", "Details", new { id = item.DrugNo }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.DrugNo })
+            </td>
+        </tr>
+    }
 
 </table>
 

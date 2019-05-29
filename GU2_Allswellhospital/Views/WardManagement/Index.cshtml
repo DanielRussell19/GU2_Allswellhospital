@@ -6,6 +6,13 @@
 
 <h2>Ward Management</h2>
 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
@@ -23,24 +30,25 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.WardName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WardCapacity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.WardSpacesTaken)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.WardNo }) |
-            @Html.ActionLink("Details", "Details", new { id = item.WardNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.WardNo })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WardName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WardCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WardSpacesTaken)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.WardNo }) |
+                @Html.ActionLink("Details", "Details", new { id = item.WardNo }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.WardNo })
+            </td>
+        </tr>
+    }
 
 </table>
 

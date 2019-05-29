@@ -6,11 +6,18 @@
 
 <h2>Index</h2>
 
-@if(User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+@if (ViewBag.ErrorMessage != null)
 {
-<p>
-    @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
-</p>
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
+@if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create", new { patientid = (string)ViewBag.patientid })
+    </p>
 }
 
 <table class="table">
@@ -33,34 +40,35 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Doctor.Forename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patient.Forename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateofTreatment)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TreatmentDetails)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TreatmentCost)
-        </td>
-        <td>
-            @if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
-            {
-                @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Doctor.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient.Forename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateofTreatment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TreatmentDetails)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TreatmentCost)
+            </td>
+            <td>
+                @if (User.IsInRole("Consultant") || User.IsInRole("StaffNurse") || User.IsInRole("Nurse") || User.IsInRole("Doctor"))
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
 
-                @Html.ActionLink("Details", "Details", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+                    @Html.ActionLink("Details", "Details", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
 
-                @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
-            }
-        </td>
-    </tr>
-}
+                    @Html.ActionLink("Delete", "Delete", new { id = item.TreatmentNo, patientid = (string)ViewBag.patientid })
+                }
+            </td>
+        </tr>
+    }
 
 </table>

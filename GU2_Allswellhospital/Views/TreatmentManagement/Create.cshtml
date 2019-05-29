@@ -6,11 +6,18 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.DoctorID);
-    
+
     <div class="form-horizontal">
         <h4>Treatment</h4>
         <hr />

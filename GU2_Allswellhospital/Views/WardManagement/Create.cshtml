@@ -6,10 +6,17 @@
 
 <h2>Create Ward</h2>
 
-@using (Html.BeginForm()) 
+@if (ViewBag.ErrorMessage != null)
+{
+    <p style=" border:dashed; border-color: red; ">
+        @( (string)ViewBag.ErrorMessage )
+    </p>
+}
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Ward</h4>
         <hr />
