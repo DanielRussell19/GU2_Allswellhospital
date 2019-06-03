@@ -119,7 +119,17 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            //temp list of invoices used to match with patient if any are unpaid
+            List<BillingInvoice> billingInvoices = db.BillingInvoices.Include(i => i.Patient).Where(i => i.PaymentRecived == false).ToList();
             Patient patient = db.Patients.Find(id);
+
+            //if count of invoice > 0 the patient can not be deleted
+            if (billingInvoices.Count >0)
+            {
+                ViewBag.ErrorMessage = "Patient has unpaid invoices";
+                return View(patient);
+            }
+
             db.Patients.Remove(patient);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -14,37 +14,68 @@ namespace GU2_Allswellhospital.Models
     /// </summary>
     public class ModifyStaffViewModel
     {
-        //temp value for user id
+        /// <summary>
+        ///temp value for user id
+        /// </summary>
         public string tempid { get; set; }
 
-        //username of new staff
+        /// <summary>
+        ///username of new staff
+        /// </summary>
         public string Username { get; set; }
 
-        //email of new staff
+        /// <summary>
+        ///email of new staff
+        /// </summary>
+        [Required]
         public string Email { get; set; }
 
-        //staff first name
+        /// <summary>
+        ///staff first name
+        /// </summary>
+        [Required]
         public string Forename { get; set; }
 
-        //staff last name
+        /// <summary>
+        ///staff last name
+        /// </summary>
+        [Required]
         public string Surname { get; set; }
-      
-        //staff phonenumber
+
+        /// <summary>
+        ///staff phonenumber
+        /// </summary>
+        [Required]
+        [MinLength(9)]
         public string Telnum { get; set; }
 
-        //staff street
+        /// <summary>
+        ///staff street
+        /// </summary>
+        [Required]
         public string Street { get; set; }
 
-        //staff town
+        /// <summary>
+        ///staff town
+        /// </summary>
+        [Required]
         public string Town { get; set; }
 
-        //staff city
+        /// <summary>
+        ///staff city
+        /// </summary>
+        [Required]
         public string City { get; set; }
 
-        //staff date of birth
+        /// <summary>
+        ///staff date of birth
+        /// </summary>
+        [Required]
         public DateTime DOB { get; set; }
 
-        //staff password
+        /// <summary>
+        ///staff password
+        /// </summary>
         public string Password { get; set; }
 
         ///<summary>

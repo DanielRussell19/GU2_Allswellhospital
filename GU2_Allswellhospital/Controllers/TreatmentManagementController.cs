@@ -53,7 +53,7 @@ namespace GU2_Allswellhospital.Controllers
         {
             ViewBag.patientid = patientid;
 
-            return View(new Treatment { PatientID = patientid, DoctorID = User.Identity.GetUserId() });
+            return View(new Treatment { PatientID = patientid, DoctorID = User.Identity.GetUserId(), TreatmentDetails= null });
         }
 
         // POST: TreatmentManagement/Create
@@ -63,8 +63,16 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TreatmentNo,DateofTreatment,TreatmentDetails,TreatmentCost,DoctorID,PatientID")] Treatment treatment)
         {
+            //checks if a model is valid
             if (ModelState.IsValid)
             {
+                //checks treatement cost > 0
+                if (!(treatment.TreatmentCost >0))
+                {
+                    ViewBag.ErrorMessage = "Please enter a valid treatment cost";
+                    return View(treatment);
+                }
+
                 //strange improvised fix for forign key error, if staff are not loaded from staffmanagement treatment creation becomes impossible
                 db.ApplicationUsers.Load();
 
@@ -109,12 +117,14 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
+                    ViewBag.ErrorMessage = "failed to create invocie";
                     return View(treatment);
                 }
 
                 
             }
 
+            ViewBag.ErrorMessage = "Invalid Submition, please fill all fields";
             return View(treatment);
         }
 
@@ -141,17 +151,27 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "TreatmentNo,DateofTreatment,TreatmentDetails,TreatmentCost,DoctorID,PatientID")] Treatment treatment)
         {
+            //checks if model is valid
             if (ModelState.IsValid)
             {
+                //checks treatment cost is more then 0
+                if (!(treatment.TreatmentCost > 0))
+                {
+                    ViewBag.ErrorMessage = "Please enter a valid treatment cost";
+                    return View(treatment);
+                }
 
+                //temp invoice for creation of new invoice and copy of copy treatment before edit
                 BillingInvoice Invoice = new BillingInvoice { PatientID = treatment.PatientID, PaymentRecived = false, TotalDue = treatment.TreatmentCost };
                 Treatment oldtreatment = treatment;
 
+                //collection of invoices
                 var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
 
                 try
                 {
-
+                
+                //searchs through all invoice to find one by the same patientid that is unpaid, if yes that invoice is used else a new one is made
                 foreach (BillingInvoice invoice in billinginvoices)
                 {
                     if (invoice.PatientID == treatment.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
@@ -166,6 +186,7 @@ namespace GU2_Allswellhospital.Controllers
                                 }
                         }
 
+                        //handles invoice total
                         treatment.InvoiceNo = Invoice.InvoiceNo;
                         Invoice.TotalDue = Invoice.TotalDue - oldtreatment.TreatmentCost + treatment.TreatmentCost;
 
@@ -180,6 +201,7 @@ namespace GU2_Allswellhospital.Controllers
                     }
                 }
 
+                //creation of new invoice
                     treatment.InvoiceNo = Invoice.InvoiceNo;
                     db.BillingInvoices.Add(Invoice);
 
@@ -191,11 +213,13 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
+                    //failed update of invoice
+                    ViewBag.ErrorMessage = "Invoice Failed to update";
                     return View(treatment);
                 }
             }
-
-            
+            //invalid model error message
+            ViewBag.ErrorMessage = "Invalid Submition, please fill all fields";
             return View(treatment);
         }
 
@@ -222,8 +246,11 @@ namespace GU2_Allswellhospital.Controllers
             Treatment treatment = db.Treatments.Find(id);
             string patientid = treatment.PatientID;
 
+            //temp collection of invoices used to find existing invocie
             var billinginvoices = db.BillingInvoices.Include(i => i.Patient).Include(i => i.Prescriptions).Include(i => i.Treatments).Include(i => i.Payment).ToList();
             BillingInvoice Invoice = new BillingInvoice();
+
+            //searches invoices to find current invoice and updates invoice
 
             try
             {

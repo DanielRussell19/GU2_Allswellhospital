@@ -59,11 +59,14 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "AdmissionNo,DateAdmitted,DateDischarged,isConfirmed,PatientID,WardNo")] Admission admission)
         {
+            //initaliation
             admission.DateDischarged = null;
             admission.AdmissionNo = Guid.NewGuid().ToString();
 
+            //checks model state valid
             if (ModelState.IsValid)
             {
+                //checks if date is more than the present date, else error message returned
                 if (admission.DateAdmitted > DateTime.Now)
                 {
 
@@ -71,7 +74,8 @@ namespace GU2_Allswellhospital.Controllers
 
                     Patient patient = db.Patients.Find(admission.PatientID);
 
-                    if (ward.WardSpacesTaken >= ward.WardCapacity -1)
+                    //checks capacity of ward, else error message stateing it is full
+                    if (ward.WardSpacesTaken >= ward.WardCapacity)
                     {
                         ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
                         ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
@@ -80,7 +84,7 @@ namespace GU2_Allswellhospital.Controllers
                     }
                     else
                     {
-                        ward.WardSpacesTaken = ward.WardSpacesTaken + 1;
+                        //ward.WardSpacesTaken = ward.WardSpacesTaken + 1;
                         patient.WardNo = admission.WardNo;
 
                         db.Admissions.Add(admission);
@@ -88,22 +92,26 @@ namespace GU2_Allswellhospital.Controllers
                         db.Entry(patient).State = EntityState.Modified;
                         db.SaveChanges();
 
+                        //try catch for sms and email
                         try
                         {
+                            //sms process
                             if (patient.TelNum != null)
                             {
                                 SmsService smsService = new SmsService();
-                                smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "SmsTest" });
+                                smsService.SendAsync(new IdentityMessage { Destination = patient.TelNum, Body = "you've got an appointment in " + admission.Ward.WardName + "at " + admission.DateAdmitted.ToString(), Subject = "SMSTest" });
                             }
 
+                            //email process
                             if (patient.Email != null)
                             {
                                 EmailService emailService = new EmailService();
-                                emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
+                                emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "you've got an appointment in " + admission.Ward.WardName + "at " + admission.DateAdmitted.ToString(), Subject = "EmailTest" });
                             }
                         }
                         catch
                         {
+                            //notifications failed
                             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
                             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
                             ViewBag.ErrorMessage = "Sms notification and or email notification failed";
@@ -115,6 +123,7 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 else
                 {
+                    //error message for bad date
                     ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
                     ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
                     ViewBag.ErrorMessage = "Date invalid, Please choose a later date";
@@ -123,12 +132,14 @@ namespace GU2_Allswellhospital.Controllers
 
             }
 
+            //error message for invalid model
             ViewBag.PatientID = new SelectList(db.Patients, "Id", "Forename", admission.PatientID);
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", admission.WardNo);
             ViewBag.ErrorMessage = "Submit is Invalid, please fill all fields";
             return View(admission);
         }
 
+        //confirms admission
         public ActionResult ConfirmAdmission(string id)
         {
             Admission admission = db.Admissions.Find(id);
@@ -139,12 +150,15 @@ namespace GU2_Allswellhospital.Controllers
             return RedirectToAction("Index");
         }
 
+        //discharges admission
         public ActionResult DischargePatient(string id)
         {
             Admission admission = db.Admissions.Find(id);
 
+            //temp collection of invoices that matches patient id
             List<BillingInvoice> invoices = db.BillingInvoices.Include(i => i.Patient).Where(i => i.PatientID == admission.PatientID && i.PaymentRecived == false).ToList();
 
+            //if any invoices are found to match patient id that are unpaid, display error message of unpaid treatments
             if ((invoices.Count > 0) == true)
             {
                 ViewBag.ErrorMessage = "Patient has unpaid treatments";
@@ -155,8 +169,9 @@ namespace GU2_Allswellhospital.Controllers
             admission.isAdmitted = false;
 
             Ward ward = db.Wards.Find(admission.WardNo);
-            ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
+            //ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
 
+            //removes all assosiations to confirm discharge
             Patient patient = db.Patients.Find(admission.PatientID);
             patient.WardNo = null;
 
@@ -187,11 +202,14 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            //temp listing of invoice used to find unpaid invoices that match patatent id
             Admission admission = db.Admissions.Find(id);
             List<BillingInvoice> invoices = db.BillingInvoices.Include(i => i.Patient).Where(i => i.PatientID == admission.PatientID && i.PaymentRecived == false).ToList();
 
+            //if none exist then admission is removeed else error message
             if ((invoices.Count >0) == false)
             {
+                //if admission is already null in id's then remove anyway
                 if (admission.WardNo == null || admission.PatientID == null)
                 {
                     db.Admissions.Remove(admission);
@@ -199,6 +217,7 @@ namespace GU2_Allswellhospital.Controllers
                     return RedirectToAction("Index");
                 }
 
+                //else manually remove assosiations update and remove
                 Patient patient = db.Patients.Find(admission.PatientID);
 
                 Ward ward = db.Wards.Find(admission.WardNo);
@@ -206,7 +225,7 @@ namespace GU2_Allswellhospital.Controllers
                 if (patient.WardNo != null)
                 {
                     patient.WardNo = null;
-                    ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
+                    //ward.WardSpacesTaken = ward.WardSpacesTaken - 1;
 
                     db.Entry(patient).State = EntityState.Modified;
                     db.Entry(ward).State = EntityState.Modified;
@@ -218,6 +237,7 @@ namespace GU2_Allswellhospital.Controllers
             }
             else
             {
+                //unpaid error message
                 ViewBag.ErrorMessage = "Patient has unpaid treatments";
                 return View("Index", db.Admissions.Include(a => a.Patient).Include(a => a.Ward).ToList());
             }

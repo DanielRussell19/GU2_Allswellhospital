@@ -13,9 +13,14 @@ namespace GU2_Allswellhospital.Models
     public class CreatePaymentViewModel
     {
         //Attributes
+
+        //temp value to patient id
         public string PatientId { get; set; }
+
+        //temp value for invoice no
         public string InvoiceNo { get; set; }
 
+        //predefined payments methods
         [Required]
         public List<SelectListItem> PaymentMethods = new List<SelectListItem>()
         {
@@ -25,16 +30,21 @@ namespace GU2_Allswellhospital.Models
             new SelectListItem(){Text = "Pre-paid", Value = "Pre-paid"}
         };
 
+        //method user has selected
         public string SelectedMethod { get; set; }
 
+        //total invoice has calculated
         public double InvoiceTotal { get; set; }
 
+        //billing address of invoice
         [Required]
         public string BillingAddress { get; set; }
 
+        //firstname of patient
         [Required]
         public string Forename { get; set; }
 
+        //surname of patient
         [Required]
         public string Surname { get; set; }
 

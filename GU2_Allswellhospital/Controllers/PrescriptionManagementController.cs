@@ -64,12 +64,32 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID,DrugNo")] Prescription prescription)
         {
+            //checks if model is valid
             if (ModelState.IsValid)
             {
+                try
+                {
+                    //checks lenght of treatment is integer > 0 and dosage is a integer > 0 , else error message in catch
+                    if ((!(int.Parse(prescription.LengthofTreatment) > 0)) || (!(int.Parse(prescription.Dosage) > 0)))
+                    {
+                        ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                        ViewBag.ErrorMessage = "Please enter valid values > 0";
+                        return View(prescription);
+                    }
+                }
+                catch
+                {
+                    ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                    ViewBag.ErrorMessage = "Please enter valid values, please enter integer values";
+                    return View(prescription);
+                }
+
+
                 //strange improvised fix for forign key error, if staff are not loaded from staffmanagement prescription creation becomes impossible ALSO
                 db.ApplicationUsers.Load();
 
                 Drug drug = db.Drugs.Find(prescription.DrugNo);
+
                 prescription.PrescriptionCost = (drug.DrugCost * double.Parse(prescription.Dosage) * double.Parse(prescription.LengthofTreatment));
 
                 db.Prescriptions.Add(prescription);
@@ -113,14 +133,18 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
+                    //failed to create invocie message
                     ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                    ViewBag.ErrorMessage = "Failded to create invoice";
                     return View(prescription);
                 }
 
 
             }
 
+            //invalid submit message
             ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+            ViewBag.ErrorMessage = "submittion invalid, please enter all values";
             return View(prescription);
         }
 
@@ -147,11 +171,32 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "PrescriptionNo,Dosage,LengthofTreatment,DateofPrescription,DoctorID,PatientID,DrugNo")] Prescription prescription)
         {
+            // check if model is valid
             if (ModelState.IsValid)
             {
                 Drug drug = db.Drugs.Find(prescription.DrugNo);
+
+                //chcks if values is integer > 0 else error message in cathc
+                try
+                {
+                    if ((!(int.Parse(prescription.LengthofTreatment) > 0)) || (!(int.Parse(prescription.Dosage) > 0)))
+                    {
+                        ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                        ViewBag.ErrorMessage = "Please enter valid values > 0";
+                        return View(prescription);
+                    }
+                }
+                catch
+                {
+                    ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                    ViewBag.ErrorMessage = "Please enter valid values";
+                    return View(prescription);
+                }
+
+                //calculates cost
                 prescription.PrescriptionCost = (drug.DrugCost * double.Parse(prescription.Dosage) * double.Parse(prescription.LengthofTreatment));
 
+                //temp invoice for createion and  temp old prescription to be initalised if previous prescription exists
                 BillingInvoice Invoice = new BillingInvoice { PatientID = prescription.PatientID, PaymentRecived = false, TotalDue = prescription.PrescriptionCost };
                 Prescription oldprescription = prescription;
 
@@ -159,7 +204,7 @@ namespace GU2_Allswellhospital.Controllers
 
                 try
                 {
-
+                    //searches for unpaid invoice and look for old prescription matching prescription no
                     foreach (BillingInvoice invoice in billinginvoices)
                     {
                         if (invoice.PatientID == prescription.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)
@@ -188,6 +233,7 @@ namespace GU2_Allswellhospital.Controllers
                         }
                     }
 
+                    //create new invoice
                     prescription.InvoiceNo = Invoice.InvoiceNo;
                     db.BillingInvoices.Add(Invoice);
 
@@ -199,12 +245,16 @@ namespace GU2_Allswellhospital.Controllers
                 }
                 catch
                 {
+                    //invoice failed error
                     ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+                    ViewBag.ErrorMessage = "Invoice failed to update";
                     return View(prescription);
                 }
             }
 
+            //ivnalid submit error
             ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
+            ViewBag.ErrorMessage = "submittion invalid, please enter all values";
             return View(prescription);
 
         }
@@ -221,6 +271,7 @@ namespace GU2_Allswellhospital.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.DrugNo = new SelectList(db.Drugs, "DrugNo", "DrugName");
             return View(prescription);
         }
 
@@ -229,6 +280,7 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            //temp variables used to find previous invoice 
             Prescription prescription = db.Prescriptions.Find(id);
             string patientid = prescription.PatientID;
 
@@ -237,7 +289,7 @@ namespace GU2_Allswellhospital.Controllers
 
             try
             {
-
+                //once found invoice makes changes to invoice then updates
                 foreach (BillingInvoice invoice in billinginvoices)
                 {
                     if (invoice.PatientID == prescription.PatientID && invoice.PaymentRecived == false && invoice.PaymentNo == null)

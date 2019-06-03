@@ -22,16 +22,19 @@ namespace GU2_Allswellhospital.Controllers
             return View();
         }
 
+        //redirects to admin services
         public ActionResult AdminServicesRedirect()
         {
             return RedirectToAction("AdminServicesIndex","AdminServices","AdminServices");
         }
 
+        //redirects to medical records
         public ActionResult MedicalRecordsRedirect()
         {
             return RedirectToAction("MedicalRecordsIndex","MedicalRecords","MedicalRecords");
         }
 
+        //redirects to team management
         public ActionResult TeamManagementRedirect()
         {
             return RedirectToAction("Index", "TeamManagment", "TeamManagment");

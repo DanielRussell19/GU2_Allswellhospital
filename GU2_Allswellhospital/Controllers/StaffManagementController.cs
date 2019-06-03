@@ -56,6 +56,7 @@ namespace GU2_Allswellhospital.Controllers
         // GET: StaffManagement/Create
         public ActionResult Create()
         {
+            //create new instance of modifystaffviewmodel to use for creation
             ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
             ModifyStaffViewModel staffviewmodel = new ModifyStaffViewModel();
             staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name}).ToList();
@@ -69,9 +70,36 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Create(string id, ModifyStaffViewModel staffviewmodel)
         {
+            //checks model state
             if (ModelState.IsValid)
             {
+                //checks if user is of valid working age, 16
+                if (!(staffviewmodel.DOB.Year < DateTime.Now.Year - 16))
+                {
+                    ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+                    ViewBag.ErrorMessage = "Not legal age to work";
+                    staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+                    return View(staffviewmodel);
+                }
+
+                //scans all instances of staff to check for pre existing staff by these details
+                foreach(Staff staff in db.ApplicationUsers.ToList())
+                {
+                    if(staff.Email == staffviewmodel.Email || (staff.Forename == staffviewmodel.Forename && staff.Surname == staffviewmodel.Surname) || staff.PhoneNumber == staffviewmodel.Telnum)
+                    {
+                        ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+                        ViewBag.ErrorMessage = "Staff Member Already Exists By These Details";
+                        staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+                        return View(staffviewmodel);
+                    }
+                }
+
+                //create instance of staff
                 var Staff = new Staff { UserName = staffviewmodel.Email, Forename = staffviewmodel.Forename, Email = staffviewmodel.Email, City = staffviewmodel.City, DOB = staffviewmodel.DOB, PhoneNumber = staffviewmodel.Telnum, Surname = staffviewmodel.Surname, Town = staffviewmodel.Town, Street = staffviewmodel.Street };
+
+                //passes instance of staff to usermanager to create user, if success passed to index, if fail redirected to error
                 var result = await UserManager.CreateAsync(Staff, staffviewmodel.Password);
                 if (result.Succeeded)
                 {
@@ -83,7 +111,12 @@ namespace GU2_Allswellhospital.Controllers
                 return RedirectToAction("Error");
             }
 
-            return RedirectToAction("Error");
+            //if model state invalid redirects to current view confirming model not valid error
+            ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+            ViewBag.ErrorMessage = "Submission not valid, please fill all fields";
+            staffviewmodel = new ModifyStaffViewModel();
+            staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            return View(staffviewmodel);
         }
 
         // GET: StaffManagement/Edit/5
@@ -99,11 +132,13 @@ namespace GU2_Allswellhospital.Controllers
                 return HttpNotFound();
             }
 
+            //create new instance of modify staff view model for edit
             ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
             ModifyStaffViewModel staffviewmodel = new ModifyStaffViewModel();
 
             string oldRole = (await UserManager.GetRolesAsync(id)).Single();
 
+            //intakes current values available about user to modify, minus password due to hashed display and confidential
             staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name, Selected = r.Name == oldRole }).ToList();
             staffviewmodel.Forename = staff.Forename;
             staffviewmodel.Surname = staff.Surname;
@@ -113,7 +148,7 @@ namespace GU2_Allswellhospital.Controllers
             staffviewmodel.DOB = staff.DOB;
             staffviewmodel.Email = staff.Email;
             staffviewmodel.Telnum = staff.PhoneNumber;
-            staffviewmodel.Role = staff.Roles.First().ToString();
+            staffviewmodel.Role = staff.Role;
             staffviewmodel.tempid = staff.Id;
 
             return View(staffviewmodel);
@@ -126,16 +161,60 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Edit(ModifyStaffViewModel staffviewmodel)
         {
+            //checks if model is valid
             if (ModelState.IsValid)
             {
+                //checks legal working age, 16 and above
+                if (!(staffviewmodel.DOB.Year < DateTime.Now.Year - 16))
+                {
+                    ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+                    ViewBag.ErrorMessage = "Not legal age to work";
+                    staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+                    return View(staffviewmodel);
+                }
+
+                //scans all instances of staff to check for pre existing staff by these details
+                foreach (Staff s in db.ApplicationUsers.ToList())
+                {
+                    if(s.Id == staffviewmodel.tempid)
+                    {
+                        continue;
+                    }
+
+                    if (s.Email == staffviewmodel.Email || (s.Forename == staffviewmodel.Forename && s.Surname == staffviewmodel.Surname) || s.PhoneNumber == staffviewmodel.Telnum)
+                    {
+                        ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+                        ViewBag.ErrorMessage = "Staff Member Already Exists By These Details";
+                        staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+                        return View(staffviewmodel);
+                    }
+                }
+
+                //finds user and previous role
                 var staff = UserManager.FindById(staffviewmodel.tempid);
                 string oldRole = (await UserManager.GetRolesAsync(staffviewmodel.tempid)).Single();
 
+                //updates details of staff
+                staff.Forename = staffviewmodel.Forename;
+                staff.Surname = staffviewmodel.Surname;
+                staff.DOB = staffviewmodel.DOB;
+                staff.Email = staffviewmodel.Email;
+                staff.City = staffviewmodel.City;
+                staff.PhoneNumber = staffviewmodel.Telnum;
+                staff.UserName = staff.Email;
+                staff.Town = staffviewmodel.Town;
+                staff.Street = staffviewmodel.Street;
+
+                //saves changes made
                 await UserManager.UpdateAsync(staff);
 
+                //removes from oldrole defined above, replaces with new role defined in staffviewmodel
                 await UserManager.RemoveFromRoleAsync(staffviewmodel.tempid, oldRole);
                 await UserManager.AddToRoleAsync(staffviewmodel.tempid, staffviewmodel.Role);
 
+                //if a password is enter into the modifyviewmodel the password is then hashed, removes previous password and add the new one to user
                 if(staffviewmodel.Password != null)
                 {
                     IPasswordHasher passwordHasher = new PasswordHasher();
@@ -148,10 +227,18 @@ namespace GU2_Allswellhospital.Controllers
                     db.SaveChanges();
                 }
 
+                //overall savechanges if password is empty
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            return View("Error");
 
+            //if model is not valid returns viewmodel confirming error
+            ViewBag.RoleNo = new SelectList(db.Roles, "Id", "Name");
+            ViewBag.ErrorMessage = "Submission not valid, please fill all fields";
+            staffviewmodel.Roles = db.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+            return View(staffviewmodel);
         }
 
         // GET: StaffManagement/Delete/5

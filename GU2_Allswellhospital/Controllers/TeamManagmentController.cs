@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -66,14 +67,41 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TeamNo,TeamName,WardNo")] Team team)
         {
+
+            //checks model state
             if (ModelState.IsValid)
             {
+
+                //temp list of teams
+                List<Team> teams = db.Teams.Include(t => t.Ward).ToList();
+
+                foreach (Team t in teams)
+                {
+                    //checks if team already exists
+                    if (t.TeamName == team.TeamName)
+                    {
+                        ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
+                        ViewBag.ErrorMessage = "Team Already exsists, please choose different name";
+                        return View(team);
+                    }
+                    //checks if team already occupies a ward
+                    else if (t.WardNo == team.WardNo)
+                    {
+                        ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
+                        ViewBag.ErrorMessage = "Ward already occupied by another team";
+                        return View(team);
+                    }
+                }
+
+                //adds team
                 db.Teams.Add(team);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
+            //invalid model error message
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
+            ViewBag.ErrorMessage = "Submit is invalid, please fill all fields";
             return View(team);
         }
 
@@ -100,12 +128,43 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "TeamNo,TeamName,WardNo")] Team team)
         {
+            //checks model state
             if (ModelState.IsValid)
             {
-                db.Entry(team).State = EntityState.Modified;
+                //temp list of teams
+                List<Team> teams = db.Teams.Include(t => t.Ward).ToList();
+
+                foreach (Team t in teams)
+                {
+                    //if team matches team being edited then skip iteration
+                    if(t.TeamNo == team.TeamNo)
+                    {
+                        continue;
+                    }
+
+                    //checks if team name matches with any that exsist
+                    if (t.TeamName == team.TeamName)
+                    {
+                        ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
+                        ViewBag.ErrorMessage = "Team Already exsists, please choose different name";
+                        return View(team);
+                    }
+                    //checks if ward already occupied by another team
+                    else if (t.WardNo == team.WardNo)
+                    {
+                        ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
+                        ViewBag.ErrorMessage = "Ward already occupied by another team";
+                        return View(team);
+                    }
+                }
+
+                //add or update
+                db.Set<Team>().AddOrUpdate(team);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
+            //invalid model error message
             ViewBag.WardNo = new SelectList(db.Wards, "WardNo", "WardName", team.WardNo);
             return View(team);
         }
@@ -130,6 +189,7 @@ namespace GU2_Allswellhospital.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
         {
+            //removes all staff from team before deletion of team
             Team team = db.Teams.Find(id);
 
             var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == id).ToList();
@@ -157,7 +217,7 @@ namespace GU2_Allswellhospital.Controllers
             base.Dispose(disposing);
         }
 
-        
+        //Listing of staff able to be assigned to team
         public ActionResult AssignStaffListing(string id)
         {
             var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == null);
@@ -167,7 +227,7 @@ namespace GU2_Allswellhospital.Controllers
             return View(applicationUsers.ToList());
         }
 
-        
+        //Assign staff under id to team
         public ActionResult AssignStaff(string StaffId, string teamNo)
         {
 
@@ -189,7 +249,7 @@ namespace GU2_Allswellhospital.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        //displays list of staff to unassign
         public ActionResult UnAssignStaffListing(string id)
         {
             var applicationUsers = db.ApplicationUsers.Include(s => s.Team).Include(s => s.Roles).Where(s => s.TeamNo == id);
@@ -199,7 +259,7 @@ namespace GU2_Allswellhospital.Controllers
             return View(applicationUsers.ToList());
         }
 
-        
+        //dispkays list of staff able to be unassigned
         public ActionResult UnAssignStaff(string StaffId, string teamNo)
         {
             if (StaffId == null || teamNo == null)
