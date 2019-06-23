@@ -13,30 +13,38 @@
     @Html.HiddenFor(model => model.InvoiceNo)
     @Html.HiddenFor(model => model.InvoiceTotal)
 
-    <div class="form-horizontal">
-        <h4>Payment</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <h4>Payment</h4>
 
-        @Html.HiddenFor(model => model.Forename)
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <p style=" border:dashed; border-color: red; ">
+            @( (string)ViewBag.ErrorMessage )
+        </p>
+    }
 
-        @Html.HiddenFor(model => model.Surname)
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        @Html.HiddenFor(model => model.BillingAddress)
+    @Html.HiddenFor(model => model.Forename)
 
-        @Html.HiddenFor(model => model.SelectedMethod)
+    @Html.HiddenFor(model => model.Surname)
 
-        <div id="Card">
-            <script src="//checkout.stripe.com/v2/checkout.js"
-                    class="stripe-button"
-                    data-key="pk_test_rCjYKii84w528j5vcbqqVI4500zKdyayxv"
-                    data-locale="auto"
-                    data-description="Sample Charge"
-                    data-amount="">
-            </script>
-        </div>
+    @Html.HiddenFor(model => model.BillingAddress)
 
+    @Html.HiddenFor(model => model.SelectedMethod)
+
+    <div id="Card">
+        <script src="//checkout.stripe.com/v2/checkout.js"
+                class="stripe-button"
+                data-key="pk_test_rCjYKii84w528j5vcbqqVI4500zKdyayxv"
+                data-locale="auto"
+                data-description="Sample Charge"
+                data-amount="">
+        </script>
     </div>
+
+</div>
 }
 
 <div>

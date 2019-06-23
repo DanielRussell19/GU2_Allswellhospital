@@ -5,9 +5,11 @@ using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using GU2_Allswellhospital.Models;
+using Microsoft.AspNet.Identity;
 using Stripe;
 
 namespace GU2_Allswellhospital.Controllers
@@ -101,6 +103,15 @@ namespace GU2_Allswellhospital.Controllers
                     Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
                     BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
 
+                    Patient patient = db.Patients.Find(billingInvoice.PatientID);
+
+                    //email process
+                    if (patient.Email != null)
+                    {
+                        EmailService emailService = new EmailService();
+                        emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "Your Payment of £" + payment.InvoiceTotal + " for your treatments has been recived", Subject = "Confirmation of Payment" });
+                    }
+
                     //transfers invoice amount to payment amount 
                     temppayment.PaymentAmount = billingInvoice.TotalDue;
 
@@ -152,16 +163,47 @@ namespace GU2_Allswellhospital.Controllers
                 });
 
                 //creates charge, unable to correctly record charge as amount requires a long input which my entire project relises on double
-                //attempted to convert from string and convert directly to no avail
+                
+                //most tiresome double to list of char to string to int64 casting ever, but succeeds in turing a double to a long compatable with stripe API
+                //create list of char from invoice total
+                List<char> chartotal = payment.InvoiceTotal.ToString("C2").ToList();
+
+                //scans through char list removing all decimal points
+                while (chartotal.Contains('.') || chartotal.Contains(',') || chartotal.Contains('£'))
+                {
+                    try
+                    {
+                        chartotal.Remove('.');
+                        chartotal.Remove(',');
+                        chartotal.Remove('£');
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+                }
+
+                //utalizes stringbuilder to build a string out of the list of char values
+                string temptotal = null;
+                var builder = new StringBuilder();
+
+                foreach (char c in chartotal)
+                {
+                    builder.Append(c);
+                }
+
+                //final string product of the tiresome cast that now must be converted to long below
+                temptotal = builder.ToString();
+                //
 
                 //create charge
                 var charge = charges.Create(new ChargeCreateOptions
                 {
-                    Amount = 050,
+                    Amount = Int64.Parse(temptotal),
                     Description = "test purposes Charge",
                     Currency = "gbp",
                     CustomerId = customer.Id,
-                    ReceiptEmail = customer.Email
+                    ReceiptEmail = customer.Email,
                 });
 
                 //if charge and customer creation successfull and can be found on stripe then payment is recorded in database
@@ -170,6 +212,15 @@ namespace GU2_Allswellhospital.Controllers
                     //transfers details from payment view model and finds invoice
                     Payment temppayment = new Payment { Forename = payment.Forename, Surname = payment.Surname, BillingAddress = payment.BillingAddress, PaymentMethod = payment.SelectedMethod };
                     BillingInvoice billingInvoice = db.BillingInvoices.Find(payment.InvoiceNo);
+
+                    Patient patient = db.Patients.Find(billingInvoice.PatientID);
+
+                    //email process
+                    if (patient.Email != null)
+                    {
+                        EmailService emailService = new EmailService();
+                        emailService.SendAsync(new IdentityMessage { Destination = patient.Email, Body = "Your Payment of £" + payment.InvoiceTotal + " for your treatments has been recived", Subject = "Confirmation of Payment" });
+                    }
 
                     //transfers total to payment
                     temppayment.PaymentAmount = billingInvoice.TotalDue;
